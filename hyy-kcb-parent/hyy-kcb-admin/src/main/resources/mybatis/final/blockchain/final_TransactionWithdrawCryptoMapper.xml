@@ -1,0 +1,407 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hyy.kcb.dao.blockchain.ITransactionWithdrawCryptoDao" >
+	<resultMap id="transactionWithdrawCryptoResultMap" type="com.hyy.kcb.domain.blockchain.dto.TransactionWithdrawCryptoDTO">
+		<result column="ID" property="id" /> 
+		<result column="UID" property="uid" /> 
+		<result column="SYMBOL" property="symbol" /> 
+		<result column="AMOUNT" property="amount" /> 
+		<result column="FEE" property="fee" /> 
+		<result column="REAL_FEE" property="realFee" /> 
+		<result column="PAY_AMOUNT" property="payAmount" /> 
+		<result column="CREATED_AT" property="createdAt" /> 
+		<result column="UPDATED_AT" property="updatedAt" /> 
+		<result column="ADDRESS_FROM" property="addressFrom" /> 
+		<result column="ADDRESS_TO" property="addressTo" /> 
+		<result column="TXID" property="txid" /> 
+		<result column="CONFIRMATIONS" property="confirmations" /> 
+		<result column="STATUS" property="status" /> 
+		<result column="ENCRYPT" property="encrypt" /> 
+		<result column="VERIFY_DESCRIPTION" property="verifyDescription" /> 
+		<result column="VERIFY_HASH" property="verifyHash" /> 
+		<result column="REFUSE_MSG" property="refuseMsg" /> 
+		<result column="OP_UID" property="opUid" /> 
+		<result column="PAY_TIME" property="payTime" /> 
+		<result column="UP_TIME" property="upTime" /> 
+		<result column="FINGERPRINT" property="fingerprint" /> 
+	</resultMap>
+	<sql id="baseSql">
+		<![CDATA[
+			SELECT ID,UID,SYMBOL,AMOUNT,FEE,REAL_FEE,PAY_AMOUNT,CREATED_AT,UPDATED_AT,ADDRESS_FROM,ADDRESS_TO,TXID,CONFIRMATIONS,STATUS,ENCRYPT,VERIFY_DESCRIPTION,VERIFY_HASH,REFUSE_MSG,OP_UID,PAY_TIME,UP_TIME,FINGERPRINT FROM transaction_withdraw_crypto
+		]]>
+	</sql>
+	
+	<select id="selectTList" parameterType="com.hyy.kcb.commons.page.Pager" resultMap="transactionWithdrawCryptoResultMap">
+		<include refid="baseSql"/>	
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="params != null and params.uid != null and params.uid != ''" >
+				and UID = #{params.uid}
+			</if>
+			<if test="params != null and params.symbol != null and params.symbol != ''" >
+				and SYMBOL = #{params.symbol}
+			</if>
+			<if test="params != null and params.amount != null and params.amount != ''" >
+				and AMOUNT = #{params.amount}
+			</if>
+			<if test="params != null and params.fee != null and params.fee != ''" >
+				and FEE = #{params.fee}
+			</if>
+			<if test="params != null and params.realFee != null and params.realFee != ''" >
+				and REAL_FEE = #{params.realFee}
+			</if>
+			<if test="params != null and params.payAmount != null and params.payAmount != ''" >
+				and PAY_AMOUNT = #{params.payAmount}
+			</if>
+			<if test="params != null and params.createdAt != null and params.createdAt != ''" >
+				and CREATED_AT = #{params.createdAt}
+			</if>
+			<if test="params != null and params.updatedAt != null and params.updatedAt != ''" >
+				and UPDATED_AT = #{params.updatedAt}
+			</if>
+			<if test="params != null and params.addressFrom != null and params.addressFrom != ''" >
+				and ADDRESS_FROM = #{params.addressFrom}
+			</if>
+			<if test="params != null and params.addressTo != null and params.addressTo != ''" >
+				and ADDRESS_TO = #{params.addressTo}
+			</if>
+			<if test="params != null and params.txid != null and params.txid != ''" >
+				and TXID = #{params.txid}
+			</if>
+			<if test="params != null and params.confirmations != null and params.confirmations != ''" >
+				and CONFIRMATIONS = #{params.confirmations}
+			</if>
+			<if test="params != null and params.status != null and params.status != ''" >
+				and STATUS = #{params.status}
+			</if>
+			<if test="params != null and params.encrypt != null and params.encrypt != ''" >
+				and ENCRYPT = #{params.encrypt}
+			</if>
+			<if test="params != null and params.verifyDescription != null and params.verifyDescription != ''" >
+				and VERIFY_DESCRIPTION = #{params.verifyDescription}
+			</if>
+			<if test="params != null and params.verifyHash != null and params.verifyHash != ''" >
+				and VERIFY_HASH = #{params.verifyHash}
+			</if>
+			<if test="params != null and params.refuseMsg != null and params.refuseMsg != ''" >
+				and REFUSE_MSG = #{params.refuseMsg}
+			</if>
+			<if test="params != null and params.opUid != null and params.opUid != ''" >
+				and OP_UID = #{params.opUid}
+			</if>
+			<if test="params != null and params.payTime != null and params.payTime != ''" >
+				and PAY_TIME = #{params.payTime}
+			</if>
+			<if test="params != null and params.upTime != null and params.upTime != ''" >
+				and UP_TIME = #{params.upTime}
+			</if>
+			<if test="params != null and params.fingerprint != null and params.fingerprint != ''" >
+				and FINGERPRINT = #{params.fingerprint}
+			</if>
+		</trim>
+			<if test="orderField != null and orderField != ''" >
+		      order by ${orderField}
+		    </if>
+		    <if test="orderField == null or orderField == ''" >
+		      order by id
+		    </if>
+			<if test="orderDirection != null and orderDirection != ''" >
+		      ${orderDirection}
+		    </if>
+			<if test="orderDirection == null or orderDirection == ''" >
+		      desc
+		    </if>
+		    <if test="limitStart >= 0" >
+		      limit #{limitStart} , #{pageSize}
+		    </if>
+	</select>
+	<select id="selectTListCount" parameterType="com.hyy.kcb.commons.page.Pager" resultType="java.lang.Integer">
+		select count(1) from transaction_withdraw_crypto 
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="params != null and params.uid != null and params.uid != ''" >
+				and UID = #{params.uid}
+			</if>
+			<if test="params != null and params.symbol != null and params.symbol != ''" >
+				and SYMBOL = #{params.symbol}
+			</if>
+			<if test="params != null and params.amount != null and params.amount != ''" >
+				and AMOUNT = #{params.amount}
+			</if>
+			<if test="params != null and params.fee != null and params.fee != ''" >
+				and FEE = #{params.fee}
+			</if>
+			<if test="params != null and params.realFee != null and params.realFee != ''" >
+				and REAL_FEE = #{params.realFee}
+			</if>
+			<if test="params != null and params.payAmount != null and params.payAmount != ''" >
+				and PAY_AMOUNT = #{params.payAmount}
+			</if>
+			<if test="params != null and params.createdAt != null and params.createdAt != ''" >
+				and CREATED_AT = #{params.createdAt}
+			</if>
+			<if test="params != null and params.updatedAt != null and params.updatedAt != ''" >
+				and UPDATED_AT = #{params.updatedAt}
+			</if>
+			<if test="params != null and params.addressFrom != null and params.addressFrom != ''" >
+				and ADDRESS_FROM = #{params.addressFrom}
+			</if>
+			<if test="params != null and params.addressTo != null and params.addressTo != ''" >
+				and ADDRESS_TO = #{params.addressTo}
+			</if>
+			<if test="params != null and params.txid != null and params.txid != ''" >
+				and TXID = #{params.txid}
+			</if>
+			<if test="params != null and params.confirmations != null and params.confirmations != ''" >
+				and CONFIRMATIONS = #{params.confirmations}
+			</if>
+			<if test="params != null and params.status != null and params.status != ''" >
+				and STATUS = #{params.status}
+			</if>
+			<if test="params != null and params.encrypt != null and params.encrypt != ''" >
+				and ENCRYPT = #{params.encrypt}
+			</if>
+			<if test="params != null and params.verifyDescription != null and params.verifyDescription != ''" >
+				and VERIFY_DESCRIPTION = #{params.verifyDescription}
+			</if>
+			<if test="params != null and params.verifyHash != null and params.verifyHash != ''" >
+				and VERIFY_HASH = #{params.verifyHash}
+			</if>
+			<if test="params != null and params.refuseMsg != null and params.refuseMsg != ''" >
+				and REFUSE_MSG = #{params.refuseMsg}
+			</if>
+			<if test="params != null and params.opUid != null and params.opUid != ''" >
+				and OP_UID = #{params.opUid}
+			</if>
+			<if test="params != null and params.payTime != null and params.payTime != ''" >
+				and PAY_TIME = #{params.payTime}
+			</if>
+			<if test="params != null and params.upTime != null and params.upTime != ''" >
+				and UP_TIME = #{params.upTime}
+			</if>
+			<if test="params != null and params.fingerprint != null and params.fingerprint != ''" >
+				and FINGERPRINT = #{params.fingerprint}
+			</if>
+		</trim>
+	</select>
+	<select id="selectAll" resultMap="transactionWithdrawCryptoResultMap">
+		<include refid="baseSql"/>
+	</select>	
+	<select id="selectById" parameterType="java.lang.Integer" resultMap="transactionWithdrawCryptoResultMap">
+		<include refid="baseSql"/>	
+		<![CDATA[ WHERE ID=#{id}]]>
+	</select>
+	<select id="selectByUUID" parameterType="java.lang.String" resultMap="transactionWithdrawCryptoResultMap">
+		<include refid="baseSql"/>	
+		<![CDATA[ WHERE UUID=#{uuid}]]>
+	</select>
+	
+	<insert id="insert" parameterType="com.hyy.kcb.domain.blockchain.TransactionWithdrawCrypto" useGeneratedKeys="true" keyProperty="id">
+		insert into transaction_withdraw_crypto
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="uid != null" >
+				UID,
+			</if>
+			<if test="symbol != null" >
+				SYMBOL,
+			</if>
+			<if test="amount != null" >
+				AMOUNT,
+			</if>
+			<if test="fee != null" >
+				FEE,
+			</if>
+			<if test="realFee != null" >
+				REAL_FEE,
+			</if>
+			<if test="payAmount != null" >
+				PAY_AMOUNT,
+			</if>
+			<if test="createdAt != null" >
+				CREATED_AT,
+			</if>
+			<if test="updatedAt != null" >
+				UPDATED_AT,
+			</if>
+			<if test="addressFrom != null" >
+				ADDRESS_FROM,
+			</if>
+			<if test="addressTo != null" >
+				ADDRESS_TO,
+			</if>
+			<if test="txid != null" >
+				TXID,
+			</if>
+			<if test="confirmations != null" >
+				CONFIRMATIONS,
+			</if>
+			<if test="status != null" >
+				STATUS,
+			</if>
+			<if test="encrypt != null" >
+				ENCRYPT,
+			</if>
+			<if test="verifyDescription != null" >
+				VERIFY_DESCRIPTION,
+			</if>
+			<if test="verifyHash != null" >
+				VERIFY_HASH,
+			</if>
+			<if test="refuseMsg != null" >
+				REFUSE_MSG,
+			</if>
+			<if test="opUid != null" >
+				OP_UID,
+			</if>
+			<if test="payTime != null" >
+				PAY_TIME,
+			</if>
+			<if test="upTime != null" >
+				UP_TIME,
+			</if>
+			<if test="fingerprint != null" >
+				FINGERPRINT,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="uid != null" >
+				#{uid},
+			</if>
+			<if test="symbol != null" >
+				#{symbol},
+			</if>
+			<if test="amount != null" >
+				#{amount},
+			</if>
+			<if test="fee != null" >
+				#{fee},
+			</if>
+			<if test="realFee != null" >
+				#{realFee},
+			</if>
+			<if test="payAmount != null" >
+				#{payAmount},
+			</if>
+			<if test="createdAt != null" >
+				#{createdAt},
+			</if>
+			<if test="updatedAt != null" >
+				#{updatedAt},
+			</if>
+			<if test="addressFrom != null" >
+				#{addressFrom},
+			</if>
+			<if test="addressTo != null" >
+				#{addressTo},
+			</if>
+			<if test="txid != null" >
+				#{txid},
+			</if>
+			<if test="confirmations != null" >
+				#{confirmations},
+			</if>
+			<if test="status != null" >
+				#{status},
+			</if>
+			<if test="encrypt != null" >
+				#{encrypt},
+			</if>
+			<if test="verifyDescription != null" >
+				#{verifyDescription},
+			</if>
+			<if test="verifyHash != null" >
+				#{verifyHash},
+			</if>
+			<if test="refuseMsg != null" >
+				#{refuseMsg},
+			</if>
+			<if test="opUid != null" >
+				#{opUid},
+			</if>
+			<if test="payTime != null" >
+				#{payTime},
+			</if>
+			<if test="upTime != null" >
+				#{upTime},
+			</if>
+			<if test="fingerprint != null" >
+				#{fingerprint},
+			</if>
+		</trim>
+	</insert>
+	
+	<update id="updateObj" parameterType="com.hyy.kcb.domain.blockchain.TransactionWithdrawCrypto">
+		update transaction_withdraw_crypto
+		<set>
+			<if test="uid != null" >
+				UID = #{uid},
+			</if>
+			<if test="symbol != null" >
+				SYMBOL = #{symbol},
+			</if>
+			<if test="amount != null" >
+				AMOUNT = #{amount},
+			</if>
+			<if test="fee != null" >
+				FEE = #{fee},
+			</if>
+			<if test="realFee != null" >
+				REAL_FEE = #{realFee},
+			</if>
+			<if test="payAmount != null" >
+				PAY_AMOUNT = #{payAmount},
+			</if>
+			<if test="createdAt != null" >
+				CREATED_AT = #{createdAt},
+			</if>
+			<if test="updatedAt != null" >
+				UPDATED_AT = #{updatedAt},
+			</if>
+			<if test="addressFrom != null" >
+				ADDRESS_FROM = #{addressFrom},
+			</if>
+			<if test="addressTo != null" >
+				ADDRESS_TO = #{addressTo},
+			</if>
+			<if test="txid != null" >
+				TXID = #{txid},
+			</if>
+			<if test="confirmations != null" >
+				CONFIRMATIONS = #{confirmations},
+			</if>
+			<if test="status != null" >
+				STATUS = #{status},
+			</if>
+			<if test="encrypt != null" >
+				ENCRYPT = #{encrypt},
+			</if>
+			<if test="verifyDescription != null" >
+				VERIFY_DESCRIPTION = #{verifyDescription},
+			</if>
+			<if test="verifyHash != null" >
+				VERIFY_HASH = #{verifyHash},
+			</if>
+			<if test="refuseMsg != null" >
+				REFUSE_MSG = #{refuseMsg},
+			</if>
+			<if test="opUid != null" >
+				OP_UID = #{opUid},
+			</if>
+			<if test="payTime != null" >
+				PAY_TIME = #{payTime},
+			</if>
+			<if test="upTime != null" >
+				UP_TIME = #{upTime},
+			</if>
+			<if test="fingerprint != null" >
+				FINGERPRINT = #{fingerprint},
+			</if>
+		</set>
+		where ID = #{id}
+	</update>	
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		<![CDATA[
+			DELETE FROM transaction_withdraw_crypto
+			WHERE ID=#{id}
+		]]>
+	</delete>	
+	
+</mapper>

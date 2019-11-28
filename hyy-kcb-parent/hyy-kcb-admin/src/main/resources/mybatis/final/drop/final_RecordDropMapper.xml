@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hyy.kcb.dao.drop.IRecordDropDao" >
+	<resultMap id="recordDropResultMap" type="com.hyy.kcb.domain.drop.dto.RecordDropDTO">
+		<result column="ID" property="id" /> 
+		<result column="OPENID" property="openid" /> 
+		<result column="TIME" property="time" /> 
+		<result column="GROSS_AMOUNT" property="grossAmount" /> 
+		<result column="RELEASE_AMOUNT" property="releaseAmount" /> 
+		<result column="BALANCE" property="balance" /> 
+		<result column="RELEASE_DAY" property="releaseDay" /> 
+		<result column="TYPE" property="type" /> 
+	</resultMap>
+	<sql id="baseSql">
+		<![CDATA[
+			SELECT ID,OPENID,TIME,GROSS_AMOUNT,RELEASE_AMOUNT,BALANCE,RELEASE_DAY,TYPE FROM record_drop
+		]]>
+	</sql>
+	
+	<select id="selectTList" parameterType="com.hyy.kcb.commons.page.Pager" resultMap="recordDropResultMap">
+		<include refid="baseSql"/>	
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="params != null and params.openid != null and params.openid != ''" >
+				and OPENID = #{params.openid}
+			</if>
+			<if test="params != null and params.time != null and params.time != ''" >
+				and TIME = #{params.time}
+			</if>
+			<if test="params != null and params.grossAmount != null and params.grossAmount != ''" >
+				and GROSS_AMOUNT = #{params.grossAmount}
+			</if>
+			<if test="params != null and params.releaseAmount != null and params.releaseAmount != ''" >
+				and RELEASE_AMOUNT = #{params.releaseAmount}
+			</if>
+			<if test="params != null and params.balance != null and params.balance != ''" >
+				and BALANCE = #{params.balance}
+			</if>
+			<if test="params != null and params.releaseDay != null and params.releaseDay != ''" >
+				and RELEASE_DAY = #{params.releaseDay}
+			</if>
+			<if test="params != null and params.type != null and params.type != ''" >
+				and TYPE = #{params.type}
+			</if>
+		</trim>
+			<if test="orderField != null and orderField != ''" >
+		      order by ${orderField}
+		    </if>
+		    <if test="orderField == null or orderField == ''" >
+		      order by id
+		    </if>
+			<if test="orderDirection != null and orderDirection != ''" >
+		      ${orderDirection}
+		    </if>
+			<if test="orderDirection == null or orderDirection == ''" >
+		      desc
+		    </if>
+		    <if test="limitStart >= 0" >
+		      limit #{limitStart} , #{pageSize}
+		    </if>
+	</select>
+	<select id="selectTListCount" parameterType="com.hyy.kcb.commons.page.Pager" resultType="java.lang.Integer">
+		select count(1) from record_drop 
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="params != null and params.openid != null and params.openid != ''" >
+				and OPENID = #{params.openid}
+			</if>
+			<if test="params != null and params.time != null and params.time != ''" >
+				and TIME = #{params.time}
+			</if>
+			<if test="params != null and params.grossAmount != null and params.grossAmount != ''" >
+				and GROSS_AMOUNT = #{params.grossAmount}
+			</if>
+			<if test="params != null and params.releaseAmount != null and params.releaseAmount != ''" >
+				and RELEASE_AMOUNT = #{params.releaseAmount}
+			</if>
+			<if test="params != null and params.balance != null and params.balance != ''" >
+				and BALANCE = #{params.balance}
+			</if>
+			<if test="params != null and params.releaseDay != null and params.releaseDay != ''" >
+				and RELEASE_DAY = #{params.releaseDay}
+			</if>
+			<if test="params != null and params.type != null and params.type != ''" >
+				and TYPE = #{params.type}
+			</if>
+		</trim>
+	</select>
+	<select id="selectAll" resultMap="recordDropResultMap">
+		<include refid="baseSql"/>
+	</select>	
+	<select id="selectById" parameterType="java.lang.Integer" resultMap="recordDropResultMap">
+		<include refid="baseSql"/>	
+		<![CDATA[ WHERE ID=#{id}]]>
+	</select>
+	<select id="selectByUUID" parameterType="java.lang.String" resultMap="recordDropResultMap">
+		<include refid="baseSql"/>	
+		<![CDATA[ WHERE UUID=#{uuid}]]>
+	</select>
+	
+	<insert id="insert" parameterType="com.hyy.kcb.domain.drop.RecordDrop" useGeneratedKeys="true" keyProperty="id">
+		insert into record_drop
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="openid != null" >
+				OPENID,
+			</if>
+			<if test="time != null" >
+				TIME,
+			</if>
+			<if test="grossAmount != null" >
+				GROSS_AMOUNT,
+			</if>
+			<if test="releaseAmount != null" >
+				RELEASE_AMOUNT,
+			</if>
+			<if test="balance != null" >
+				BALANCE,
+			</if>
+			<if test="releaseDay != null" >
+				RELEASE_DAY,
+			</if>
+			<if test="type != null" >
+				TYPE,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="openid != null" >
+				#{openid},
+			</if>
+			<if test="time != null" >
+				#{time},
+			</if>
+			<if test="grossAmount != null" >
+				#{grossAmount},
+			</if>
+			<if test="releaseAmount != null" >
+				#{releaseAmount},
+			</if>
+			<if test="balance != null" >
+				#{balance},
+			</if>
+			<if test="releaseDay != null" >
+				#{releaseDay},
+			</if>
+			<if test="type != null" >
+				#{type},
+			</if>
+		</trim>
+	</insert>
+	
+	<update id="updateObj" parameterType="com.hyy.kcb.domain.drop.RecordDrop">
+		update record_drop
+		<set>
+			<if test="openid != null" >
+				OPENID = #{openid},
+			</if>
+			<if test="time != null" >
+				TIME = #{time},
+			</if>
+			<if test="grossAmount != null" >
+				GROSS_AMOUNT = #{grossAmount},
+			</if>
+			<if test="releaseAmount != null" >
+				RELEASE_AMOUNT = #{releaseAmount},
+			</if>
+			<if test="balance != null" >
+				BALANCE = #{balance},
+			</if>
+			<if test="releaseDay != null" >
+				RELEASE_DAY = #{releaseDay},
+			</if>
+			<if test="type != null" >
+				TYPE = #{type},
+			</if>
+		</set>
+		where ID = #{id}
+	</update>	
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		<![CDATA[
+			DELETE FROM record_drop
+			WHERE ID=#{id}
+		]]>
+	</delete>	
+	
+</mapper>

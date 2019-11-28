@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hyy.kcb.dao.audit.IAuditSynchronizationDao" >
+	<resultMap id="auditSynchronizationResultMap" type="com.hyy.kcb.domain.audit.dto.AuditSynchronizationDTO">
+		<result column="ID" property="id" /> 
+		<result column="UID" property="uid" /> 
+		<result column="AMOUNT" property="amount" /> 
+		<result column="C_TIME" property="cTime" /> 
+		<result column="STATUS" property="status" /> 
+	</resultMap>
+	<sql id="baseSql">
+		<![CDATA[
+			SELECT ID,UID,AMOUNT,C_TIME,STATUS FROM audit_synchronization
+		]]>
+	</sql>
+	
+	<select id="selectTList" parameterType="com.hyy.kcb.commons.page.Pager" resultMap="auditSynchronizationResultMap">
+		<include refid="baseSql"/>	
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="params != null and params.uid != null and params.uid != ''" >
+				and UID = #{params.uid}
+			</if>
+			<if test="params != null and params.amount != null and params.amount != ''" >
+				and AMOUNT = #{params.amount}
+			</if>
+			<if test="params != null and params.cTime != null and params.cTime != ''" >
+				and C_TIME = #{params.cTime}
+			</if>
+			<if test="params != null and params.status != null and params.status != ''" >
+				and STATUS = #{params.status}
+			</if>
+		</trim>
+			<if test="orderField != null and orderField != ''" >
+		      order by ${orderField}
+		    </if>
+		    <if test="orderField == null or orderField == ''" >
+		      order by id
+		    </if>
+			<if test="orderDirection != null and orderDirection != ''" >
+		      ${orderDirection}
+		    </if>
+			<if test="orderDirection == null or orderDirection == ''" >
+		      desc
+		    </if>
+		    <if test="limitStart >= 0" >
+		      limit #{limitStart} , #{pageSize}
+		    </if>
+	</select>
+	<select id="selectTListCount" parameterType="com.hyy.kcb.commons.page.Pager" resultType="java.lang.Integer">
+		select count(1) from audit_synchronization 
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="params != null and params.uid != null and params.uid != ''" >
+				and UID = #{params.uid}
+			</if>
+			<if test="params != null and params.amount != null and params.amount != ''" >
+				and AMOUNT = #{params.amount}
+			</if>
+			<if test="params != null and params.cTime != null and params.cTime != ''" >
+				and C_TIME = #{params.cTime}
+			</if>
+			<if test="params != null and params.status != null and params.status != ''" >
+				and STATUS = #{params.status}
+			</if>
+		</trim>
+	</select>
+	<select id="selectAll" resultMap="auditSynchronizationResultMap">
+		<include refid="baseSql"/>
+	</select>	
+	<select id="selectById" parameterType="java.lang.Integer" resultMap="auditSynchronizationResultMap">
+		<include refid="baseSql"/>	
+		<![CDATA[ WHERE ID=#{id}]]>
+	</select>
+	<select id="selectByUUID" parameterType="java.lang.String" resultMap="auditSynchronizationResultMap">
+		<include refid="baseSql"/>	
+		<![CDATA[ WHERE UUID=#{uuid}]]>
+	</select>
+	
+	<insert id="insert" parameterType="com.hyy.kcb.domain.audit.AuditSynchronization" useGeneratedKeys="true" keyProperty="id">
+		insert into audit_synchronization
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="uid != null" >
+				UID,
+			</if>
+			<if test="amount != null" >
+				AMOUNT,
+			</if>
+			<if test="cTime != null" >
+				C_TIME,
+			</if>
+			<if test="status != null" >
+				STATUS,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="uid != null" >
+				#{uid},
+			</if>
+			<if test="amount != null" >
+				#{amount},
+			</if>
+			<if test="cTime != null" >
+				#{cTime},
+			</if>
+			<if test="status != null" >
+				#{status},
+			</if>
+		</trim>
+	</insert>
+	
+	<update id="updateObj" parameterType="com.hyy.kcb.domain.audit.AuditSynchronization">
+		update audit_synchronization
+		<set>
+			<if test="uid != null" >
+				UID = #{uid},
+			</if>
+			<if test="amount != null" >
+				AMOUNT = #{amount},
+			</if>
+			<if test="cTime != null" >
+				C_TIME = #{cTime},
+			</if>
+			<if test="status != null" >
+				STATUS = #{status},
+			</if>
+		</set>
+		where ID = #{id}
+	</update>	
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		<![CDATA[
+			DELETE FROM audit_synchronization
+			WHERE ID=#{id}
+		]]>
+	</delete>	
+	
+</mapper>

@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hyy.kcb.dao.order.ITransactionPaymentDao" >
+	<resultMap id="transactionPaymentResultMap" type="com.hyy.kcb.domain.order.dto.TransactionPaymentDTO">
+		<result column="ID" property="id" /> 
+		<result column="PAYMENT_UID" property="paymentUid" /> 
+		<result column="AMOUNT" property="amount" /> 
+		<result column="RECEIPT_MOBILE" property="receiptMobile" /> 
+		<result column="FEE" property="fee" /> 
+		<result column="REMARK" property="remark" /> 
+		<result column="RECEIPT_AMOUNT" property="receiptAmount" /> 
+		<result column="CREATE_TIME" property="createTime" /> 
+	</resultMap>
+	<sql id="baseSql">
+		<![CDATA[
+			SELECT ID,PAYMENT_UID,AMOUNT,RECEIPT_MOBILE,FEE,REMARK,RECEIPT_AMOUNT,CREATE_TIME FROM transaction_payment
+		]]>
+	</sql>
+	
+	<select id="selectTList" parameterType="com.hyy.kcb.commons.page.Pager" resultMap="transactionPaymentResultMap">
+		<include refid="baseSql"/>	
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="params != null and params.paymentUid != null and params.paymentUid != ''" >
+				and PAYMENT_UID = #{params.paymentUid}
+			</if>
+			<if test="params != null and params.amount != null and params.amount != ''" >
+				and AMOUNT = #{params.amount}
+			</if>
+			<if test="params != null and params.receiptMobile != null and params.receiptMobile != ''" >
+				and RECEIPT_MOBILE = #{params.receiptMobile}
+			</if>
+			<if test="params != null and params.fee != null and params.fee != ''" >
+				and FEE = #{params.fee}
+			</if>
+			<if test="params != null and params.remark != null and params.remark != ''" >
+				and REMARK = #{params.remark}
+			</if>
+			<if test="params != null and params.receiptAmount != null and params.receiptAmount != ''" >
+				and RECEIPT_AMOUNT = #{params.receiptAmount}
+			</if>
+			<if test="params != null and params.createTime != null" >
+				and CREATE_TIME = #{params.createTime,jdbcType=TIMESTAMP}
+			</if>
+		</trim>
+			<if test="orderField != null and orderField != ''" >
+		      order by ${orderField}
+		    </if>
+		    <if test="orderField == null or orderField == ''" >
+		      order by id
+		    </if>
+			<if test="orderDirection != null and orderDirection != ''" >
+		      ${orderDirection}
+		    </if>
+			<if test="orderDirection == null or orderDirection == ''" >
+		      desc
+		    </if>
+		    <if test="limitStart >= 0" >
+		      limit #{limitStart} , #{pageSize}
+		    </if>
+	</select>
+	<select id="selectTListCount" parameterType="com.hyy.kcb.commons.page.Pager" resultType="java.lang.Integer">
+		select count(1) from transaction_payment 
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="params != null and params.paymentUid != null and params.paymentUid != ''" >
+				and PAYMENT_UID = #{params.paymentUid}
+			</if>
+			<if test="params != null and params.amount != null and params.amount != ''" >
+				and AMOUNT = #{params.amount}
+			</if>
+			<if test="params != null and params.receiptMobile != null and params.receiptMobile != ''" >
+				and RECEIPT_MOBILE = #{params.receiptMobile}
+			</if>
+			<if test="params != null and params.fee != null and params.fee != ''" >
+				and FEE = #{params.fee}
+			</if>
+			<if test="params != null and params.remark != null and params.remark != ''" >
+				and REMARK = #{params.remark}
+			</if>
+			<if test="params != null and params.receiptAmount != null and params.receiptAmount != ''" >
+				and RECEIPT_AMOUNT = #{params.receiptAmount}
+			</if>
+			<if test="params != null and params.createTime != null" >
+				and CREATE_TIME = #{params.createTime,jdbcType=TIMESTAMP}
+			</if>
+		</trim>
+	</select>
+	<select id="selectAll" resultMap="transactionPaymentResultMap">
+		<include refid="baseSql"/>
+	</select>	
+	<select id="selectById" parameterType="java.lang.Integer" resultMap="transactionPaymentResultMap">
+		<include refid="baseSql"/>	
+		<![CDATA[ WHERE ID=#{id}]]>
+	</select>
+	<select id="selectByUUID" parameterType="java.lang.String" resultMap="transactionPaymentResultMap">
+		<include refid="baseSql"/>	
+		<![CDATA[ WHERE UUID=#{uuid}]]>
+	</select>
+	
+	<insert id="insert" parameterType="com.hyy.kcb.domain.order.TransactionPayment" useGeneratedKeys="true" keyProperty="id">
+		insert into transaction_payment
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="paymentUid != null" >
+				PAYMENT_UID,
+			</if>
+			<if test="amount != null" >
+				AMOUNT,
+			</if>
+			<if test="receiptMobile != null" >
+				RECEIPT_MOBILE,
+			</if>
+			<if test="fee != null" >
+				FEE,
+			</if>
+			<if test="remark != null" >
+				REMARK,
+			</if>
+			<if test="receiptAmount != null" >
+				RECEIPT_AMOUNT,
+			</if>
+			<if test="createTime != null" >
+				CREATE_TIME,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="paymentUid != null" >
+				#{paymentUid},
+			</if>
+			<if test="amount != null" >
+				#{amount},
+			</if>
+			<if test="receiptMobile != null" >
+				#{receiptMobile},
+			</if>
+			<if test="fee != null" >
+				#{fee},
+			</if>
+			<if test="remark != null" >
+				#{remark},
+			</if>
+			<if test="receiptAmount != null" >
+				#{receiptAmount},
+			</if>
+			<if test="createTime != null" >
+				#{createTime},
+			</if>
+		</trim>
+	</insert>
+	
+	<update id="updateObj" parameterType="com.hyy.kcb.domain.order.TransactionPayment">
+		update transaction_payment
+		<set>
+			<if test="paymentUid != null" >
+				PAYMENT_UID = #{paymentUid},
+			</if>
+			<if test="amount != null" >
+				AMOUNT = #{amount},
+			</if>
+			<if test="receiptMobile != null" >
+				RECEIPT_MOBILE = #{receiptMobile},
+			</if>
+			<if test="fee != null" >
+				FEE = #{fee},
+			</if>
+			<if test="remark != null" >
+				REMARK = #{remark},
+			</if>
+			<if test="receiptAmount != null" >
+				RECEIPT_AMOUNT = #{receiptAmount},
+			</if>
+			<if test="createTime != null" >
+				CREATE_TIME = #{createTime},
+			</if>
+		</set>
+		where ID = #{id}
+	</update>	
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		<![CDATA[
+			DELETE FROM transaction_payment
+			WHERE ID=#{id}
+		]]>
+	</delete>	
+	
+</mapper>

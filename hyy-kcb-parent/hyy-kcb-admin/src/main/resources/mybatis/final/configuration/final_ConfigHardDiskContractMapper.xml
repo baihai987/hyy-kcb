@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hyy.kcb.dao.configuration.IConfigHardDiskContractDao" >
+	<resultMap id="configHardDiskContractResultMap" type="com.hyy.kcb.domain.configuration.dto.ConfigHardDiskContractDTO">
+		<result column="CONTRACT_ID" property="contractId" /> 
+		<result column="CONTRACT_VALIDITY" property="contractValidity" /> 
+		<result column="DISCOUNT" property="discount" /> 
+		<result column="CONTRACT_NAME" property="contractName" /> 
+	</resultMap>
+	<sql id="baseSql">
+		<![CDATA[
+			SELECT CONTRACT_ID,CONTRACT_VALIDITY,DISCOUNT,CONTRACT_NAME FROM config_hard_disk_contract
+		]]>
+	</sql>
+	
+	<select id="selectTList" parameterType="com.hyy.kcb.commons.page.Pager" resultMap="configHardDiskContractResultMap">
+		<include refid="baseSql"/>	
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="params != null and params.contractValidity != null and params.contractValidity != ''" >
+				and CONTRACT_VALIDITY = #{params.contractValidity}
+			</if>
+			<if test="params != null and params.discount != null and params.discount != ''" >
+				and DISCOUNT = #{params.discount}
+			</if>
+			<if test="params != null and params.contractName != null and params.contractName != ''" >
+				and CONTRACT_NAME = #{params.contractName}
+			</if>
+		</trim>
+			<if test="orderField != null and orderField != ''" >
+		      order by ${orderField}
+		    </if>
+		    <if test="orderField == null or orderField == ''" >
+		      order by id
+		    </if>
+			<if test="orderDirection != null and orderDirection != ''" >
+		      ${orderDirection}
+		    </if>
+			<if test="orderDirection == null or orderDirection == ''" >
+		      desc
+		    </if>
+		    <if test="limitStart >= 0" >
+		      limit #{limitStart} , #{pageSize}
+		    </if>
+	</select>
+	<select id="selectTListCount" parameterType="com.hyy.kcb.commons.page.Pager" resultType="java.lang.Integer">
+		select count(1) from config_hard_disk_contract 
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="params != null and params.contractValidity != null and params.contractValidity != ''" >
+				and CONTRACT_VALIDITY = #{params.contractValidity}
+			</if>
+			<if test="params != null and params.discount != null and params.discount != ''" >
+				and DISCOUNT = #{params.discount}
+			</if>
+			<if test="params != null and params.contractName != null and params.contractName != ''" >
+				and CONTRACT_NAME = #{params.contractName}
+			</if>
+		</trim>
+	</select>
+	<select id="selectAll" resultMap="configHardDiskContractResultMap">
+		<include refid="baseSql"/>
+	</select>	
+	<select id="selectById" parameterType="java.lang.Integer" resultMap="configHardDiskContractResultMap">
+		<include refid="baseSql"/>	
+		<![CDATA[ WHERE ID=#{id}]]>
+	</select>
+	<select id="selectByUUID" parameterType="java.lang.String" resultMap="configHardDiskContractResultMap">
+		<include refid="baseSql"/>	
+		<![CDATA[ WHERE UUID=#{uuid}]]>
+	</select>
+	
+	<insert id="insert" parameterType="com.hyy.kcb.domain.configuration.ConfigHardDiskContract" useGeneratedKeys="true" keyProperty="id">
+		insert into config_hard_disk_contract
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="contractValidity != null" >
+				CONTRACT_VALIDITY,
+			</if>
+			<if test="discount != null" >
+				DISCOUNT,
+			</if>
+			<if test="contractName != null" >
+				CONTRACT_NAME,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="contractValidity != null" >
+				#{contractValidity},
+			</if>
+			<if test="discount != null" >
+				#{discount},
+			</if>
+			<if test="contractName != null" >
+				#{contractName},
+			</if>
+		</trim>
+	</insert>
+	
+	<update id="updateObj" parameterType="com.hyy.kcb.domain.configuration.ConfigHardDiskContract">
+		update config_hard_disk_contract
+		<set>
+			<if test="contractValidity != null" >
+				CONTRACT_VALIDITY = #{contractValidity},
+			</if>
+			<if test="discount != null" >
+				DISCOUNT = #{discount},
+			</if>
+			<if test="contractName != null" >
+				CONTRACT_NAME = #{contractName},
+			</if>
+		</set>
+		where ID = #{id}
+	</update>	
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		<![CDATA[
+			DELETE FROM config_hard_disk_contract
+			WHERE CONTRACT_ID=#{contractId}
+		]]>
+	</delete>	
+	
+</mapper>

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hyy.kcb.dao.sys.ISysRoleDao" >
+	<resultMap id="sysRoleResultMap" type="com.hyy.kcb.domain.sys.dto.SysRoleDTO">
+		<result column="ID" property="id" /> 
+		<result column="ROLE" property="role" /> 
+		<result column="DESCRIPTION" property="description" /> 
+		<result column="AVAILABLE" property="available" /> 
+	</resultMap>
+	<sql id="baseSql">
+		<![CDATA[
+			SELECT ID,ROLE,DESCRIPTION,AVAILABLE FROM sys_role
+		]]>
+	</sql>
+	
+	<select id="selectTList" parameterType="com.hyy.kcb.commons.page.Pager" resultMap="sysRoleResultMap">
+		<include refid="baseSql"/>	
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="params != null and params.role != null and params.role != ''" >
+				and ROLE = #{params.role}
+			</if>
+			<if test="params != null and params.description != null and params.description != ''" >
+				and DESCRIPTION = #{params.description}
+			</if>
+			<if test="params != null and params.available != null and params.available != ''" >
+				and AVAILABLE = #{params.available}
+			</if>
+		</trim>
+			<if test="orderField != null and orderField != ''" >
+		      order by ${orderField}
+		    </if>
+		    <if test="orderField == null or orderField == ''" >
+		      order by id
+		    </if>
+			<if test="orderDirection != null and orderDirection != ''" >
+		      ${orderDirection}
+		    </if>
+			<if test="orderDirection == null or orderDirection == ''" >
+		      desc
+		    </if>
+		    <if test="limitStart >= 0" >
+		      limit #{limitStart} , #{pageSize}
+		    </if>
+	</select>
+	<select id="selectTListCount" parameterType="com.hyy.kcb.commons.page.Pager" resultType="java.lang.Integer">
+		select count(1) from sys_role 
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="params != null and params.role != null and params.role != ''" >
+				and ROLE = #{params.role}
+			</if>
+			<if test="params != null and params.description != null and params.description != ''" >
+				and DESCRIPTION = #{params.description}
+			</if>
+			<if test="params != null and params.available != null and params.available != ''" >
+				and AVAILABLE = #{params.available}
+			</if>
+		</trim>
+	</select>
+	<select id="selectAll" resultMap="sysRoleResultMap">
+		<include refid="baseSql"/>
+	</select>	
+	<select id="selectById" parameterType="java.lang.Integer" resultMap="sysRoleResultMap">
+		<include refid="baseSql"/>	
+		<![CDATA[ WHERE ID=#{id}]]>
+	</select>
+	<select id="selectByUUID" parameterType="java.lang.String" resultMap="sysRoleResultMap">
+		<include refid="baseSql"/>	
+		<![CDATA[ WHERE UUID=#{uuid}]]>
+	</select>
+	
+	<insert id="insert" parameterType="com.hyy.kcb.domain.sys.SysRole" useGeneratedKeys="true" keyProperty="id">
+		insert into sys_role
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="role != null" >
+				ROLE,
+			</if>
+			<if test="description != null" >
+				DESCRIPTION,
+			</if>
+			<if test="available != null" >
+				AVAILABLE,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="role != null" >
+				#{role},
+			</if>
+			<if test="description != null" >
+				#{description},
+			</if>
+			<if test="available != null" >
+				#{available},
+			</if>
+		</trim>
+	</insert>
+	
+	<update id="updateObj" parameterType="com.hyy.kcb.domain.sys.SysRole">
+		update sys_role
+		<set>
+			<if test="role != null" >
+				ROLE = #{role},
+			</if>
+			<if test="description != null" >
+				DESCRIPTION = #{description},
+			</if>
+			<if test="available != null" >
+				AVAILABLE = #{available},
+			</if>
+		</set>
+		where ID = #{id}
+	</update>	
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		<![CDATA[
+			DELETE FROM sys_role
+			WHERE ID=#{id}
+		]]>
+	</delete>	
+	
+</mapper>

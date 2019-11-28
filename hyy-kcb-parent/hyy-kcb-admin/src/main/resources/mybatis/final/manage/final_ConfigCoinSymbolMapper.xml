@@ -1,0 +1,647 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hyy.kcb.dao.manage.IConfigCoinSymbolDao" >
+	<resultMap id="configCoinSymbolResultMap" type="com.hyy.kcb.domain.manage.dto.ConfigCoinSymbolDTO">
+		<result column="ID" property="id" /> 
+		<result column="COIN_SYMBOL" property="coinSymbol" /> 
+		<result column="CONTRACT_ADDRESS" property="contractAddress" /> 
+		<result column="CONTRACT_PRECISION" property="contractPrecision" /> 
+		<result column="SHOW_PRECISION" property="showPrecision" /> 
+		<result column="OTC_OPEN" property="otcOpen" /> 
+		<result column="IS_FIAT" property="isFiat" /> 
+		<result column="IS_QUOTE" property="isQuote" /> 
+		<result column="IS_OPEN" property="isOpen" /> 
+		<result column="DEPOSIT_OPEN" property="depositOpen" /> 
+		<result column="WITHDRAW_OPEN" property="withdrawOpen" /> 
+		<result column="USE_RATE" property="useRate" /> 
+		<result column="TOKEN_BASE" property="tokenBase" /> 
+		<result column="CHAIN_ADDRESS" property="chainAddress" /> 
+		<result column="CHAIN_TX" property="chainTx" /> 
+		<result column="DEPOSIT_CONFIRM" property="depositConfirm" /> 
+		<result column="MINING_DEPOSIT_CONFIRM" property="miningDepositConfirm" /> 
+		<result column="WITHDRAW_MAX" property="withdrawMax" /> 
+		<result column="WITHDRAW_MIN" property="withdrawMin" /> 
+		<result column="WITHDRAW_MAX_DAY" property="withdrawMaxDay" /> 
+		<result column="WITHDRAW_MAX_DAY_NO_AUTH" property="withdrawMaxDayNoAuth" /> 
+		<result column="ADDRESS_LEN" property="addressLen" /> 
+		<result column="NAME" property="name" /> 
+		<result column="ICON" property="icon" /> 
+		<result column="LINK" property="link" /> 
+		<result column="SORT" property="sort" /> 
+		<result column="RELEASE_STATUS" property="releaseStatus" /> 
+		<result column="CTIME" property="ctime" /> 
+		<result column="MTIME" property="mtime" /> 
+		<result column="BTC_RATE_MATH" property="btcRateMath" /> 
+		<result column="IS_RELEASE" property="isRelease" /> 
+		<result column="SECURITY_STATUS" property="securityStatus" /> 
+		<result column="DEPOSIT_MIN" property="depositMin" /> 
+		<result column="TAG_TYPE" property="tagType" /> 
+		<result column="SUPPORT_TOKEN" property="supportToken" /> 
+		<result column="REGULAR" property="regular" /> 
+		<result column="DEPOSIT_LOCK_OPEN" property="depositLockOpen" /> 
+	</resultMap>
+	<sql id="baseSql">
+		<![CDATA[
+			SELECT ID,COIN_SYMBOL,CONTRACT_ADDRESS,CONTRACT_PRECISION,SHOW_PRECISION,OTC_OPEN,IS_FIAT,IS_QUOTE,IS_OPEN,DEPOSIT_OPEN,WITHDRAW_OPEN,USE_RATE,TOKEN_BASE,CHAIN_ADDRESS,CHAIN_TX,DEPOSIT_CONFIRM,MINING_DEPOSIT_CONFIRM,WITHDRAW_MAX,WITHDRAW_MIN,WITHDRAW_MAX_DAY,WITHDRAW_MAX_DAY_NO_AUTH,ADDRESS_LEN,NAME,ICON,LINK,SORT,RELEASE_STATUS,CTIME,MTIME,BTC_RATE_MATH,IS_RELEASE,SECURITY_STATUS,DEPOSIT_MIN,TAG_TYPE,SUPPORT_TOKEN,REGULAR,DEPOSIT_LOCK_OPEN FROM config_coin_symbol
+		]]>
+	</sql>
+	
+	<select id="selectTList" parameterType="com.hyy.kcb.commons.page.Pager" resultMap="configCoinSymbolResultMap">
+		<include refid="baseSql"/>	
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="params != null and params.coinSymbol != null and params.coinSymbol != ''" >
+				and COIN_SYMBOL = #{params.coinSymbol}
+			</if>
+			<if test="params != null and params.contractAddress != null and params.contractAddress != ''" >
+				and CONTRACT_ADDRESS = #{params.contractAddress}
+			</if>
+			<if test="params != null and params.contractPrecision != null and params.contractPrecision != ''" >
+				and CONTRACT_PRECISION = #{params.contractPrecision}
+			</if>
+			<if test="params != null and params.showPrecision != null and params.showPrecision != ''" >
+				and SHOW_PRECISION = #{params.showPrecision}
+			</if>
+			<if test="params != null and params.otcOpen != null and params.otcOpen != ''" >
+				and OTC_OPEN = #{params.otcOpen}
+			</if>
+			<if test="params != null and params.isFiat != null and params.isFiat != ''" >
+				and IS_FIAT = #{params.isFiat}
+			</if>
+			<if test="params != null and params.isQuote != null and params.isQuote != ''" >
+				and IS_QUOTE = #{params.isQuote}
+			</if>
+			<if test="params != null and params.isOpen != null and params.isOpen != ''" >
+				and IS_OPEN = #{params.isOpen}
+			</if>
+			<if test="params != null and params.depositOpen != null and params.depositOpen != ''" >
+				and DEPOSIT_OPEN = #{params.depositOpen}
+			</if>
+			<if test="params != null and params.withdrawOpen != null and params.withdrawOpen != ''" >
+				and WITHDRAW_OPEN = #{params.withdrawOpen}
+			</if>
+			<if test="params != null and params.useRate != null and params.useRate != ''" >
+				and USE_RATE = #{params.useRate}
+			</if>
+			<if test="params != null and params.tokenBase != null and params.tokenBase != ''" >
+				and TOKEN_BASE = #{params.tokenBase}
+			</if>
+			<if test="params != null and params.chainAddress != null and params.chainAddress != ''" >
+				and CHAIN_ADDRESS = #{params.chainAddress}
+			</if>
+			<if test="params != null and params.chainTx != null and params.chainTx != ''" >
+				and CHAIN_TX = #{params.chainTx}
+			</if>
+			<if test="params != null and params.depositConfirm != null and params.depositConfirm != ''" >
+				and DEPOSIT_CONFIRM = #{params.depositConfirm}
+			</if>
+			<if test="params != null and params.miningDepositConfirm != null and params.miningDepositConfirm != ''" >
+				and MINING_DEPOSIT_CONFIRM = #{params.miningDepositConfirm}
+			</if>
+			<if test="params != null and params.withdrawMax != null and params.withdrawMax != ''" >
+				and WITHDRAW_MAX = #{params.withdrawMax}
+			</if>
+			<if test="params != null and params.withdrawMin != null and params.withdrawMin != ''" >
+				and WITHDRAW_MIN = #{params.withdrawMin}
+			</if>
+			<if test="params != null and params.withdrawMaxDay != null and params.withdrawMaxDay != ''" >
+				and WITHDRAW_MAX_DAY = #{params.withdrawMaxDay}
+			</if>
+			<if test="params != null and params.withdrawMaxDayNoAuth != null and params.withdrawMaxDayNoAuth != ''" >
+				and WITHDRAW_MAX_DAY_NO_AUTH = #{params.withdrawMaxDayNoAuth}
+			</if>
+			<if test="params != null and params.addressLen != null and params.addressLen != ''" >
+				and ADDRESS_LEN = #{params.addressLen}
+			</if>
+			<if test="params != null and params.name != null and params.name != ''" >
+				and NAME = #{params.name}
+			</if>
+			<if test="params != null and params.icon != null and params.icon != ''" >
+				and ICON = #{params.icon}
+			</if>
+			<if test="params != null and params.link != null and params.link != ''" >
+				and LINK = #{params.link}
+			</if>
+			<if test="params != null and params.sort != null and params.sort != ''" >
+				and SORT = #{params.sort}
+			</if>
+			<if test="params != null and params.releaseStatus != null and params.releaseStatus != ''" >
+				and RELEASE_STATUS = #{params.releaseStatus}
+			</if>
+			<if test="params != null and params.ctime != null and params.ctime != ''" >
+				and CTIME = #{params.ctime}
+			</if>
+			<if test="params != null and params.mtime != null and params.mtime != ''" >
+				and MTIME = #{params.mtime}
+			</if>
+			<if test="params != null and params.btcRateMath != null and params.btcRateMath != ''" >
+				and BTC_RATE_MATH = #{params.btcRateMath}
+			</if>
+			<if test="params != null and params.isRelease != null and params.isRelease != ''" >
+				and IS_RELEASE = #{params.isRelease}
+			</if>
+			<if test="params != null and params.securityStatus != null and params.securityStatus != ''" >
+				and SECURITY_STATUS = #{params.securityStatus}
+			</if>
+			<if test="params != null and params.depositMin != null and params.depositMin != ''" >
+				and DEPOSIT_MIN = #{params.depositMin}
+			</if>
+			<if test="params != null and params.tagType != null and params.tagType != ''" >
+				and TAG_TYPE = #{params.tagType}
+			</if>
+			<if test="params != null and params.supportToken != null and params.supportToken != ''" >
+				and SUPPORT_TOKEN = #{params.supportToken}
+			</if>
+			<if test="params != null and params.regular != null and params.regular != ''" >
+				and REGULAR = #{params.regular}
+			</if>
+			<if test="params != null and params.depositLockOpen != null and params.depositLockOpen != ''" >
+				and DEPOSIT_LOCK_OPEN = #{params.depositLockOpen}
+			</if>
+		</trim>
+			<if test="orderField != null and orderField != ''" >
+		      order by ${orderField}
+		    </if>
+		    <if test="orderField == null or orderField == ''" >
+		      order by id
+		    </if>
+			<if test="orderDirection != null and orderDirection != ''" >
+		      ${orderDirection}
+		    </if>
+			<if test="orderDirection == null or orderDirection == ''" >
+		      desc
+		    </if>
+		    <if test="limitStart >= 0" >
+		      limit #{limitStart} , #{pageSize}
+		    </if>
+	</select>
+	<select id="selectTListCount" parameterType="com.hyy.kcb.commons.page.Pager" resultType="java.lang.Integer">
+		select count(1) from config_coin_symbol 
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="params != null and params.coinSymbol != null and params.coinSymbol != ''" >
+				and COIN_SYMBOL = #{params.coinSymbol}
+			</if>
+			<if test="params != null and params.contractAddress != null and params.contractAddress != ''" >
+				and CONTRACT_ADDRESS = #{params.contractAddress}
+			</if>
+			<if test="params != null and params.contractPrecision != null and params.contractPrecision != ''" >
+				and CONTRACT_PRECISION = #{params.contractPrecision}
+			</if>
+			<if test="params != null and params.showPrecision != null and params.showPrecision != ''" >
+				and SHOW_PRECISION = #{params.showPrecision}
+			</if>
+			<if test="params != null and params.otcOpen != null and params.otcOpen != ''" >
+				and OTC_OPEN = #{params.otcOpen}
+			</if>
+			<if test="params != null and params.isFiat != null and params.isFiat != ''" >
+				and IS_FIAT = #{params.isFiat}
+			</if>
+			<if test="params != null and params.isQuote != null and params.isQuote != ''" >
+				and IS_QUOTE = #{params.isQuote}
+			</if>
+			<if test="params != null and params.isOpen != null and params.isOpen != ''" >
+				and IS_OPEN = #{params.isOpen}
+			</if>
+			<if test="params != null and params.depositOpen != null and params.depositOpen != ''" >
+				and DEPOSIT_OPEN = #{params.depositOpen}
+			</if>
+			<if test="params != null and params.withdrawOpen != null and params.withdrawOpen != ''" >
+				and WITHDRAW_OPEN = #{params.withdrawOpen}
+			</if>
+			<if test="params != null and params.useRate != null and params.useRate != ''" >
+				and USE_RATE = #{params.useRate}
+			</if>
+			<if test="params != null and params.tokenBase != null and params.tokenBase != ''" >
+				and TOKEN_BASE = #{params.tokenBase}
+			</if>
+			<if test="params != null and params.chainAddress != null and params.chainAddress != ''" >
+				and CHAIN_ADDRESS = #{params.chainAddress}
+			</if>
+			<if test="params != null and params.chainTx != null and params.chainTx != ''" >
+				and CHAIN_TX = #{params.chainTx}
+			</if>
+			<if test="params != null and params.depositConfirm != null and params.depositConfirm != ''" >
+				and DEPOSIT_CONFIRM = #{params.depositConfirm}
+			</if>
+			<if test="params != null and params.miningDepositConfirm != null and params.miningDepositConfirm != ''" >
+				and MINING_DEPOSIT_CONFIRM = #{params.miningDepositConfirm}
+			</if>
+			<if test="params != null and params.withdrawMax != null and params.withdrawMax != ''" >
+				and WITHDRAW_MAX = #{params.withdrawMax}
+			</if>
+			<if test="params != null and params.withdrawMin != null and params.withdrawMin != ''" >
+				and WITHDRAW_MIN = #{params.withdrawMin}
+			</if>
+			<if test="params != null and params.withdrawMaxDay != null and params.withdrawMaxDay != ''" >
+				and WITHDRAW_MAX_DAY = #{params.withdrawMaxDay}
+			</if>
+			<if test="params != null and params.withdrawMaxDayNoAuth != null and params.withdrawMaxDayNoAuth != ''" >
+				and WITHDRAW_MAX_DAY_NO_AUTH = #{params.withdrawMaxDayNoAuth}
+			</if>
+			<if test="params != null and params.addressLen != null and params.addressLen != ''" >
+				and ADDRESS_LEN = #{params.addressLen}
+			</if>
+			<if test="params != null and params.name != null and params.name != ''" >
+				and NAME = #{params.name}
+			</if>
+			<if test="params != null and params.icon != null and params.icon != ''" >
+				and ICON = #{params.icon}
+			</if>
+			<if test="params != null and params.link != null and params.link != ''" >
+				and LINK = #{params.link}
+			</if>
+			<if test="params != null and params.sort != null and params.sort != ''" >
+				and SORT = #{params.sort}
+			</if>
+			<if test="params != null and params.releaseStatus != null and params.releaseStatus != ''" >
+				and RELEASE_STATUS = #{params.releaseStatus}
+			</if>
+			<if test="params != null and params.ctime != null and params.ctime != ''" >
+				and CTIME = #{params.ctime}
+			</if>
+			<if test="params != null and params.mtime != null and params.mtime != ''" >
+				and MTIME = #{params.mtime}
+			</if>
+			<if test="params != null and params.btcRateMath != null and params.btcRateMath != ''" >
+				and BTC_RATE_MATH = #{params.btcRateMath}
+			</if>
+			<if test="params != null and params.isRelease != null and params.isRelease != ''" >
+				and IS_RELEASE = #{params.isRelease}
+			</if>
+			<if test="params != null and params.securityStatus != null and params.securityStatus != ''" >
+				and SECURITY_STATUS = #{params.securityStatus}
+			</if>
+			<if test="params != null and params.depositMin != null and params.depositMin != ''" >
+				and DEPOSIT_MIN = #{params.depositMin}
+			</if>
+			<if test="params != null and params.tagType != null and params.tagType != ''" >
+				and TAG_TYPE = #{params.tagType}
+			</if>
+			<if test="params != null and params.supportToken != null and params.supportToken != ''" >
+				and SUPPORT_TOKEN = #{params.supportToken}
+			</if>
+			<if test="params != null and params.regular != null and params.regular != ''" >
+				and REGULAR = #{params.regular}
+			</if>
+			<if test="params != null and params.depositLockOpen != null and params.depositLockOpen != ''" >
+				and DEPOSIT_LOCK_OPEN = #{params.depositLockOpen}
+			</if>
+		</trim>
+	</select>
+	<select id="selectAll" resultMap="configCoinSymbolResultMap">
+		<include refid="baseSql"/>
+	</select>	
+	<select id="selectById" parameterType="java.lang.Integer" resultMap="configCoinSymbolResultMap">
+		<include refid="baseSql"/>	
+		<![CDATA[ WHERE ID=#{id}]]>
+	</select>
+	<select id="selectByUUID" parameterType="java.lang.String" resultMap="configCoinSymbolResultMap">
+		<include refid="baseSql"/>	
+		<![CDATA[ WHERE UUID=#{uuid}]]>
+	</select>
+	
+	<insert id="insert" parameterType="com.hyy.kcb.domain.manage.ConfigCoinSymbol" useGeneratedKeys="true" keyProperty="id">
+		insert into config_coin_symbol
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="coinSymbol != null" >
+				COIN_SYMBOL,
+			</if>
+			<if test="contractAddress != null" >
+				CONTRACT_ADDRESS,
+			</if>
+			<if test="contractPrecision != null" >
+				CONTRACT_PRECISION,
+			</if>
+			<if test="showPrecision != null" >
+				SHOW_PRECISION,
+			</if>
+			<if test="otcOpen != null" >
+				OTC_OPEN,
+			</if>
+			<if test="isFiat != null" >
+				IS_FIAT,
+			</if>
+			<if test="isQuote != null" >
+				IS_QUOTE,
+			</if>
+			<if test="isOpen != null" >
+				IS_OPEN,
+			</if>
+			<if test="depositOpen != null" >
+				DEPOSIT_OPEN,
+			</if>
+			<if test="withdrawOpen != null" >
+				WITHDRAW_OPEN,
+			</if>
+			<if test="useRate != null" >
+				USE_RATE,
+			</if>
+			<if test="tokenBase != null" >
+				TOKEN_BASE,
+			</if>
+			<if test="chainAddress != null" >
+				CHAIN_ADDRESS,
+			</if>
+			<if test="chainTx != null" >
+				CHAIN_TX,
+			</if>
+			<if test="depositConfirm != null" >
+				DEPOSIT_CONFIRM,
+			</if>
+			<if test="miningDepositConfirm != null" >
+				MINING_DEPOSIT_CONFIRM,
+			</if>
+			<if test="withdrawMax != null" >
+				WITHDRAW_MAX,
+			</if>
+			<if test="withdrawMin != null" >
+				WITHDRAW_MIN,
+			</if>
+			<if test="withdrawMaxDay != null" >
+				WITHDRAW_MAX_DAY,
+			</if>
+			<if test="withdrawMaxDayNoAuth != null" >
+				WITHDRAW_MAX_DAY_NO_AUTH,
+			</if>
+			<if test="addressLen != null" >
+				ADDRESS_LEN,
+			</if>
+			<if test="name != null" >
+				NAME,
+			</if>
+			<if test="icon != null" >
+				ICON,
+			</if>
+			<if test="link != null" >
+				LINK,
+			</if>
+			<if test="sort != null" >
+				SORT,
+			</if>
+			<if test="releaseStatus != null" >
+				RELEASE_STATUS,
+			</if>
+			<if test="ctime != null" >
+				CTIME,
+			</if>
+			<if test="mtime != null" >
+				MTIME,
+			</if>
+			<if test="btcRateMath != null" >
+				BTC_RATE_MATH,
+			</if>
+			<if test="isRelease != null" >
+				IS_RELEASE,
+			</if>
+			<if test="securityStatus != null" >
+				SECURITY_STATUS,
+			</if>
+			<if test="depositMin != null" >
+				DEPOSIT_MIN,
+			</if>
+			<if test="tagType != null" >
+				TAG_TYPE,
+			</if>
+			<if test="supportToken != null" >
+				SUPPORT_TOKEN,
+			</if>
+			<if test="regular != null" >
+				REGULAR,
+			</if>
+			<if test="depositLockOpen != null" >
+				DEPOSIT_LOCK_OPEN,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="coinSymbol != null" >
+				#{coinSymbol},
+			</if>
+			<if test="contractAddress != null" >
+				#{contractAddress},
+			</if>
+			<if test="contractPrecision != null" >
+				#{contractPrecision},
+			</if>
+			<if test="showPrecision != null" >
+				#{showPrecision},
+			</if>
+			<if test="otcOpen != null" >
+				#{otcOpen},
+			</if>
+			<if test="isFiat != null" >
+				#{isFiat},
+			</if>
+			<if test="isQuote != null" >
+				#{isQuote},
+			</if>
+			<if test="isOpen != null" >
+				#{isOpen},
+			</if>
+			<if test="depositOpen != null" >
+				#{depositOpen},
+			</if>
+			<if test="withdrawOpen != null" >
+				#{withdrawOpen},
+			</if>
+			<if test="useRate != null" >
+				#{useRate},
+			</if>
+			<if test="tokenBase != null" >
+				#{tokenBase},
+			</if>
+			<if test="chainAddress != null" >
+				#{chainAddress},
+			</if>
+			<if test="chainTx != null" >
+				#{chainTx},
+			</if>
+			<if test="depositConfirm != null" >
+				#{depositConfirm},
+			</if>
+			<if test="miningDepositConfirm != null" >
+				#{miningDepositConfirm},
+			</if>
+			<if test="withdrawMax != null" >
+				#{withdrawMax},
+			</if>
+			<if test="withdrawMin != null" >
+				#{withdrawMin},
+			</if>
+			<if test="withdrawMaxDay != null" >
+				#{withdrawMaxDay},
+			</if>
+			<if test="withdrawMaxDayNoAuth != null" >
+				#{withdrawMaxDayNoAuth},
+			</if>
+			<if test="addressLen != null" >
+				#{addressLen},
+			</if>
+			<if test="name != null" >
+				#{name},
+			</if>
+			<if test="icon != null" >
+				#{icon},
+			</if>
+			<if test="link != null" >
+				#{link},
+			</if>
+			<if test="sort != null" >
+				#{sort},
+			</if>
+			<if test="releaseStatus != null" >
+				#{releaseStatus},
+			</if>
+			<if test="ctime != null" >
+				#{ctime},
+			</if>
+			<if test="mtime != null" >
+				#{mtime},
+			</if>
+			<if test="btcRateMath != null" >
+				#{btcRateMath},
+			</if>
+			<if test="isRelease != null" >
+				#{isRelease},
+			</if>
+			<if test="securityStatus != null" >
+				#{securityStatus},
+			</if>
+			<if test="depositMin != null" >
+				#{depositMin},
+			</if>
+			<if test="tagType != null" >
+				#{tagType},
+			</if>
+			<if test="supportToken != null" >
+				#{supportToken},
+			</if>
+			<if test="regular != null" >
+				#{regular},
+			</if>
+			<if test="depositLockOpen != null" >
+				#{depositLockOpen},
+			</if>
+		</trim>
+	</insert>
+	
+	<update id="updateObj" parameterType="com.hyy.kcb.domain.manage.ConfigCoinSymbol">
+		update config_coin_symbol
+		<set>
+			<if test="coinSymbol != null" >
+				COIN_SYMBOL = #{coinSymbol},
+			</if>
+			<if test="contractAddress != null" >
+				CONTRACT_ADDRESS = #{contractAddress},
+			</if>
+			<if test="contractPrecision != null" >
+				CONTRACT_PRECISION = #{contractPrecision},
+			</if>
+			<if test="showPrecision != null" >
+				SHOW_PRECISION = #{showPrecision},
+			</if>
+			<if test="otcOpen != null" >
+				OTC_OPEN = #{otcOpen},
+			</if>
+			<if test="isFiat != null" >
+				IS_FIAT = #{isFiat},
+			</if>
+			<if test="isQuote != null" >
+				IS_QUOTE = #{isQuote},
+			</if>
+			<if test="isOpen != null" >
+				IS_OPEN = #{isOpen},
+			</if>
+			<if test="depositOpen != null" >
+				DEPOSIT_OPEN = #{depositOpen},
+			</if>
+			<if test="withdrawOpen != null" >
+				WITHDRAW_OPEN = #{withdrawOpen},
+			</if>
+			<if test="useRate != null" >
+				USE_RATE = #{useRate},
+			</if>
+			<if test="tokenBase != null" >
+				TOKEN_BASE = #{tokenBase},
+			</if>
+			<if test="chainAddress != null" >
+				CHAIN_ADDRESS = #{chainAddress},
+			</if>
+			<if test="chainTx != null" >
+				CHAIN_TX = #{chainTx},
+			</if>
+			<if test="depositConfirm != null" >
+				DEPOSIT_CONFIRM = #{depositConfirm},
+			</if>
+			<if test="miningDepositConfirm != null" >
+				MINING_DEPOSIT_CONFIRM = #{miningDepositConfirm},
+			</if>
+			<if test="withdrawMax != null" >
+				WITHDRAW_MAX = #{withdrawMax},
+			</if>
+			<if test="withdrawMin != null" >
+				WITHDRAW_MIN = #{withdrawMin},
+			</if>
+			<if test="withdrawMaxDay != null" >
+				WITHDRAW_MAX_DAY = #{withdrawMaxDay},
+			</if>
+			<if test="withdrawMaxDayNoAuth != null" >
+				WITHDRAW_MAX_DAY_NO_AUTH = #{withdrawMaxDayNoAuth},
+			</if>
+			<if test="addressLen != null" >
+				ADDRESS_LEN = #{addressLen},
+			</if>
+			<if test="name != null" >
+				NAME = #{name},
+			</if>
+			<if test="icon != null" >
+				ICON = #{icon},
+			</if>
+			<if test="link != null" >
+				LINK = #{link},
+			</if>
+			<if test="sort != null" >
+				SORT = #{sort},
+			</if>
+			<if test="releaseStatus != null" >
+				RELEASE_STATUS = #{releaseStatus},
+			</if>
+			<if test="ctime != null" >
+				CTIME = #{ctime},
+			</if>
+			<if test="mtime != null" >
+				MTIME = #{mtime},
+			</if>
+			<if test="btcRateMath != null" >
+				BTC_RATE_MATH = #{btcRateMath},
+			</if>
+			<if test="isRelease != null" >
+				IS_RELEASE = #{isRelease},
+			</if>
+			<if test="securityStatus != null" >
+				SECURITY_STATUS = #{securityStatus},
+			</if>
+			<if test="depositMin != null" >
+				DEPOSIT_MIN = #{depositMin},
+			</if>
+			<if test="tagType != null" >
+				TAG_TYPE = #{tagType},
+			</if>
+			<if test="supportToken != null" >
+				SUPPORT_TOKEN = #{supportToken},
+			</if>
+			<if test="regular != null" >
+				REGULAR = #{regular},
+			</if>
+			<if test="depositLockOpen != null" >
+				DEPOSIT_LOCK_OPEN = #{depositLockOpen},
+			</if>
+		</set>
+		where ID = #{id}
+	</update>	
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		<![CDATA[
+			DELETE FROM config_coin_symbol
+			WHERE ID=#{id}
+		]]>
+	</delete>	
+	
+</mapper>

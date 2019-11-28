@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hyy.kcb.dao.manage.IConfigFunctionDao" >
+	<resultMap id="configFunctionResultMap" type="com.hyy.kcb.domain.manage.dto.ConfigFunctionDTO">
+		<result column="ID" property="id" /> 
+		<result column="FUNCTION" property="function" /> 
+		<result column="INTERFACE_PATH" property="interfacePath" /> 
+		<result column="IS_OPEN" property="isOpen" /> 
+	</resultMap>
+	<sql id="baseSql">
+		<![CDATA[
+			SELECT ID,FUNCTION,INTERFACE_PATH,IS_OPEN FROM config_function
+		]]>
+	</sql>
+	
+	<select id="selectTList" parameterType="com.hyy.kcb.commons.page.Pager" resultMap="configFunctionResultMap">
+		<include refid="baseSql"/>	
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="params != null and params.function != null and params.function != ''" >
+				and FUNCTION = #{params.function}
+			</if>
+			<if test="params != null and params.interfacePath != null and params.interfacePath != ''" >
+				and INTERFACE_PATH = #{params.interfacePath}
+			</if>
+			<if test="params != null and params.isOpen != null and params.isOpen != ''" >
+				and IS_OPEN = #{params.isOpen}
+			</if>
+		</trim>
+			<if test="orderField != null and orderField != ''" >
+		      order by ${orderField}
+		    </if>
+		    <if test="orderField == null or orderField == ''" >
+		      order by id
+		    </if>
+			<if test="orderDirection != null and orderDirection != ''" >
+		      ${orderDirection}
+		    </if>
+			<if test="orderDirection == null or orderDirection == ''" >
+		      desc
+		    </if>
+		    <if test="limitStart >= 0" >
+		      limit #{limitStart} , #{pageSize}
+		    </if>
+	</select>
+	<select id="selectTListCount" parameterType="com.hyy.kcb.commons.page.Pager" resultType="java.lang.Integer">
+		select count(1) from config_function 
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="params != null and params.function != null and params.function != ''" >
+				and FUNCTION = #{params.function}
+			</if>
+			<if test="params != null and params.interfacePath != null and params.interfacePath != ''" >
+				and INTERFACE_PATH = #{params.interfacePath}
+			</if>
+			<if test="params != null and params.isOpen != null and params.isOpen != ''" >
+				and IS_OPEN = #{params.isOpen}
+			</if>
+		</trim>
+	</select>
+	<select id="selectAll" resultMap="configFunctionResultMap">
+		<include refid="baseSql"/>
+	</select>	
+	<select id="selectById" parameterType="java.lang.Integer" resultMap="configFunctionResultMap">
+		<include refid="baseSql"/>	
+		<![CDATA[ WHERE ID=#{id}]]>
+	</select>
+	<select id="selectByUUID" parameterType="java.lang.String" resultMap="configFunctionResultMap">
+		<include refid="baseSql"/>	
+		<![CDATA[ WHERE UUID=#{uuid}]]>
+	</select>
+	
+	<insert id="insert" parameterType="com.hyy.kcb.domain.manage.ConfigFunction" useGeneratedKeys="true" keyProperty="id">
+		insert into config_function
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="function != null" >
+				FUNCTION,
+			</if>
+			<if test="interfacePath != null" >
+				INTERFACE_PATH,
+			</if>
+			<if test="isOpen != null" >
+				IS_OPEN,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="function != null" >
+				#{function},
+			</if>
+			<if test="interfacePath != null" >
+				#{interfacePath},
+			</if>
+			<if test="isOpen != null" >
+				#{isOpen},
+			</if>
+		</trim>
+	</insert>
+	
+	<update id="updateObj" parameterType="com.hyy.kcb.domain.manage.ConfigFunction">
+		update config_function
+		<set>
+			<if test="function != null" >
+				FUNCTION = #{function},
+			</if>
+			<if test="interfacePath != null" >
+				INTERFACE_PATH = #{interfacePath},
+			</if>
+			<if test="isOpen != null" >
+				IS_OPEN = #{isOpen},
+			</if>
+		</set>
+		where ID = #{id}
+	</update>	
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		<![CDATA[
+			DELETE FROM config_function
+			WHERE ID=#{id}
+		]]>
+	</delete>	
+	
+</mapper>

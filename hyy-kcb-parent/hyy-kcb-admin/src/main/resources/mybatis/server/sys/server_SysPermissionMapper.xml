@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hyy.kcb.dao.sys.ISysPermissionDao" >
+    <!-- 根据系统角色id查询所有资源 -->
+    <select id="selectSysPermissionAllByRoleId" parameterType="java.lang.Long" resultMap="sysPermissionResultMap">
+        SELECT smission.* from sys_permission smission join  sys_role_permission srp on smission.id  =  srp.sys_permission_id
+        where srp.sys_role_id = #{roleId}
+    </select>
+</mapper>

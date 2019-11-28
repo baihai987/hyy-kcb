@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hyy.kcb.dao.order.IOrderFormDao" >
+	<resultMap id="orderFormResultMap" type="com.hyy.kcb.domain.order.dto.OrderFormDTO">
+		<result column="ID" property="id" /> 
+		<result column="UID" property="uid" /> 
+		<result column="ORDER_NUMBER" property="orderNumber" /> 
+		<result column="AMOUNT" property="amount" /> 
+		<result column="SHIFT" property="shift" /> 
+		<result column="STATUS" property="status" /> 
+		<result column="C_TIME" property="cTime" /> 
+		<result column="BODY" property="body" /> 
+		<result column="SUBJECT" property="subject" /> 
+		<result column="E_TIME" property="eTime" /> 
+		<result column="FEE" property="fee" /> 
+	</resultMap>
+	<sql id="baseSql">
+		<![CDATA[
+			SELECT ID,UID,ORDER_NUMBER,AMOUNT,SHIFT,STATUS,C_TIME,BODY,SUBJECT,E_TIME,FEE FROM order_form
+		]]>
+	</sql>
+	
+	<select id="selectTList" parameterType="com.hyy.kcb.commons.page.Pager" resultMap="orderFormResultMap">
+		<include refid="baseSql"/>	
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="params != null and params.uid != null and params.uid != ''" >
+				and UID = #{params.uid}
+			</if>
+			<if test="params != null and params.orderNumber != null and params.orderNumber != ''" >
+				and ORDER_NUMBER = #{params.orderNumber}
+			</if>
+			<if test="params != null and params.amount != null and params.amount != ''" >
+				and AMOUNT = #{params.amount}
+			</if>
+			<if test="params != null and params.shift != null and params.shift != ''" >
+				and SHIFT = #{params.shift}
+			</if>
+			<if test="params != null and params.status != null and params.status != ''" >
+				and STATUS = #{params.status}
+			</if>
+			<if test="params != null and params.cTime != null and params.cTime != ''" >
+				and C_TIME = #{params.cTime}
+			</if>
+			<if test="params != null and params.body != null and params.body != ''" >
+				and BODY = #{params.body}
+			</if>
+			<if test="params != null and params.subject != null and params.subject != ''" >
+				and SUBJECT = #{params.subject}
+			</if>
+			<if test="params != null and params.eTime != null" >
+				and E_TIME = #{params.eTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="params != null and params.fee != null and params.fee != ''" >
+				and FEE = #{params.fee}
+			</if>
+		</trim>
+			<if test="orderField != null and orderField != ''" >
+		      order by ${orderField}
+		    </if>
+		    <if test="orderField == null or orderField == ''" >
+		      order by id
+		    </if>
+			<if test="orderDirection != null and orderDirection != ''" >
+		      ${orderDirection}
+		    </if>
+			<if test="orderDirection == null or orderDirection == ''" >
+		      desc
+		    </if>
+		    <if test="limitStart >= 0" >
+		      limit #{limitStart} , #{pageSize}
+		    </if>
+	</select>
+	<select id="selectTListCount" parameterType="com.hyy.kcb.commons.page.Pager" resultType="java.lang.Integer">
+		select count(1) from order_form 
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="params != null and params.uid != null and params.uid != ''" >
+				and UID = #{params.uid}
+			</if>
+			<if test="params != null and params.orderNumber != null and params.orderNumber != ''" >
+				and ORDER_NUMBER = #{params.orderNumber}
+			</if>
+			<if test="params != null and params.amount != null and params.amount != ''" >
+				and AMOUNT = #{params.amount}
+			</if>
+			<if test="params != null and params.shift != null and params.shift != ''" >
+				and SHIFT = #{params.shift}
+			</if>
+			<if test="params != null and params.status != null and params.status != ''" >
+				and STATUS = #{params.status}
+			</if>
+			<if test="params != null and params.cTime != null and params.cTime != ''" >
+				and C_TIME = #{params.cTime}
+			</if>
+			<if test="params != null and params.body != null and params.body != ''" >
+				and BODY = #{params.body}
+			</if>
+			<if test="params != null and params.subject != null and params.subject != ''" >
+				and SUBJECT = #{params.subject}
+			</if>
+			<if test="params != null and params.eTime != null" >
+				and E_TIME = #{params.eTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="params != null and params.fee != null and params.fee != ''" >
+				and FEE = #{params.fee}
+			</if>
+		</trim>
+	</select>
+	<select id="selectAll" resultMap="orderFormResultMap">
+		<include refid="baseSql"/>
+	</select>	
+	<select id="selectById" parameterType="java.lang.Integer" resultMap="orderFormResultMap">
+		<include refid="baseSql"/>	
+		<![CDATA[ WHERE ID=#{id}]]>
+	</select>
+	<select id="selectByUUID" parameterType="java.lang.String" resultMap="orderFormResultMap">
+		<include refid="baseSql"/>	
+		<![CDATA[ WHERE UUID=#{uuid}]]>
+	</select>
+	
+	<insert id="insert" parameterType="com.hyy.kcb.domain.order.OrderForm" useGeneratedKeys="true" keyProperty="id">
+		insert into order_form
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="uid != null" >
+				UID,
+			</if>
+			<if test="orderNumber != null" >
+				ORDER_NUMBER,
+			</if>
+			<if test="amount != null" >
+				AMOUNT,
+			</if>
+			<if test="shift != null" >
+				SHIFT,
+			</if>
+			<if test="status != null" >
+				STATUS,
+			</if>
+			<if test="cTime != null" >
+				C_TIME,
+			</if>
+			<if test="body != null" >
+				BODY,
+			</if>
+			<if test="subject != null" >
+				SUBJECT,
+			</if>
+			<if test="eTime != null" >
+				E_TIME,
+			</if>
+			<if test="fee != null" >
+				FEE,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="uid != null" >
+				#{uid},
+			</if>
+			<if test="orderNumber != null" >
+				#{orderNumber},
+			</if>
+			<if test="amount != null" >
+				#{amount},
+			</if>
+			<if test="shift != null" >
+				#{shift},
+			</if>
+			<if test="status != null" >
+				#{status},
+			</if>
+			<if test="cTime != null" >
+				#{cTime},
+			</if>
+			<if test="body != null" >
+				#{body},
+			</if>
+			<if test="subject != null" >
+				#{subject},
+			</if>
+			<if test="eTime != null" >
+				#{eTime},
+			</if>
+			<if test="fee != null" >
+				#{fee},
+			</if>
+		</trim>
+	</insert>
+	
+	<update id="updateObj" parameterType="com.hyy.kcb.domain.order.OrderForm">
+		update order_form
+		<set>
+			<if test="uid != null" >
+				UID = #{uid},
+			</if>
+			<if test="orderNumber != null" >
+				ORDER_NUMBER = #{orderNumber},
+			</if>
+			<if test="amount != null" >
+				AMOUNT = #{amount},
+			</if>
+			<if test="shift != null" >
+				SHIFT = #{shift},
+			</if>
+			<if test="status != null" >
+				STATUS = #{status},
+			</if>
+			<if test="cTime != null" >
+				C_TIME = #{cTime},
+			</if>
+			<if test="body != null" >
+				BODY = #{body},
+			</if>
+			<if test="subject != null" >
+				SUBJECT = #{subject},
+			</if>
+			<if test="eTime != null" >
+				E_TIME = #{eTime},
+			</if>
+			<if test="fee != null" >
+				FEE = #{fee},
+			</if>
+		</set>
+		where ID = #{id}
+	</update>	
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		<![CDATA[
+			DELETE FROM order_form
+			WHERE ID=#{id}
+		]]>
+	</delete>	
+	
+</mapper>

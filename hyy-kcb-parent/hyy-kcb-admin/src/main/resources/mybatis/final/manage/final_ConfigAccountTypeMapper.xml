@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hyy.kcb.dao.manage.IConfigAccountTypeDao" >
+	<resultMap id="configAccountTypeResultMap" type="com.hyy.kcb.domain.manage.dto.ConfigAccountTypeDTO">
+		<result column="ID" property="id" /> 
+		<result column="ASSET_TYPE" property="assetType" /> 
+		<result column="ASSET_A" property="assetA" /> 
+		<result column="ASSET_BC" property="assetBc" /> 
+		<result column="ASSET_COIN_NUMBER" property="assetCoinNumber" /> 
+		<result column="COIN_SYMBOL" property="coinSymbol" /> 
+		<result column="SYMBOL" property="symbol" /> 
+		<result column="TAG" property="tag" /> 
+		<result column="DESCRIPTION" property="description" /> 
+		<result column="CTIME" property="ctime" /> 
+		<result column="MTIME" property="mtime" /> 
+	</resultMap>
+	<sql id="baseSql">
+		<![CDATA[
+			SELECT ID,ASSET_TYPE,ASSET_A,ASSET_BC,ASSET_COIN_NUMBER,COIN_SYMBOL,SYMBOL,TAG,DESCRIPTION,CTIME,MTIME FROM config_account_type
+		]]>
+	</sql>
+	
+	<select id="selectTList" parameterType="com.hyy.kcb.commons.page.Pager" resultMap="configAccountTypeResultMap">
+		<include refid="baseSql"/>	
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="params != null and params.assetType != null and params.assetType != ''" >
+				and ASSET_TYPE = #{params.assetType}
+			</if>
+			<if test="params != null and params.assetA != null and params.assetA != ''" >
+				and ASSET_A = #{params.assetA}
+			</if>
+			<if test="params != null and params.assetBc != null and params.assetBc != ''" >
+				and ASSET_BC = #{params.assetBc}
+			</if>
+			<if test="params != null and params.assetCoinNumber != null and params.assetCoinNumber != ''" >
+				and ASSET_COIN_NUMBER = #{params.assetCoinNumber}
+			</if>
+			<if test="params != null and params.coinSymbol != null and params.coinSymbol != ''" >
+				and COIN_SYMBOL = #{params.coinSymbol}
+			</if>
+			<if test="params != null and params.symbol != null and params.symbol != ''" >
+				and SYMBOL = #{params.symbol}
+			</if>
+			<if test="params != null and params.tag != null and params.tag != ''" >
+				and TAG = #{params.tag}
+			</if>
+			<if test="params != null and params.description != null and params.description != ''" >
+				and DESCRIPTION = #{params.description}
+			</if>
+			<if test="params != null and params.ctime != null and params.ctime != ''" >
+				and CTIME = #{params.ctime}
+			</if>
+			<if test="params != null and params.mtime != null and params.mtime != ''" >
+				and MTIME = #{params.mtime}
+			</if>
+		</trim>
+			<if test="orderField != null and orderField != ''" >
+		      order by ${orderField}
+		    </if>
+		    <if test="orderField == null or orderField == ''" >
+		      order by id
+		    </if>
+			<if test="orderDirection != null and orderDirection != ''" >
+		      ${orderDirection}
+		    </if>
+			<if test="orderDirection == null or orderDirection == ''" >
+		      desc
+		    </if>
+		    <if test="limitStart >= 0" >
+		      limit #{limitStart} , #{pageSize}
+		    </if>
+	</select>
+	<select id="selectTListCount" parameterType="com.hyy.kcb.commons.page.Pager" resultType="java.lang.Integer">
+		select count(1) from config_account_type 
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="params != null and params.assetType != null and params.assetType != ''" >
+				and ASSET_TYPE = #{params.assetType}
+			</if>
+			<if test="params != null and params.assetA != null and params.assetA != ''" >
+				and ASSET_A = #{params.assetA}
+			</if>
+			<if test="params != null and params.assetBc != null and params.assetBc != ''" >
+				and ASSET_BC = #{params.assetBc}
+			</if>
+			<if test="params != null and params.assetCoinNumber != null and params.assetCoinNumber != ''" >
+				and ASSET_COIN_NUMBER = #{params.assetCoinNumber}
+			</if>
+			<if test="params != null and params.coinSymbol != null and params.coinSymbol != ''" >
+				and COIN_SYMBOL = #{params.coinSymbol}
+			</if>
+			<if test="params != null and params.symbol != null and params.symbol != ''" >
+				and SYMBOL = #{params.symbol}
+			</if>
+			<if test="params != null and params.tag != null and params.tag != ''" >
+				and TAG = #{params.tag}
+			</if>
+			<if test="params != null and params.description != null and params.description != ''" >
+				and DESCRIPTION = #{params.description}
+			</if>
+			<if test="params != null and params.ctime != null and params.ctime != ''" >
+				and CTIME = #{params.ctime}
+			</if>
+			<if test="params != null and params.mtime != null and params.mtime != ''" >
+				and MTIME = #{params.mtime}
+			</if>
+		</trim>
+	</select>
+	<select id="selectAll" resultMap="configAccountTypeResultMap">
+		<include refid="baseSql"/>
+	</select>	
+	<select id="selectById" parameterType="java.lang.Integer" resultMap="configAccountTypeResultMap">
+		<include refid="baseSql"/>	
+		<![CDATA[ WHERE ID=#{id}]]>
+	</select>
+	<select id="selectByUUID" parameterType="java.lang.String" resultMap="configAccountTypeResultMap">
+		<include refid="baseSql"/>	
+		<![CDATA[ WHERE UUID=#{uuid}]]>
+	</select>
+	
+	<insert id="insert" parameterType="com.hyy.kcb.domain.manage.ConfigAccountType" useGeneratedKeys="true" keyProperty="id">
+		insert into config_account_type
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="assetType != null" >
+				ASSET_TYPE,
+			</if>
+			<if test="assetA != null" >
+				ASSET_A,
+			</if>
+			<if test="assetBc != null" >
+				ASSET_BC,
+			</if>
+			<if test="assetCoinNumber != null" >
+				ASSET_COIN_NUMBER,
+			</if>
+			<if test="coinSymbol != null" >
+				COIN_SYMBOL,
+			</if>
+			<if test="symbol != null" >
+				SYMBOL,
+			</if>
+			<if test="tag != null" >
+				TAG,
+			</if>
+			<if test="description != null" >
+				DESCRIPTION,
+			</if>
+			<if test="ctime != null" >
+				CTIME,
+			</if>
+			<if test="mtime != null" >
+				MTIME,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="assetType != null" >
+				#{assetType},
+			</if>
+			<if test="assetA != null" >
+				#{assetA},
+			</if>
+			<if test="assetBc != null" >
+				#{assetBc},
+			</if>
+			<if test="assetCoinNumber != null" >
+				#{assetCoinNumber},
+			</if>
+			<if test="coinSymbol != null" >
+				#{coinSymbol},
+			</if>
+			<if test="symbol != null" >
+				#{symbol},
+			</if>
+			<if test="tag != null" >
+				#{tag},
+			</if>
+			<if test="description != null" >
+				#{description},
+			</if>
+			<if test="ctime != null" >
+				#{ctime},
+			</if>
+			<if test="mtime != null" >
+				#{mtime},
+			</if>
+		</trim>
+	</insert>
+	
+	<update id="updateObj" parameterType="com.hyy.kcb.domain.manage.ConfigAccountType">
+		update config_account_type
+		<set>
+			<if test="assetType != null" >
+				ASSET_TYPE = #{assetType},
+			</if>
+			<if test="assetA != null" >
+				ASSET_A = #{assetA},
+			</if>
+			<if test="assetBc != null" >
+				ASSET_BC = #{assetBc},
+			</if>
+			<if test="assetCoinNumber != null" >
+				ASSET_COIN_NUMBER = #{assetCoinNumber},
+			</if>
+			<if test="coinSymbol != null" >
+				COIN_SYMBOL = #{coinSymbol},
+			</if>
+			<if test="symbol != null" >
+				SYMBOL = #{symbol},
+			</if>
+			<if test="tag != null" >
+				TAG = #{tag},
+			</if>
+			<if test="description != null" >
+				DESCRIPTION = #{description},
+			</if>
+			<if test="ctime != null" >
+				CTIME = #{ctime},
+			</if>
+			<if test="mtime != null" >
+				MTIME = #{mtime},
+			</if>
+		</set>
+		where ID = #{id}
+	</update>	
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		<![CDATA[
+			DELETE FROM config_account_type
+			WHERE ID=#{id}
+		]]>
+	</delete>	
+	
+</mapper>

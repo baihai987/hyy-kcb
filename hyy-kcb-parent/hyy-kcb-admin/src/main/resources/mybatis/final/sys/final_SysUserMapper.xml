@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hyy.kcb.dao.sys.ISysUserDao" >
+	<resultMap id="sysUserResultMap" type="com.hyy.kcb.domain.sys.dto.SysUserDTO">
+		<result column="ID" property="id" /> 
+		<result column="USER_NAME" property="userName" /> 
+		<result column="NAME" property="name" /> 
+		<result column="PASSWORD" property="password" /> 
+		<result column="SALT" property="salt" /> 
+		<result column="STATE" property="state" /> 
+		<result column="CREATE_DATE" property="createDate" /> 
+		<result column="CREATE_USER" property="createUser" /> 
+		<result column="UPDATE_USER" property="updateUser" /> 
+		<result column="UPDATE_DATE" property="updateDate" /> 
+		<result column="IS_DEL" property="isDel" /> 
+	</resultMap>
+	<sql id="baseSql">
+		<![CDATA[
+			SELECT ID,USER_NAME,NAME,PASSWORD,SALT,STATE,CREATE_DATE,CREATE_USER,UPDATE_USER,UPDATE_DATE,IS_DEL FROM sys_user
+		]]>
+	</sql>
+	
+	<select id="selectTList" parameterType="com.hyy.kcb.commons.page.Pager" resultMap="sysUserResultMap">
+		<include refid="baseSql"/>	
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="params != null and params.userName != null and params.userName != ''" >
+				and USER_NAME = #{params.userName}
+			</if>
+			<if test="params != null and params.name != null and params.name != ''" >
+				and NAME = #{params.name}
+			</if>
+			<if test="params != null and params.password != null and params.password != ''" >
+				and PASSWORD = #{params.password}
+			</if>
+			<if test="params != null and params.salt != null and params.salt != ''" >
+				and SALT = #{params.salt}
+			</if>
+			<if test="params != null and params.state != null and params.state != ''" >
+				and STATE = #{params.state}
+			</if>
+			<if test="params != null and params.createDate != null" >
+				and CREATE_DATE = #{params.createDate,jdbcType=TIMESTAMP}
+			</if>
+			<if test="params != null and params.createUser != null and params.createUser != ''" >
+				and CREATE_USER = #{params.createUser}
+			</if>
+			<if test="params != null and params.updateUser != null and params.updateUser != ''" >
+				and UPDATE_USER = #{params.updateUser}
+			</if>
+			<if test="params != null and params.updateDate != null" >
+				and UPDATE_DATE = #{params.updateDate,jdbcType=TIMESTAMP}
+			</if>
+			<if test="params != null and params.isDel != null and params.isDel != ''" >
+				and IS_DEL = #{params.isDel}
+			</if>
+		</trim>
+			<if test="orderField != null and orderField != ''" >
+		      order by ${orderField}
+		    </if>
+		    <if test="orderField == null or orderField == ''" >
+		      order by id
+		    </if>
+			<if test="orderDirection != null and orderDirection != ''" >
+		      ${orderDirection}
+		    </if>
+			<if test="orderDirection == null or orderDirection == ''" >
+		      desc
+		    </if>
+		    <if test="limitStart >= 0" >
+		      limit #{limitStart} , #{pageSize}
+		    </if>
+	</select>
+	<select id="selectTListCount" parameterType="com.hyy.kcb.commons.page.Pager" resultType="java.lang.Integer">
+		select count(1) from sys_user 
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="params != null and params.userName != null and params.userName != ''" >
+				and USER_NAME = #{params.userName}
+			</if>
+			<if test="params != null and params.name != null and params.name != ''" >
+				and NAME = #{params.name}
+			</if>
+			<if test="params != null and params.password != null and params.password != ''" >
+				and PASSWORD = #{params.password}
+			</if>
+			<if test="params != null and params.salt != null and params.salt != ''" >
+				and SALT = #{params.salt}
+			</if>
+			<if test="params != null and params.state != null and params.state != ''" >
+				and STATE = #{params.state}
+			</if>
+			<if test="params != null and params.createDate != null" >
+				and CREATE_DATE = #{params.createDate,jdbcType=TIMESTAMP}
+			</if>
+			<if test="params != null and params.createUser != null and params.createUser != ''" >
+				and CREATE_USER = #{params.createUser}
+			</if>
+			<if test="params != null and params.updateUser != null and params.updateUser != ''" >
+				and UPDATE_USER = #{params.updateUser}
+			</if>
+			<if test="params != null and params.updateDate != null" >
+				and UPDATE_DATE = #{params.updateDate,jdbcType=TIMESTAMP}
+			</if>
+			<if test="params != null and params.isDel != null and params.isDel != ''" >
+				and IS_DEL = #{params.isDel}
+			</if>
+		</trim>
+	</select>
+	<select id="selectAll" resultMap="sysUserResultMap">
+		<include refid="baseSql"/>
+	</select>	
+	<select id="selectById" parameterType="java.lang.Integer" resultMap="sysUserResultMap">
+		<include refid="baseSql"/>	
+		<![CDATA[ WHERE ID=#{id}]]>
+	</select>
+	<select id="selectByUUID" parameterType="java.lang.String" resultMap="sysUserResultMap">
+		<include refid="baseSql"/>	
+		<![CDATA[ WHERE UUID=#{uuid}]]>
+	</select>
+	
+	<insert id="insert" parameterType="com.hyy.kcb.domain.sys.SysUser" useGeneratedKeys="true" keyProperty="id">
+		insert into sys_user
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="userName != null" >
+				USER_NAME,
+			</if>
+			<if test="name != null" >
+				NAME,
+			</if>
+			<if test="password != null" >
+				PASSWORD,
+			</if>
+			<if test="salt != null" >
+				SALT,
+			</if>
+			<if test="state != null" >
+				STATE,
+			</if>
+			<if test="createDate != null" >
+				CREATE_DATE,
+			</if>
+			<if test="createUser != null" >
+				CREATE_USER,
+			</if>
+			<if test="updateUser != null" >
+				UPDATE_USER,
+			</if>
+			<if test="updateDate != null" >
+				UPDATE_DATE,
+			</if>
+			<if test="isDel != null" >
+				IS_DEL,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="userName != null" >
+				#{userName},
+			</if>
+			<if test="name != null" >
+				#{name},
+			</if>
+			<if test="password != null" >
+				#{password},
+			</if>
+			<if test="salt != null" >
+				#{salt},
+			</if>
+			<if test="state != null" >
+				#{state},
+			</if>
+			<if test="createDate != null" >
+				#{createDate},
+			</if>
+			<if test="createUser != null" >
+				#{createUser},
+			</if>
+			<if test="updateUser != null" >
+				#{updateUser},
+			</if>
+			<if test="updateDate != null" >
+				#{updateDate},
+			</if>
+			<if test="isDel != null" >
+				#{isDel},
+			</if>
+		</trim>
+	</insert>
+	
+	<update id="updateObj" parameterType="com.hyy.kcb.domain.sys.SysUser">
+		update sys_user
+		<set>
+			<if test="userName != null" >
+				USER_NAME = #{userName},
+			</if>
+			<if test="name != null" >
+				NAME = #{name},
+			</if>
+			<if test="password != null" >
+				PASSWORD = #{password},
+			</if>
+			<if test="salt != null" >
+				SALT = #{salt},
+			</if>
+			<if test="state != null" >
+				STATE = #{state},
+			</if>
+			<if test="createDate != null" >
+				CREATE_DATE = #{createDate},
+			</if>
+			<if test="createUser != null" >
+				CREATE_USER = #{createUser},
+			</if>
+			<if test="updateUser != null" >
+				UPDATE_USER = #{updateUser},
+			</if>
+			<if test="updateDate != null" >
+				UPDATE_DATE = #{updateDate},
+			</if>
+			<if test="isDel != null" >
+				IS_DEL = #{isDel},
+			</if>
+		</set>
+		where ID = #{id}
+	</update>	
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		<![CDATA[
+			DELETE FROM sys_user
+			WHERE ID=#{id}
+		]]>
+	</delete>	
+	
+</mapper>

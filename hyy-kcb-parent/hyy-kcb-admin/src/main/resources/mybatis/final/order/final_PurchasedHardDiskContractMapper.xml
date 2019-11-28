@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hyy.kcb.dao.order.IPurchasedHardDiskContractDao" >
+	<resultMap id="purchasedHardDiskContractResultMap" type="com.hyy.kcb.domain.order.dto.PurchasedHardDiskContractDTO">
+		<result column="PURCHASED_HARD_DISK_ID" property="purchasedHardDiskId" /> 
+		<result column="CONTRACT_ID" property="contractId" /> 
+		<result column="CONTRACT_START_TIME" property="contractStartTime" /> 
+		<result column="CONTRACT_END_TIME" property="contractEndTime" /> 
+	</resultMap>
+	<sql id="baseSql">
+		<![CDATA[
+			SELECT PURCHASED_HARD_DISK_ID,CONTRACT_ID,CONTRACT_START_TIME,CONTRACT_END_TIME FROM purchased_hard_disk_contract
+		]]>
+	</sql>
+	
+	<select id="selectTList" parameterType="com.hyy.kcb.commons.page.Pager" resultMap="purchasedHardDiskContractResultMap">
+		<include refid="baseSql"/>	
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="params != null and params.contractId != null and params.contractId != ''" >
+				and CONTRACT_ID = #{params.contractId}
+			</if>
+			<if test="params != null and params.contractStartTime != null" >
+				and CONTRACT_START_TIME = #{params.contractStartTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="params != null and params.contractEndTime != null" >
+				and CONTRACT_END_TIME = #{params.contractEndTime,jdbcType=TIMESTAMP}
+			</if>
+		</trim>
+			<if test="orderField != null and orderField != ''" >
+		      order by ${orderField}
+		    </if>
+		    <if test="orderField == null or orderField == ''" >
+		      order by id
+		    </if>
+			<if test="orderDirection != null and orderDirection != ''" >
+		      ${orderDirection}
+		    </if>
+			<if test="orderDirection == null or orderDirection == ''" >
+		      desc
+		    </if>
+		    <if test="limitStart >= 0" >
+		      limit #{limitStart} , #{pageSize}
+		    </if>
+	</select>
+	<select id="selectTListCount" parameterType="com.hyy.kcb.commons.page.Pager" resultType="java.lang.Integer">
+		select count(1) from purchased_hard_disk_contract 
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="params != null and params.contractId != null and params.contractId != ''" >
+				and CONTRACT_ID = #{params.contractId}
+			</if>
+			<if test="params != null and params.contractStartTime != null" >
+				and CONTRACT_START_TIME = #{params.contractStartTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="params != null and params.contractEndTime != null" >
+				and CONTRACT_END_TIME = #{params.contractEndTime,jdbcType=TIMESTAMP}
+			</if>
+		</trim>
+	</select>
+	<select id="selectAll" resultMap="purchasedHardDiskContractResultMap">
+		<include refid="baseSql"/>
+	</select>	
+	<select id="selectById" parameterType="java.lang.Integer" resultMap="purchasedHardDiskContractResultMap">
+		<include refid="baseSql"/>	
+		<![CDATA[ WHERE ID=#{id}]]>
+	</select>
+	<select id="selectByUUID" parameterType="java.lang.String" resultMap="purchasedHardDiskContractResultMap">
+		<include refid="baseSql"/>	
+		<![CDATA[ WHERE UUID=#{uuid}]]>
+	</select>
+	
+	<insert id="insert" parameterType="com.hyy.kcb.domain.order.PurchasedHardDiskContract" useGeneratedKeys="true" keyProperty="id">
+		insert into purchased_hard_disk_contract
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="contractId != null" >
+				CONTRACT_ID,
+			</if>
+			<if test="contractStartTime != null" >
+				CONTRACT_START_TIME,
+			</if>
+			<if test="contractEndTime != null" >
+				CONTRACT_END_TIME,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="contractId != null" >
+				#{contractId},
+			</if>
+			<if test="contractStartTime != null" >
+				#{contractStartTime},
+			</if>
+			<if test="contractEndTime != null" >
+				#{contractEndTime},
+			</if>
+		</trim>
+	</insert>
+	
+	<update id="updateObj" parameterType="com.hyy.kcb.domain.order.PurchasedHardDiskContract">
+		update purchased_hard_disk_contract
+		<set>
+			<if test="contractId != null" >
+				CONTRACT_ID = #{contractId},
+			</if>
+			<if test="contractStartTime != null" >
+				CONTRACT_START_TIME = #{contractStartTime},
+			</if>
+			<if test="contractEndTime != null" >
+				CONTRACT_END_TIME = #{contractEndTime},
+			</if>
+		</set>
+		where ID = #{id}
+	</update>	
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		<![CDATA[
+			DELETE FROM purchased_hard_disk_contract
+			WHERE PURCHASED_HARD_DISK_ID=#{purchasedHardDiskId}
+		]]>
+	</delete>	
+	
+</mapper>

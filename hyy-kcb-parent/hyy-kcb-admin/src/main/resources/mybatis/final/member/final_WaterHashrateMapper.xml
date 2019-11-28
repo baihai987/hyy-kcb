@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hyy.kcb.dao.member.IWaterHashrateDao" >
+	<resultMap id="waterHashrateResultMap" type="com.hyy.kcb.domain.member.dto.WaterHashrateDTO">
+		<result column="ID" property="id" /> 
+		<result column="UID" property="uid" /> 
+		<result column="AMOUNT" property="amount" /> 
+		<result column="HASHRATE_TYPE" property="hashrateType" /> 
+		<result column="CREATE_TIME" property="createTime" /> 
+		<result column="CREATE_DATE" property="createDate" /> 
+	</resultMap>
+	<sql id="baseSql">
+		<![CDATA[
+			SELECT ID,UID,AMOUNT,HASHRATE_TYPE,CREATE_TIME,CREATE_DATE FROM water_hashrate
+		]]>
+	</sql>
+	
+	<select id="selectTList" parameterType="com.hyy.kcb.commons.page.Pager" resultMap="waterHashrateResultMap">
+		<include refid="baseSql"/>	
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="params != null and params.uid != null and params.uid != ''" >
+				and UID = #{params.uid}
+			</if>
+			<if test="params != null and params.amount != null and params.amount != ''" >
+				and AMOUNT = #{params.amount}
+			</if>
+			<if test="params != null and params.hashrateType != null and params.hashrateType != ''" >
+				and HASHRATE_TYPE = #{params.hashrateType}
+			</if>
+			<if test="params != null and params.createTime != null and params.createTime != ''" >
+				and CREATE_TIME = #{params.createTime}
+			</if>
+			<if test="params != null and params.createDate != null" >
+				and CREATE_DATE = #{params.createDate,jdbcType=TIMESTAMP}
+			</if>
+		</trim>
+			<if test="orderField != null and orderField != ''" >
+		      order by ${orderField}
+		    </if>
+		    <if test="orderField == null or orderField == ''" >
+		      order by id
+		    </if>
+			<if test="orderDirection != null and orderDirection != ''" >
+		      ${orderDirection}
+		    </if>
+			<if test="orderDirection == null or orderDirection == ''" >
+		      desc
+		    </if>
+		    <if test="limitStart >= 0" >
+		      limit #{limitStart} , #{pageSize}
+		    </if>
+	</select>
+	<select id="selectTListCount" parameterType="com.hyy.kcb.commons.page.Pager" resultType="java.lang.Integer">
+		select count(1) from water_hashrate 
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="params != null and params.uid != null and params.uid != ''" >
+				and UID = #{params.uid}
+			</if>
+			<if test="params != null and params.amount != null and params.amount != ''" >
+				and AMOUNT = #{params.amount}
+			</if>
+			<if test="params != null and params.hashrateType != null and params.hashrateType != ''" >
+				and HASHRATE_TYPE = #{params.hashrateType}
+			</if>
+			<if test="params != null and params.createTime != null and params.createTime != ''" >
+				and CREATE_TIME = #{params.createTime}
+			</if>
+			<if test="params != null and params.createDate != null" >
+				and CREATE_DATE = #{params.createDate,jdbcType=TIMESTAMP}
+			</if>
+		</trim>
+	</select>
+	<select id="selectAll" resultMap="waterHashrateResultMap">
+		<include refid="baseSql"/>
+	</select>	
+	<select id="selectById" parameterType="java.lang.Integer" resultMap="waterHashrateResultMap">
+		<include refid="baseSql"/>	
+		<![CDATA[ WHERE ID=#{id}]]>
+	</select>
+	<select id="selectByUUID" parameterType="java.lang.String" resultMap="waterHashrateResultMap">
+		<include refid="baseSql"/>	
+		<![CDATA[ WHERE UUID=#{uuid}]]>
+	</select>
+	
+	<insert id="insert" parameterType="com.hyy.kcb.domain.member.WaterHashrate" useGeneratedKeys="true" keyProperty="id">
+		insert into water_hashrate
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="uid != null" >
+				UID,
+			</if>
+			<if test="amount != null" >
+				AMOUNT,
+			</if>
+			<if test="hashrateType != null" >
+				HASHRATE_TYPE,
+			</if>
+			<if test="createTime != null" >
+				CREATE_TIME,
+			</if>
+			<if test="createDate != null" >
+				CREATE_DATE,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="uid != null" >
+				#{uid},
+			</if>
+			<if test="amount != null" >
+				#{amount},
+			</if>
+			<if test="hashrateType != null" >
+				#{hashrateType},
+			</if>
+			<if test="createTime != null" >
+				#{createTime},
+			</if>
+			<if test="createDate != null" >
+				#{createDate},
+			</if>
+		</trim>
+	</insert>
+	
+	<update id="updateObj" parameterType="com.hyy.kcb.domain.member.WaterHashrate">
+		update water_hashrate
+		<set>
+			<if test="uid != null" >
+				UID = #{uid},
+			</if>
+			<if test="amount != null" >
+				AMOUNT = #{amount},
+			</if>
+			<if test="hashrateType != null" >
+				HASHRATE_TYPE = #{hashrateType},
+			</if>
+			<if test="createTime != null" >
+				CREATE_TIME = #{createTime},
+			</if>
+			<if test="createDate != null" >
+				CREATE_DATE = #{createDate},
+			</if>
+		</set>
+		where ID = #{id}
+	</update>	
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		<![CDATA[
+			DELETE FROM water_hashrate
+			WHERE ID=#{id}
+		]]>
+	</delete>	
+	
+</mapper>

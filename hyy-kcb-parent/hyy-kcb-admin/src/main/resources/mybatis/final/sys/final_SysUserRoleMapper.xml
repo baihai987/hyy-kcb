@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hyy.kcb.dao.sys.ISysUserRoleDao" >
+	<resultMap id="sysUserRoleResultMap" type="com.hyy.kcb.domain.sys.dto.SysUserRoleDTO">
+		<result column="ID" property="id" /> 
+		<result column="SYS_USER_ID" property="sysUserId" /> 
+		<result column="SYS_ROLE_ID" property="sysRoleId" /> 
+	</resultMap>
+	<sql id="baseSql">
+		<![CDATA[
+			SELECT ID,SYS_USER_ID,SYS_ROLE_ID FROM sys_user_role
+		]]>
+	</sql>
+	
+	<select id="selectTList" parameterType="com.hyy.kcb.commons.page.Pager" resultMap="sysUserRoleResultMap">
+		<include refid="baseSql"/>	
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="params != null and params.sysUserId != null and params.sysUserId != ''" >
+				and SYS_USER_ID = #{params.sysUserId}
+			</if>
+			<if test="params != null and params.sysRoleId != null and params.sysRoleId != ''" >
+				and SYS_ROLE_ID = #{params.sysRoleId}
+			</if>
+		</trim>
+			<if test="orderField != null and orderField != ''" >
+		      order by ${orderField}
+		    </if>
+		    <if test="orderField == null or orderField == ''" >
+		      order by id
+		    </if>
+			<if test="orderDirection != null and orderDirection != ''" >
+		      ${orderDirection}
+		    </if>
+			<if test="orderDirection == null or orderDirection == ''" >
+		      desc
+		    </if>
+		    <if test="limitStart >= 0" >
+		      limit #{limitStart} , #{pageSize}
+		    </if>
+	</select>
+	<select id="selectTListCount" parameterType="com.hyy.kcb.commons.page.Pager" resultType="java.lang.Integer">
+		select count(1) from sys_user_role 
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="params != null and params.sysUserId != null and params.sysUserId != ''" >
+				and SYS_USER_ID = #{params.sysUserId}
+			</if>
+			<if test="params != null and params.sysRoleId != null and params.sysRoleId != ''" >
+				and SYS_ROLE_ID = #{params.sysRoleId}
+			</if>
+		</trim>
+	</select>
+	<select id="selectAll" resultMap="sysUserRoleResultMap">
+		<include refid="baseSql"/>
+	</select>	
+	<select id="selectById" parameterType="java.lang.Integer" resultMap="sysUserRoleResultMap">
+		<include refid="baseSql"/>	
+		<![CDATA[ WHERE ID=#{id}]]>
+	</select>
+	<select id="selectByUUID" parameterType="java.lang.String" resultMap="sysUserRoleResultMap">
+		<include refid="baseSql"/>	
+		<![CDATA[ WHERE UUID=#{uuid}]]>
+	</select>
+	
+	<insert id="insert" parameterType="com.hyy.kcb.domain.sys.SysUserRole" useGeneratedKeys="true" keyProperty="id">
+		insert into sys_user_role
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="sysUserId != null" >
+				SYS_USER_ID,
+			</if>
+			<if test="sysRoleId != null" >
+				SYS_ROLE_ID,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="sysUserId != null" >
+				#{sysUserId},
+			</if>
+			<if test="sysRoleId != null" >
+				#{sysRoleId},
+			</if>
+		</trim>
+	</insert>
+	
+	<update id="updateObj" parameterType="com.hyy.kcb.domain.sys.SysUserRole">
+		update sys_user_role
+		<set>
+			<if test="sysUserId != null" >
+				SYS_USER_ID = #{sysUserId},
+			</if>
+			<if test="sysRoleId != null" >
+				SYS_ROLE_ID = #{sysRoleId},
+			</if>
+		</set>
+		where ID = #{id}
+	</update>	
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		<![CDATA[
+			DELETE FROM sys_user_role
+			WHERE ID=#{id}
+		]]>
+	</delete>	
+	
+</mapper>

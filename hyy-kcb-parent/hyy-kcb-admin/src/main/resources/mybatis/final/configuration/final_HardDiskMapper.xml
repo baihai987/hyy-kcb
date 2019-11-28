@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hyy.kcb.dao.configuration.IHardDiskDao" >
+	<resultMap id="hardDiskResultMap" type="com.hyy.kcb.domain.configuration.dto.HardDiskDTO">
+		<result column="ID" property="id" /> 
+		<result column="NAME" property="name" /> 
+		<result column="LEVEL" property="level" /> 
+		<result column="PRICE" property="price" /> 
+		<result column="HASHRATE" property="hashrate" /> 
+		<result column="ASSET_TRANSFER_RESTRICTION" property="assetTransferRestriction" /> 
+		<result column="ANNUAL_RATE" property="annualRate" /> 
+		<result column="REVIEW_TIME" property="reviewTime" /> 
+	</resultMap>
+	<sql id="baseSql">
+		<![CDATA[
+			SELECT ID,NAME,LEVEL,PRICE,HASHRATE,ASSET_TRANSFER_RESTRICTION,ANNUAL_RATE,REVIEW_TIME FROM hard_disk
+		]]>
+	</sql>
+	
+	<select id="selectTList" parameterType="com.hyy.kcb.commons.page.Pager" resultMap="hardDiskResultMap">
+		<include refid="baseSql"/>	
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="params != null and params.name != null and params.name != ''" >
+				and NAME = #{params.name}
+			</if>
+			<if test="params != null and params.level != null and params.level != ''" >
+				and LEVEL = #{params.level}
+			</if>
+			<if test="params != null and params.price != null and params.price != ''" >
+				and PRICE = #{params.price}
+			</if>
+			<if test="params != null and params.hashrate != null and params.hashrate != ''" >
+				and HASHRATE = #{params.hashrate}
+			</if>
+			<if test="params != null and params.assetTransferRestriction != null and params.assetTransferRestriction != ''" >
+				and ASSET_TRANSFER_RESTRICTION = #{params.assetTransferRestriction}
+			</if>
+			<if test="params != null and params.annualRate != null and params.annualRate != ''" >
+				and ANNUAL_RATE = #{params.annualRate}
+			</if>
+			<if test="params != null and params.reviewTime != null and params.reviewTime != ''" >
+				and REVIEW_TIME = #{params.reviewTime}
+			</if>
+		</trim>
+			<if test="orderField != null and orderField != ''" >
+		      order by ${orderField}
+		    </if>
+		    <if test="orderField == null or orderField == ''" >
+		      order by id
+		    </if>
+			<if test="orderDirection != null and orderDirection != ''" >
+		      ${orderDirection}
+		    </if>
+			<if test="orderDirection == null or orderDirection == ''" >
+		      desc
+		    </if>
+		    <if test="limitStart >= 0" >
+		      limit #{limitStart} , #{pageSize}
+		    </if>
+	</select>
+	<select id="selectTListCount" parameterType="com.hyy.kcb.commons.page.Pager" resultType="java.lang.Integer">
+		select count(1) from hard_disk 
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="params != null and params.name != null and params.name != ''" >
+				and NAME = #{params.name}
+			</if>
+			<if test="params != null and params.level != null and params.level != ''" >
+				and LEVEL = #{params.level}
+			</if>
+			<if test="params != null and params.price != null and params.price != ''" >
+				and PRICE = #{params.price}
+			</if>
+			<if test="params != null and params.hashrate != null and params.hashrate != ''" >
+				and HASHRATE = #{params.hashrate}
+			</if>
+			<if test="params != null and params.assetTransferRestriction != null and params.assetTransferRestriction != ''" >
+				and ASSET_TRANSFER_RESTRICTION = #{params.assetTransferRestriction}
+			</if>
+			<if test="params != null and params.annualRate != null and params.annualRate != ''" >
+				and ANNUAL_RATE = #{params.annualRate}
+			</if>
+			<if test="params != null and params.reviewTime != null and params.reviewTime != ''" >
+				and REVIEW_TIME = #{params.reviewTime}
+			</if>
+		</trim>
+	</select>
+	<select id="selectAll" resultMap="hardDiskResultMap">
+		<include refid="baseSql"/>
+	</select>	
+	<select id="selectById" parameterType="java.lang.Integer" resultMap="hardDiskResultMap">
+		<include refid="baseSql"/>	
+		<![CDATA[ WHERE ID=#{id}]]>
+	</select>
+	<select id="selectByUUID" parameterType="java.lang.String" resultMap="hardDiskResultMap">
+		<include refid="baseSql"/>	
+		<![CDATA[ WHERE UUID=#{uuid}]]>
+	</select>
+	
+	<insert id="insert" parameterType="com.hyy.kcb.domain.configuration.HardDisk" useGeneratedKeys="true" keyProperty="id">
+		insert into hard_disk
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="name != null" >
+				NAME,
+			</if>
+			<if test="level != null" >
+				LEVEL,
+			</if>
+			<if test="price != null" >
+				PRICE,
+			</if>
+			<if test="hashrate != null" >
+				HASHRATE,
+			</if>
+			<if test="assetTransferRestriction != null" >
+				ASSET_TRANSFER_RESTRICTION,
+			</if>
+			<if test="annualRate != null" >
+				ANNUAL_RATE,
+			</if>
+			<if test="reviewTime != null" >
+				REVIEW_TIME,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="name != null" >
+				#{name},
+			</if>
+			<if test="level != null" >
+				#{level},
+			</if>
+			<if test="price != null" >
+				#{price},
+			</if>
+			<if test="hashrate != null" >
+				#{hashrate},
+			</if>
+			<if test="assetTransferRestriction != null" >
+				#{assetTransferRestriction},
+			</if>
+			<if test="annualRate != null" >
+				#{annualRate},
+			</if>
+			<if test="reviewTime != null" >
+				#{reviewTime},
+			</if>
+		</trim>
+	</insert>
+	
+	<update id="updateObj" parameterType="com.hyy.kcb.domain.configuration.HardDisk">
+		update hard_disk
+		<set>
+			<if test="name != null" >
+				NAME = #{name},
+			</if>
+			<if test="level != null" >
+				LEVEL = #{level},
+			</if>
+			<if test="price != null" >
+				PRICE = #{price},
+			</if>
+			<if test="hashrate != null" >
+				HASHRATE = #{hashrate},
+			</if>
+			<if test="assetTransferRestriction != null" >
+				ASSET_TRANSFER_RESTRICTION = #{assetTransferRestriction},
+			</if>
+			<if test="annualRate != null" >
+				ANNUAL_RATE = #{annualRate},
+			</if>
+			<if test="reviewTime != null" >
+				REVIEW_TIME = #{reviewTime},
+			</if>
+		</set>
+		where ID = #{id}
+	</update>	
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		<![CDATA[
+			DELETE FROM hard_disk
+			WHERE ID=#{id}
+		]]>
+	</delete>	
+	
+</mapper>

@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hyy.kcb.dao.manage.IHardDiskOrderDao" >
+	<resultMap id="hardDiskOrderResultMap" type="com.hyy.kcb.domain.manage.dto.HardDiskOrderDTO">
+		<result column="ID" property="id" /> 
+		<result column="UID" property="uid" /> 
+		<result column="HARD_DISK_ID" property="hardDiskId" /> 
+		<result column="TOTAL_AMOUNT" property="totalAmount" /> 
+		<result column="SETTLE_CURRENCY" property="settleCurrency" /> 
+		<result column="OPENID" property="openid" /> 
+		<result column="OUT_TRADE_NO" property="outTradeNo" /> 
+		<result column="STATUS" property="status" /> 
+		<result column="CREATE_TIME" property="createTime" /> 
+		<result column="UPDATE_TIME" property="updateTime" /> 
+	</resultMap>
+	<sql id="baseSql">
+		<![CDATA[
+			SELECT ID,UID,HARD_DISK_ID,TOTAL_AMOUNT,SETTLE_CURRENCY,OPENID,OUT_TRADE_NO,STATUS,CREATE_TIME,UPDATE_TIME FROM hard_disk_order
+		]]>
+	</sql>
+	
+	<select id="selectTList" parameterType="com.hyy.kcb.commons.page.Pager" resultMap="hardDiskOrderResultMap">
+		<include refid="baseSql"/>	
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="params != null and params.uid != null and params.uid != ''" >
+				and UID = #{params.uid}
+			</if>
+			<if test="params != null and params.hardDiskId != null and params.hardDiskId != ''" >
+				and HARD_DISK_ID = #{params.hardDiskId}
+			</if>
+			<if test="params != null and params.totalAmount != null and params.totalAmount != ''" >
+				and TOTAL_AMOUNT = #{params.totalAmount}
+			</if>
+			<if test="params != null and params.settleCurrency != null and params.settleCurrency != ''" >
+				and SETTLE_CURRENCY = #{params.settleCurrency}
+			</if>
+			<if test="params != null and params.openid != null and params.openid != ''" >
+				and OPENID = #{params.openid}
+			</if>
+			<if test="params != null and params.outTradeNo != null and params.outTradeNo != ''" >
+				and OUT_TRADE_NO = #{params.outTradeNo}
+			</if>
+			<if test="params != null and params.status != null and params.status != ''" >
+				and STATUS = #{params.status}
+			</if>
+			<if test="params != null and params.createTime != null" >
+				and CREATE_TIME = #{params.createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="params != null and params.updateTime != null" >
+				and UPDATE_TIME = #{params.updateTime,jdbcType=TIMESTAMP}
+			</if>
+		</trim>
+			<if test="orderField != null and orderField != ''" >
+		      order by ${orderField}
+		    </if>
+		    <if test="orderField == null or orderField == ''" >
+		      order by id
+		    </if>
+			<if test="orderDirection != null and orderDirection != ''" >
+		      ${orderDirection}
+		    </if>
+			<if test="orderDirection == null or orderDirection == ''" >
+		      desc
+		    </if>
+		    <if test="limitStart >= 0" >
+		      limit #{limitStart} , #{pageSize}
+		    </if>
+	</select>
+	<select id="selectTListCount" parameterType="com.hyy.kcb.commons.page.Pager" resultType="java.lang.Integer">
+		select count(1) from hard_disk_order 
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="params != null and params.uid != null and params.uid != ''" >
+				and UID = #{params.uid}
+			</if>
+			<if test="params != null and params.hardDiskId != null and params.hardDiskId != ''" >
+				and HARD_DISK_ID = #{params.hardDiskId}
+			</if>
+			<if test="params != null and params.totalAmount != null and params.totalAmount != ''" >
+				and TOTAL_AMOUNT = #{params.totalAmount}
+			</if>
+			<if test="params != null and params.settleCurrency != null and params.settleCurrency != ''" >
+				and SETTLE_CURRENCY = #{params.settleCurrency}
+			</if>
+			<if test="params != null and params.openid != null and params.openid != ''" >
+				and OPENID = #{params.openid}
+			</if>
+			<if test="params != null and params.outTradeNo != null and params.outTradeNo != ''" >
+				and OUT_TRADE_NO = #{params.outTradeNo}
+			</if>
+			<if test="params != null and params.status != null and params.status != ''" >
+				and STATUS = #{params.status}
+			</if>
+			<if test="params != null and params.createTime != null" >
+				and CREATE_TIME = #{params.createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="params != null and params.updateTime != null" >
+				and UPDATE_TIME = #{params.updateTime,jdbcType=TIMESTAMP}
+			</if>
+		</trim>
+	</select>
+	<select id="selectAll" resultMap="hardDiskOrderResultMap">
+		<include refid="baseSql"/>
+	</select>	
+	<select id="selectById" parameterType="java.lang.Integer" resultMap="hardDiskOrderResultMap">
+		<include refid="baseSql"/>	
+		<![CDATA[ WHERE ID=#{id}]]>
+	</select>
+	<select id="selectByUUID" parameterType="java.lang.String" resultMap="hardDiskOrderResultMap">
+		<include refid="baseSql"/>	
+		<![CDATA[ WHERE UUID=#{uuid}]]>
+	</select>
+	
+	<insert id="insert" parameterType="com.hyy.kcb.domain.manage.HardDiskOrder" useGeneratedKeys="true" keyProperty="id">
+		insert into hard_disk_order
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="uid != null" >
+				UID,
+			</if>
+			<if test="hardDiskId != null" >
+				HARD_DISK_ID,
+			</if>
+			<if test="totalAmount != null" >
+				TOTAL_AMOUNT,
+			</if>
+			<if test="settleCurrency != null" >
+				SETTLE_CURRENCY,
+			</if>
+			<if test="openid != null" >
+				OPENID,
+			</if>
+			<if test="outTradeNo != null" >
+				OUT_TRADE_NO,
+			</if>
+			<if test="status != null" >
+				STATUS,
+			</if>
+			<if test="createTime != null" >
+				CREATE_TIME,
+			</if>
+			<if test="updateTime != null" >
+				UPDATE_TIME,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="uid != null" >
+				#{uid},
+			</if>
+			<if test="hardDiskId != null" >
+				#{hardDiskId},
+			</if>
+			<if test="totalAmount != null" >
+				#{totalAmount},
+			</if>
+			<if test="settleCurrency != null" >
+				#{settleCurrency},
+			</if>
+			<if test="openid != null" >
+				#{openid},
+			</if>
+			<if test="outTradeNo != null" >
+				#{outTradeNo},
+			</if>
+			<if test="status != null" >
+				#{status},
+			</if>
+			<if test="createTime != null" >
+				#{createTime},
+			</if>
+			<if test="updateTime != null" >
+				#{updateTime},
+			</if>
+		</trim>
+	</insert>
+	
+	<update id="updateObj" parameterType="com.hyy.kcb.domain.manage.HardDiskOrder">
+		update hard_disk_order
+		<set>
+			<if test="uid != null" >
+				UID = #{uid},
+			</if>
+			<if test="hardDiskId != null" >
+				HARD_DISK_ID = #{hardDiskId},
+			</if>
+			<if test="totalAmount != null" >
+				TOTAL_AMOUNT = #{totalAmount},
+			</if>
+			<if test="settleCurrency != null" >
+				SETTLE_CURRENCY = #{settleCurrency},
+			</if>
+			<if test="openid != null" >
+				OPENID = #{openid},
+			</if>
+			<if test="outTradeNo != null" >
+				OUT_TRADE_NO = #{outTradeNo},
+			</if>
+			<if test="status != null" >
+				STATUS = #{status},
+			</if>
+			<if test="createTime != null" >
+				CREATE_TIME = #{createTime},
+			</if>
+			<if test="updateTime != null" >
+				UPDATE_TIME = #{updateTime},
+			</if>
+		</set>
+		where ID = #{id}
+	</update>	
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		<![CDATA[
+			DELETE FROM hard_disk_order
+			WHERE ID=#{id}
+		]]>
+	</delete>	
+	
+</mapper>

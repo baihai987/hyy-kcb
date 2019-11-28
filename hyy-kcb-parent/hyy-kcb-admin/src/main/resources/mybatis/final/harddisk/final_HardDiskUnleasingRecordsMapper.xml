@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hyy.kcb.dao.harddisk.IHardDiskUnleasingRecordsDao" >
+	<resultMap id="hardDiskUnleasingRecordsResultMap" type="com.hyy.kcb.domain.harddisk.dto.HardDiskUnleasingRecordsDTO">
+		<result column="ID" property="id" /> 
+		<result column="UID" property="uid" /> 
+		<result column="PURCHASED_HARD_DISK_ID" property="purchasedHardDiskId" /> 
+		<result column="DAILY_ISSUE" property="dailyIssue" /> 
+		<result column="CREATE_TIME" property="createTime" /> 
+		<result column="NUMBER_OF_DAYS_ISSUED" property="numberOfDaysIssued" /> 
+	</resultMap>
+	<sql id="baseSql">
+		<![CDATA[
+			SELECT ID,UID,PURCHASED_HARD_DISK_ID,DAILY_ISSUE,CREATE_TIME,NUMBER_OF_DAYS_ISSUED FROM hard_disk_unleasing_records
+		]]>
+	</sql>
+	
+	<select id="selectTList" parameterType="com.hyy.kcb.commons.page.Pager" resultMap="hardDiskUnleasingRecordsResultMap">
+		<include refid="baseSql"/>	
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="params != null and params.uid != null and params.uid != ''" >
+				and UID = #{params.uid}
+			</if>
+			<if test="params != null and params.purchasedHardDiskId != null and params.purchasedHardDiskId != ''" >
+				and PURCHASED_HARD_DISK_ID = #{params.purchasedHardDiskId}
+			</if>
+			<if test="params != null and params.dailyIssue != null and params.dailyIssue != ''" >
+				and DAILY_ISSUE = #{params.dailyIssue}
+			</if>
+			<if test="params != null and params.createTime != null and params.createTime != ''" >
+				and CREATE_TIME = #{params.createTime}
+			</if>
+			<if test="params != null and params.numberOfDaysIssued != null and params.numberOfDaysIssued != ''" >
+				and NUMBER_OF_DAYS_ISSUED = #{params.numberOfDaysIssued}
+			</if>
+		</trim>
+			<if test="orderField != null and orderField != ''" >
+		      order by ${orderField}
+		    </if>
+		    <if test="orderField == null or orderField == ''" >
+		      order by id
+		    </if>
+			<if test="orderDirection != null and orderDirection != ''" >
+		      ${orderDirection}
+		    </if>
+			<if test="orderDirection == null or orderDirection == ''" >
+		      desc
+		    </if>
+		    <if test="limitStart >= 0" >
+		      limit #{limitStart} , #{pageSize}
+		    </if>
+	</select>
+	<select id="selectTListCount" parameterType="com.hyy.kcb.commons.page.Pager" resultType="java.lang.Integer">
+		select count(1) from hard_disk_unleasing_records 
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="params != null and params.uid != null and params.uid != ''" >
+				and UID = #{params.uid}
+			</if>
+			<if test="params != null and params.purchasedHardDiskId != null and params.purchasedHardDiskId != ''" >
+				and PURCHASED_HARD_DISK_ID = #{params.purchasedHardDiskId}
+			</if>
+			<if test="params != null and params.dailyIssue != null and params.dailyIssue != ''" >
+				and DAILY_ISSUE = #{params.dailyIssue}
+			</if>
+			<if test="params != null and params.createTime != null and params.createTime != ''" >
+				and CREATE_TIME = #{params.createTime}
+			</if>
+			<if test="params != null and params.numberOfDaysIssued != null and params.numberOfDaysIssued != ''" >
+				and NUMBER_OF_DAYS_ISSUED = #{params.numberOfDaysIssued}
+			</if>
+		</trim>
+	</select>
+	<select id="selectAll" resultMap="hardDiskUnleasingRecordsResultMap">
+		<include refid="baseSql"/>
+	</select>	
+	<select id="selectById" parameterType="java.lang.Integer" resultMap="hardDiskUnleasingRecordsResultMap">
+		<include refid="baseSql"/>	
+		<![CDATA[ WHERE ID=#{id}]]>
+	</select>
+	<select id="selectByUUID" parameterType="java.lang.String" resultMap="hardDiskUnleasingRecordsResultMap">
+		<include refid="baseSql"/>	
+		<![CDATA[ WHERE UUID=#{uuid}]]>
+	</select>
+	
+	<insert id="insert" parameterType="com.hyy.kcb.domain.harddisk.HardDiskUnleasingRecords" useGeneratedKeys="true" keyProperty="id">
+		insert into hard_disk_unleasing_records
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="uid != null" >
+				UID,
+			</if>
+			<if test="purchasedHardDiskId != null" >
+				PURCHASED_HARD_DISK_ID,
+			</if>
+			<if test="dailyIssue != null" >
+				DAILY_ISSUE,
+			</if>
+			<if test="createTime != null" >
+				CREATE_TIME,
+			</if>
+			<if test="numberOfDaysIssued != null" >
+				NUMBER_OF_DAYS_ISSUED,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="uid != null" >
+				#{uid},
+			</if>
+			<if test="purchasedHardDiskId != null" >
+				#{purchasedHardDiskId},
+			</if>
+			<if test="dailyIssue != null" >
+				#{dailyIssue},
+			</if>
+			<if test="createTime != null" >
+				#{createTime},
+			</if>
+			<if test="numberOfDaysIssued != null" >
+				#{numberOfDaysIssued},
+			</if>
+		</trim>
+	</insert>
+	
+	<update id="updateObj" parameterType="com.hyy.kcb.domain.harddisk.HardDiskUnleasingRecords">
+		update hard_disk_unleasing_records
+		<set>
+			<if test="uid != null" >
+				UID = #{uid},
+			</if>
+			<if test="purchasedHardDiskId != null" >
+				PURCHASED_HARD_DISK_ID = #{purchasedHardDiskId},
+			</if>
+			<if test="dailyIssue != null" >
+				DAILY_ISSUE = #{dailyIssue},
+			</if>
+			<if test="createTime != null" >
+				CREATE_TIME = #{createTime},
+			</if>
+			<if test="numberOfDaysIssued != null" >
+				NUMBER_OF_DAYS_ISSUED = #{numberOfDaysIssued},
+			</if>
+		</set>
+		where ID = #{id}
+	</update>	
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		<![CDATA[
+			DELETE FROM hard_disk_unleasing_records
+			WHERE ID=#{id}
+		]]>
+	</delete>	
+	
+</mapper>

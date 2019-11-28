@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hyy.kcb.dao.sys.ISysRolePermissionDao" >
+	<resultMap id="sysRolePermissionResultMap" type="com.hyy.kcb.domain.sys.dto.SysRolePermissionDTO">
+		<result column="ID" property="id" /> 
+		<result column="SYS_ROLE_ID" property="sysRoleId" /> 
+		<result column="SYS_PERMISSION_ID" property="sysPermissionId" /> 
+	</resultMap>
+	<sql id="baseSql">
+		<![CDATA[
+			SELECT ID,SYS_ROLE_ID,SYS_PERMISSION_ID FROM sys_role_permission
+		]]>
+	</sql>
+	
+	<select id="selectTList" parameterType="com.hyy.kcb.commons.page.Pager" resultMap="sysRolePermissionResultMap">
+		<include refid="baseSql"/>	
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="params != null and params.sysRoleId != null and params.sysRoleId != ''" >
+				and SYS_ROLE_ID = #{params.sysRoleId}
+			</if>
+			<if test="params != null and params.sysPermissionId != null and params.sysPermissionId != ''" >
+				and SYS_PERMISSION_ID = #{params.sysPermissionId}
+			</if>
+		</trim>
+			<if test="orderField != null and orderField != ''" >
+		      order by ${orderField}
+		    </if>
+		    <if test="orderField == null or orderField == ''" >
+		      order by id
+		    </if>
+			<if test="orderDirection != null and orderDirection != ''" >
+		      ${orderDirection}
+		    </if>
+			<if test="orderDirection == null or orderDirection == ''" >
+		      desc
+		    </if>
+		    <if test="limitStart >= 0" >
+		      limit #{limitStart} , #{pageSize}
+		    </if>
+	</select>
+	<select id="selectTListCount" parameterType="com.hyy.kcb.commons.page.Pager" resultType="java.lang.Integer">
+		select count(1) from sys_role_permission 
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="params != null and params.sysRoleId != null and params.sysRoleId != ''" >
+				and SYS_ROLE_ID = #{params.sysRoleId}
+			</if>
+			<if test="params != null and params.sysPermissionId != null and params.sysPermissionId != ''" >
+				and SYS_PERMISSION_ID = #{params.sysPermissionId}
+			</if>
+		</trim>
+	</select>
+	<select id="selectAll" resultMap="sysRolePermissionResultMap">
+		<include refid="baseSql"/>
+	</select>	
+	<select id="selectById" parameterType="java.lang.Integer" resultMap="sysRolePermissionResultMap">
+		<include refid="baseSql"/>	
+		<![CDATA[ WHERE ID=#{id}]]>
+	</select>
+	<select id="selectByUUID" parameterType="java.lang.String" resultMap="sysRolePermissionResultMap">
+		<include refid="baseSql"/>	
+		<![CDATA[ WHERE UUID=#{uuid}]]>
+	</select>
+	
+	<insert id="insert" parameterType="com.hyy.kcb.domain.sys.SysRolePermission" useGeneratedKeys="true" keyProperty="id">
+		insert into sys_role_permission
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="sysRoleId != null" >
+				SYS_ROLE_ID,
+			</if>
+			<if test="sysPermissionId != null" >
+				SYS_PERMISSION_ID,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="sysRoleId != null" >
+				#{sysRoleId},
+			</if>
+			<if test="sysPermissionId != null" >
+				#{sysPermissionId},
+			</if>
+		</trim>
+	</insert>
+	
+	<update id="updateObj" parameterType="com.hyy.kcb.domain.sys.SysRolePermission">
+		update sys_role_permission
+		<set>
+			<if test="sysRoleId != null" >
+				SYS_ROLE_ID = #{sysRoleId},
+			</if>
+			<if test="sysPermissionId != null" >
+				SYS_PERMISSION_ID = #{sysPermissionId},
+			</if>
+		</set>
+		where ID = #{id}
+	</update>	
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		<![CDATA[
+			DELETE FROM sys_role_permission
+			WHERE ID=#{id}
+		]]>
+	</delete>	
+	
+</mapper>

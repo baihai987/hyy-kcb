@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hyy.kcb.dao.order.ITotalTransactionFlowDao" >
+	<resultMap id="totalTransactionFlowResultMap" type="com.hyy.kcb.domain.order.dto.TotalTransactionFlowDTO">
+		<result column="ID" property="id" /> 
+		<result column="UID" property="uid" /> 
+		<result column="AMOUNT" property="amount" /> 
+		<result column="CREATE_TIME" property="createTime" /> 
+		<result column="REMARK" property="remark" /> 
+		<result column="BUSINESS_TABLE_ID" property="businessTableId" /> 
+		<result column="BUSINESS_TABLE_NAME" property="businessTableName" /> 
+		<result column="BUSINESS_TYPE" property="businessType" /> 
+	</resultMap>
+	<sql id="baseSql">
+		<![CDATA[
+			SELECT ID,UID,AMOUNT,CREATE_TIME,REMARK,BUSINESS_TABLE_ID,BUSINESS_TABLE_NAME,BUSINESS_TYPE FROM total_transaction_flow
+		]]>
+	</sql>
+	
+	<select id="selectTList" parameterType="com.hyy.kcb.commons.page.Pager" resultMap="totalTransactionFlowResultMap">
+		<include refid="baseSql"/>	
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="params != null and params.uid != null and params.uid != ''" >
+				and UID = #{params.uid}
+			</if>
+			<if test="params != null and params.amount != null and params.amount != ''" >
+				and AMOUNT = #{params.amount}
+			</if>
+			<if test="params != null and params.createTime != null" >
+				and CREATE_TIME = #{params.createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="params != null and params.remark != null and params.remark != ''" >
+				and REMARK = #{params.remark}
+			</if>
+			<if test="params != null and params.businessTableId != null and params.businessTableId != ''" >
+				and BUSINESS_TABLE_ID = #{params.businessTableId}
+			</if>
+			<if test="params != null and params.businessTableName != null and params.businessTableName != ''" >
+				and BUSINESS_TABLE_NAME = #{params.businessTableName}
+			</if>
+			<if test="params != null and params.businessType != null and params.businessType != ''" >
+				and BUSINESS_TYPE = #{params.businessType}
+			</if>
+		</trim>
+			<if test="orderField != null and orderField != ''" >
+		      order by ${orderField}
+		    </if>
+		    <if test="orderField == null or orderField == ''" >
+		      order by id
+		    </if>
+			<if test="orderDirection != null and orderDirection != ''" >
+		      ${orderDirection}
+		    </if>
+			<if test="orderDirection == null or orderDirection == ''" >
+		      desc
+		    </if>
+		    <if test="limitStart >= 0" >
+		      limit #{limitStart} , #{pageSize}
+		    </if>
+	</select>
+	<select id="selectTListCount" parameterType="com.hyy.kcb.commons.page.Pager" resultType="java.lang.Integer">
+		select count(1) from total_transaction_flow 
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="params != null and params.uid != null and params.uid != ''" >
+				and UID = #{params.uid}
+			</if>
+			<if test="params != null and params.amount != null and params.amount != ''" >
+				and AMOUNT = #{params.amount}
+			</if>
+			<if test="params != null and params.createTime != null" >
+				and CREATE_TIME = #{params.createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="params != null and params.remark != null and params.remark != ''" >
+				and REMARK = #{params.remark}
+			</if>
+			<if test="params != null and params.businessTableId != null and params.businessTableId != ''" >
+				and BUSINESS_TABLE_ID = #{params.businessTableId}
+			</if>
+			<if test="params != null and params.businessTableName != null and params.businessTableName != ''" >
+				and BUSINESS_TABLE_NAME = #{params.businessTableName}
+			</if>
+			<if test="params != null and params.businessType != null and params.businessType != ''" >
+				and BUSINESS_TYPE = #{params.businessType}
+			</if>
+		</trim>
+	</select>
+	<select id="selectAll" resultMap="totalTransactionFlowResultMap">
+		<include refid="baseSql"/>
+	</select>	
+	<select id="selectById" parameterType="java.lang.Integer" resultMap="totalTransactionFlowResultMap">
+		<include refid="baseSql"/>	
+		<![CDATA[ WHERE ID=#{id}]]>
+	</select>
+	<select id="selectByUUID" parameterType="java.lang.String" resultMap="totalTransactionFlowResultMap">
+		<include refid="baseSql"/>	
+		<![CDATA[ WHERE UUID=#{uuid}]]>
+	</select>
+	
+	<insert id="insert" parameterType="com.hyy.kcb.domain.order.TotalTransactionFlow" useGeneratedKeys="true" keyProperty="id">
+		insert into total_transaction_flow
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="uid != null" >
+				UID,
+			</if>
+			<if test="amount != null" >
+				AMOUNT,
+			</if>
+			<if test="createTime != null" >
+				CREATE_TIME,
+			</if>
+			<if test="remark != null" >
+				REMARK,
+			</if>
+			<if test="businessTableId != null" >
+				BUSINESS_TABLE_ID,
+			</if>
+			<if test="businessTableName != null" >
+				BUSINESS_TABLE_NAME,
+			</if>
+			<if test="businessType != null" >
+				BUSINESS_TYPE,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="uid != null" >
+				#{uid},
+			</if>
+			<if test="amount != null" >
+				#{amount},
+			</if>
+			<if test="createTime != null" >
+				#{createTime},
+			</if>
+			<if test="remark != null" >
+				#{remark},
+			</if>
+			<if test="businessTableId != null" >
+				#{businessTableId},
+			</if>
+			<if test="businessTableName != null" >
+				#{businessTableName},
+			</if>
+			<if test="businessType != null" >
+				#{businessType},
+			</if>
+		</trim>
+	</insert>
+	
+	<update id="updateObj" parameterType="com.hyy.kcb.domain.order.TotalTransactionFlow">
+		update total_transaction_flow
+		<set>
+			<if test="uid != null" >
+				UID = #{uid},
+			</if>
+			<if test="amount != null" >
+				AMOUNT = #{amount},
+			</if>
+			<if test="createTime != null" >
+				CREATE_TIME = #{createTime},
+			</if>
+			<if test="remark != null" >
+				REMARK = #{remark},
+			</if>
+			<if test="businessTableId != null" >
+				BUSINESS_TABLE_ID = #{businessTableId},
+			</if>
+			<if test="businessTableName != null" >
+				BUSINESS_TABLE_NAME = #{businessTableName},
+			</if>
+			<if test="businessType != null" >
+				BUSINESS_TYPE = #{businessType},
+			</if>
+		</set>
+		where ID = #{id}
+	</update>	
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		<![CDATA[
+			DELETE FROM total_transaction_flow
+			WHERE ID=#{id}
+		]]>
+	</delete>	
+	
+</mapper>

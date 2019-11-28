@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hyy.kcb.dao.member.IAccountDao" >
+	<resultMap id="accountResultMap" type="com.hyy.kcb.domain.member.dto.AccountDTO">
+		<result column="ID" property="id" /> 
+		<result column="UID" property="uid" /> 
+		<result column="TYPE" property="type" /> 
+		<result column="BALANCE" property="balance" /> 
+		<result column="TAG" property="tag" /> 
+		<result column="CTIME" property="ctime" /> 
+		<result column="MTIME" property="mtime" /> 
+	</resultMap>
+	<sql id="baseSql">
+		<![CDATA[
+			SELECT ID,UID,TYPE,BALANCE,TAG,CTIME,MTIME FROM account
+		]]>
+	</sql>
+	
+	<select id="selectTList" parameterType="com.hyy.kcb.commons.page.Pager" resultMap="accountResultMap">
+		<include refid="baseSql"/>	
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="params != null and params.uid != null and params.uid != ''" >
+				and UID = #{params.uid}
+			</if>
+			<if test="params != null and params.type != null and params.type != ''" >
+				and TYPE = #{params.type}
+			</if>
+			<if test="params != null and params.balance != null and params.balance != ''" >
+				and BALANCE = #{params.balance}
+			</if>
+			<if test="params != null and params.tag != null and params.tag != ''" >
+				and TAG = #{params.tag}
+			</if>
+			<if test="params != null and params.ctime != null and params.ctime != ''" >
+				and CTIME = #{params.ctime}
+			</if>
+			<if test="params != null and params.mtime != null and params.mtime != ''" >
+				and MTIME = #{params.mtime}
+			</if>
+		</trim>
+			<if test="orderField != null and orderField != ''" >
+		      order by ${orderField}
+		    </if>
+		    <if test="orderField == null or orderField == ''" >
+		      order by id
+		    </if>
+			<if test="orderDirection != null and orderDirection != ''" >
+		      ${orderDirection}
+		    </if>
+			<if test="orderDirection == null or orderDirection == ''" >
+		      desc
+		    </if>
+		    <if test="limitStart >= 0" >
+		      limit #{limitStart} , #{pageSize}
+		    </if>
+	</select>
+	<select id="selectTListCount" parameterType="com.hyy.kcb.commons.page.Pager" resultType="java.lang.Integer">
+		select count(1) from account 
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="params != null and params.uid != null and params.uid != ''" >
+				and UID = #{params.uid}
+			</if>
+			<if test="params != null and params.type != null and params.type != ''" >
+				and TYPE = #{params.type}
+			</if>
+			<if test="params != null and params.balance != null and params.balance != ''" >
+				and BALANCE = #{params.balance}
+			</if>
+			<if test="params != null and params.tag != null and params.tag != ''" >
+				and TAG = #{params.tag}
+			</if>
+			<if test="params != null and params.ctime != null and params.ctime != ''" >
+				and CTIME = #{params.ctime}
+			</if>
+			<if test="params != null and params.mtime != null and params.mtime != ''" >
+				and MTIME = #{params.mtime}
+			</if>
+		</trim>
+	</select>
+	<select id="selectAll" resultMap="accountResultMap">
+		<include refid="baseSql"/>
+	</select>	
+	<select id="selectById" parameterType="java.lang.Integer" resultMap="accountResultMap">
+		<include refid="baseSql"/>	
+		<![CDATA[ WHERE ID=#{id}]]>
+	</select>
+	<select id="selectByUUID" parameterType="java.lang.String" resultMap="accountResultMap">
+		<include refid="baseSql"/>	
+		<![CDATA[ WHERE UUID=#{uuid}]]>
+	</select>
+	
+	<insert id="insert" parameterType="com.hyy.kcb.domain.member.Account" useGeneratedKeys="true" keyProperty="id">
+		insert into account
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="uid != null" >
+				UID,
+			</if>
+			<if test="type != null" >
+				TYPE,
+			</if>
+			<if test="balance != null" >
+				BALANCE,
+			</if>
+			<if test="tag != null" >
+				TAG,
+			</if>
+			<if test="ctime != null" >
+				CTIME,
+			</if>
+			<if test="mtime != null" >
+				MTIME,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="uid != null" >
+				#{uid},
+			</if>
+			<if test="type != null" >
+				#{type},
+			</if>
+			<if test="balance != null" >
+				#{balance},
+			</if>
+			<if test="tag != null" >
+				#{tag},
+			</if>
+			<if test="ctime != null" >
+				#{ctime},
+			</if>
+			<if test="mtime != null" >
+				#{mtime},
+			</if>
+		</trim>
+	</insert>
+	
+	<update id="updateObj" parameterType="com.hyy.kcb.domain.member.Account">
+		update account
+		<set>
+			<if test="uid != null" >
+				UID = #{uid},
+			</if>
+			<if test="type != null" >
+				TYPE = #{type},
+			</if>
+			<if test="balance != null" >
+				BALANCE = #{balance},
+			</if>
+			<if test="tag != null" >
+				TAG = #{tag},
+			</if>
+			<if test="ctime != null" >
+				CTIME = #{ctime},
+			</if>
+			<if test="mtime != null" >
+				MTIME = #{mtime},
+			</if>
+		</set>
+		where ID = #{id}
+	</update>	
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		<![CDATA[
+			DELETE FROM account
+			WHERE ID=#{id}
+		]]>
+	</delete>	
+	
+</mapper>

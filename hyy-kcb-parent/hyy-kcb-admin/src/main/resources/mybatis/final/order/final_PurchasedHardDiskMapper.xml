@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hyy.kcb.dao.order.IPurchasedHardDiskDao" >
+	<resultMap id="purchasedHardDiskResultMap" type="com.hyy.kcb.domain.order.dto.PurchasedHardDiskDTO">
+		<result column="ID" property="id" /> 
+		<result column="UID" property="uid" /> 
+		<result column="MOBILE_NUMBER" property="mobileNumber" /> 
+		<result column="HARD_DISK_ID" property="hardDiskId" /> 
+		<result column="HARD_DISK_NAME" property="hardDiskName" /> 
+		<result column="LEVEL" property="level" /> 
+		<result column="BUYING_PRICE" property="buyingPrice" /> 
+		<result column="C_TIME" property="cTime" /> 
+		<result column="LIFT_TIME" property="liftTime" /> 
+		<result column="REMAINING_DAYS" property="remainingDays" /> 
+		<result column="TYPE" property="type" /> 
+		<result column="DEDUCT_MONEY_ORDER" property="deductMoneyOrder" /> 
+		<result column="OUTPUT_TODAY" property="outputToday" /> 
+		<result column="PENDING_AMOUNT" property="pendingAmount" /> 
+		<result column="BEFORE_LEVEL" property="beforeLevel" /> 
+	</resultMap>
+	<sql id="baseSql">
+		<![CDATA[
+			SELECT ID,UID,MOBILE_NUMBER,HARD_DISK_ID,HARD_DISK_NAME,LEVEL,BUYING_PRICE,C_TIME,LIFT_TIME,REMAINING_DAYS,TYPE,DEDUCT_MONEY_ORDER,OUTPUT_TODAY,PENDING_AMOUNT,BEFORE_LEVEL FROM purchased_hard_disk
+		]]>
+	</sql>
+	
+	<select id="selectTList" parameterType="com.hyy.kcb.commons.page.Pager" resultMap="purchasedHardDiskResultMap">
+		<include refid="baseSql"/>	
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="params != null and params.uid != null and params.uid != ''" >
+				and UID = #{params.uid}
+			</if>
+			<if test="params != null and params.mobileNumber != null and params.mobileNumber != ''" >
+				and MOBILE_NUMBER = #{params.mobileNumber}
+			</if>
+			<if test="params != null and params.hardDiskId != null and params.hardDiskId != ''" >
+				and HARD_DISK_ID = #{params.hardDiskId}
+			</if>
+			<if test="params != null and params.hardDiskName != null and params.hardDiskName != ''" >
+				and HARD_DISK_NAME = #{params.hardDiskName}
+			</if>
+			<if test="params != null and params.level != null and params.level != ''" >
+				and LEVEL = #{params.level}
+			</if>
+			<if test="params != null and params.buyingPrice != null and params.buyingPrice != ''" >
+				and BUYING_PRICE = #{params.buyingPrice}
+			</if>
+			<if test="params != null and params.cTime != null and params.cTime != ''" >
+				and C_TIME = #{params.cTime}
+			</if>
+			<if test="params != null and params.liftTime != null and params.liftTime != ''" >
+				and LIFT_TIME = #{params.liftTime}
+			</if>
+			<if test="params != null and params.remainingDays != null and params.remainingDays != ''" >
+				and REMAINING_DAYS = #{params.remainingDays}
+			</if>
+			<if test="params != null and params.type != null and params.type != ''" >
+				and TYPE = #{params.type}
+			</if>
+			<if test="params != null and params.deductMoneyOrder != null and params.deductMoneyOrder != ''" >
+				and DEDUCT_MONEY_ORDER = #{params.deductMoneyOrder}
+			</if>
+			<if test="params != null and params.outputToday != null and params.outputToday != ''" >
+				and OUTPUT_TODAY = #{params.outputToday}
+			</if>
+			<if test="params != null and params.pendingAmount != null and params.pendingAmount != ''" >
+				and PENDING_AMOUNT = #{params.pendingAmount}
+			</if>
+			<if test="params != null and params.beforeLevel != null and params.beforeLevel != ''" >
+				and BEFORE_LEVEL = #{params.beforeLevel}
+			</if>
+		</trim>
+			<if test="orderField != null and orderField != ''" >
+		      order by ${orderField}
+		    </if>
+		    <if test="orderField == null or orderField == ''" >
+		      order by id
+		    </if>
+			<if test="orderDirection != null and orderDirection != ''" >
+		      ${orderDirection}
+		    </if>
+			<if test="orderDirection == null or orderDirection == ''" >
+		      desc
+		    </if>
+		    <if test="limitStart >= 0" >
+		      limit #{limitStart} , #{pageSize}
+		    </if>
+	</select>
+	<select id="selectTListCount" parameterType="com.hyy.kcb.commons.page.Pager" resultType="java.lang.Integer">
+		select count(1) from purchased_hard_disk 
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="params != null and params.uid != null and params.uid != ''" >
+				and UID = #{params.uid}
+			</if>
+			<if test="params != null and params.mobileNumber != null and params.mobileNumber != ''" >
+				and MOBILE_NUMBER = #{params.mobileNumber}
+			</if>
+			<if test="params != null and params.hardDiskId != null and params.hardDiskId != ''" >
+				and HARD_DISK_ID = #{params.hardDiskId}
+			</if>
+			<if test="params != null and params.hardDiskName != null and params.hardDiskName != ''" >
+				and HARD_DISK_NAME = #{params.hardDiskName}
+			</if>
+			<if test="params != null and params.level != null and params.level != ''" >
+				and LEVEL = #{params.level}
+			</if>
+			<if test="params != null and params.buyingPrice != null and params.buyingPrice != ''" >
+				and BUYING_PRICE = #{params.buyingPrice}
+			</if>
+			<if test="params != null and params.cTime != null and params.cTime != ''" >
+				and C_TIME = #{params.cTime}
+			</if>
+			<if test="params != null and params.liftTime != null and params.liftTime != ''" >
+				and LIFT_TIME = #{params.liftTime}
+			</if>
+			<if test="params != null and params.remainingDays != null and params.remainingDays != ''" >
+				and REMAINING_DAYS = #{params.remainingDays}
+			</if>
+			<if test="params != null and params.type != null and params.type != ''" >
+				and TYPE = #{params.type}
+			</if>
+			<if test="params != null and params.deductMoneyOrder != null and params.deductMoneyOrder != ''" >
+				and DEDUCT_MONEY_ORDER = #{params.deductMoneyOrder}
+			</if>
+			<if test="params != null and params.outputToday != null and params.outputToday != ''" >
+				and OUTPUT_TODAY = #{params.outputToday}
+			</if>
+			<if test="params != null and params.pendingAmount != null and params.pendingAmount != ''" >
+				and PENDING_AMOUNT = #{params.pendingAmount}
+			</if>
+			<if test="params != null and params.beforeLevel != null and params.beforeLevel != ''" >
+				and BEFORE_LEVEL = #{params.beforeLevel}
+			</if>
+		</trim>
+	</select>
+	<select id="selectAll" resultMap="purchasedHardDiskResultMap">
+		<include refid="baseSql"/>
+	</select>	
+	<select id="selectById" parameterType="java.lang.Integer" resultMap="purchasedHardDiskResultMap">
+		<include refid="baseSql"/>	
+		<![CDATA[ WHERE ID=#{id}]]>
+	</select>
+	<select id="selectByUUID" parameterType="java.lang.String" resultMap="purchasedHardDiskResultMap">
+		<include refid="baseSql"/>	
+		<![CDATA[ WHERE UUID=#{uuid}]]>
+	</select>
+	
+	<insert id="insert" parameterType="com.hyy.kcb.domain.order.PurchasedHardDisk" useGeneratedKeys="true" keyProperty="id">
+		insert into purchased_hard_disk
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="uid != null" >
+				UID,
+			</if>
+			<if test="mobileNumber != null" >
+				MOBILE_NUMBER,
+			</if>
+			<if test="hardDiskId != null" >
+				HARD_DISK_ID,
+			</if>
+			<if test="hardDiskName != null" >
+				HARD_DISK_NAME,
+			</if>
+			<if test="level != null" >
+				LEVEL,
+			</if>
+			<if test="buyingPrice != null" >
+				BUYING_PRICE,
+			</if>
+			<if test="cTime != null" >
+				C_TIME,
+			</if>
+			<if test="liftTime != null" >
+				LIFT_TIME,
+			</if>
+			<if test="remainingDays != null" >
+				REMAINING_DAYS,
+			</if>
+			<if test="type != null" >
+				TYPE,
+			</if>
+			<if test="deductMoneyOrder != null" >
+				DEDUCT_MONEY_ORDER,
+			</if>
+			<if test="outputToday != null" >
+				OUTPUT_TODAY,
+			</if>
+			<if test="pendingAmount != null" >
+				PENDING_AMOUNT,
+			</if>
+			<if test="beforeLevel != null" >
+				BEFORE_LEVEL,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="uid != null" >
+				#{uid},
+			</if>
+			<if test="mobileNumber != null" >
+				#{mobileNumber},
+			</if>
+			<if test="hardDiskId != null" >
+				#{hardDiskId},
+			</if>
+			<if test="hardDiskName != null" >
+				#{hardDiskName},
+			</if>
+			<if test="level != null" >
+				#{level},
+			</if>
+			<if test="buyingPrice != null" >
+				#{buyingPrice},
+			</if>
+			<if test="cTime != null" >
+				#{cTime},
+			</if>
+			<if test="liftTime != null" >
+				#{liftTime},
+			</if>
+			<if test="remainingDays != null" >
+				#{remainingDays},
+			</if>
+			<if test="type != null" >
+				#{type},
+			</if>
+			<if test="deductMoneyOrder != null" >
+				#{deductMoneyOrder},
+			</if>
+			<if test="outputToday != null" >
+				#{outputToday},
+			</if>
+			<if test="pendingAmount != null" >
+				#{pendingAmount},
+			</if>
+			<if test="beforeLevel != null" >
+				#{beforeLevel},
+			</if>
+		</trim>
+	</insert>
+	
+	<update id="updateObj" parameterType="com.hyy.kcb.domain.order.PurchasedHardDisk">
+		update purchased_hard_disk
+		<set>
+			<if test="uid != null" >
+				UID = #{uid},
+			</if>
+			<if test="mobileNumber != null" >
+				MOBILE_NUMBER = #{mobileNumber},
+			</if>
+			<if test="hardDiskId != null" >
+				HARD_DISK_ID = #{hardDiskId},
+			</if>
+			<if test="hardDiskName != null" >
+				HARD_DISK_NAME = #{hardDiskName},
+			</if>
+			<if test="level != null" >
+				LEVEL = #{level},
+			</if>
+			<if test="buyingPrice != null" >
+				BUYING_PRICE = #{buyingPrice},
+			</if>
+			<if test="cTime != null" >
+				C_TIME = #{cTime},
+			</if>
+			<if test="liftTime != null" >
+				LIFT_TIME = #{liftTime},
+			</if>
+			<if test="remainingDays != null" >
+				REMAINING_DAYS = #{remainingDays},
+			</if>
+			<if test="type != null" >
+				TYPE = #{type},
+			</if>
+			<if test="deductMoneyOrder != null" >
+				DEDUCT_MONEY_ORDER = #{deductMoneyOrder},
+			</if>
+			<if test="outputToday != null" >
+				OUTPUT_TODAY = #{outputToday},
+			</if>
+			<if test="pendingAmount != null" >
+				PENDING_AMOUNT = #{pendingAmount},
+			</if>
+			<if test="beforeLevel != null" >
+				BEFORE_LEVEL = #{beforeLevel},
+			</if>
+		</set>
+		where ID = #{id}
+	</update>	
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		<![CDATA[
+			DELETE FROM purchased_hard_disk
+			WHERE ID=#{id}
+		]]>
+	</delete>	
+	
+</mapper>

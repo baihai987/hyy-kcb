@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hyy.kcb.dao.blockchain.ITransactionDepositCryptoDao" >
+	<resultMap id="transactionDepositCryptoResultMap" type="com.hyy.kcb.domain.blockchain.dto.TransactionDepositCryptoDTO">
+		<result column="ID" property="id" /> 
+		<result column="UID" property="uid" /> 
+		<result column="SYMBOL" property="symbol" /> 
+		<result column="AMOUNT" property="amount" /> 
+		<result column="FEE" property="fee" /> 
+		<result column="REAL_FEE" property="realFee" /> 
+		<result column="CREATED_AT" property="createdAt" /> 
+		<result column="UPDATED_AT" property="updatedAt" /> 
+		<result column="ADDRESS_TO" property="addressTo" /> 
+		<result column="TXID" property="txid" /> 
+		<result column="CONFIRMATIONS" property="confirmations" /> 
+		<result column="IS_MINING" property="isMining" /> 
+		<result column="STATUS" property="status" /> 
+		<result column="ENCRYPT" property="encrypt" /> 
+		<result column="VERIFY_DESCRIPTION" property="verifyDescription" /> 
+		<result column="VERIFY_HASH" property="verifyHash" /> 
+	</resultMap>
+	<sql id="baseSql">
+		<![CDATA[
+			SELECT ID,UID,SYMBOL,AMOUNT,FEE,REAL_FEE,CREATED_AT,UPDATED_AT,ADDRESS_TO,TXID,CONFIRMATIONS,IS_MINING,STATUS,ENCRYPT,VERIFY_DESCRIPTION,VERIFY_HASH FROM transaction_deposit_crypto
+		]]>
+	</sql>
+	
+	<select id="selectTList" parameterType="com.hyy.kcb.commons.page.Pager" resultMap="transactionDepositCryptoResultMap">
+		<include refid="baseSql"/>	
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="params != null and params.uid != null and params.uid != ''" >
+				and UID = #{params.uid}
+			</if>
+			<if test="params != null and params.symbol != null and params.symbol != ''" >
+				and SYMBOL = #{params.symbol}
+			</if>
+			<if test="params != null and params.amount != null and params.amount != ''" >
+				and AMOUNT = #{params.amount}
+			</if>
+			<if test="params != null and params.fee != null and params.fee != ''" >
+				and FEE = #{params.fee}
+			</if>
+			<if test="params != null and params.realFee != null and params.realFee != ''" >
+				and REAL_FEE = #{params.realFee}
+			</if>
+			<if test="params != null and params.createdAt != null and params.createdAt != ''" >
+				and CREATED_AT = #{params.createdAt}
+			</if>
+			<if test="params != null and params.updatedAt != null and params.updatedAt != ''" >
+				and UPDATED_AT = #{params.updatedAt}
+			</if>
+			<if test="params != null and params.addressTo != null and params.addressTo != ''" >
+				and ADDRESS_TO = #{params.addressTo}
+			</if>
+			<if test="params != null and params.txid != null and params.txid != ''" >
+				and TXID = #{params.txid}
+			</if>
+			<if test="params != null and params.confirmations != null and params.confirmations != ''" >
+				and CONFIRMATIONS = #{params.confirmations}
+			</if>
+			<if test="params != null and params.isMining != null and params.isMining != ''" >
+				and IS_MINING = #{params.isMining}
+			</if>
+			<if test="params != null and params.status != null and params.status != ''" >
+				and STATUS = #{params.status}
+			</if>
+			<if test="params != null and params.encrypt != null and params.encrypt != ''" >
+				and ENCRYPT = #{params.encrypt}
+			</if>
+			<if test="params != null and params.verifyDescription != null and params.verifyDescription != ''" >
+				and VERIFY_DESCRIPTION = #{params.verifyDescription}
+			</if>
+			<if test="params != null and params.verifyHash != null and params.verifyHash != ''" >
+				and VERIFY_HASH = #{params.verifyHash}
+			</if>
+		</trim>
+			<if test="orderField != null and orderField != ''" >
+		      order by ${orderField}
+		    </if>
+		    <if test="orderField == null or orderField == ''" >
+		      order by id
+		    </if>
+			<if test="orderDirection != null and orderDirection != ''" >
+		      ${orderDirection}
+		    </if>
+			<if test="orderDirection == null or orderDirection == ''" >
+		      desc
+		    </if>
+		    <if test="limitStart >= 0" >
+		      limit #{limitStart} , #{pageSize}
+		    </if>
+	</select>
+	<select id="selectTListCount" parameterType="com.hyy.kcb.commons.page.Pager" resultType="java.lang.Integer">
+		select count(1) from transaction_deposit_crypto 
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="params != null and params.uid != null and params.uid != ''" >
+				and UID = #{params.uid}
+			</if>
+			<if test="params != null and params.symbol != null and params.symbol != ''" >
+				and SYMBOL = #{params.symbol}
+			</if>
+			<if test="params != null and params.amount != null and params.amount != ''" >
+				and AMOUNT = #{params.amount}
+			</if>
+			<if test="params != null and params.fee != null and params.fee != ''" >
+				and FEE = #{params.fee}
+			</if>
+			<if test="params != null and params.realFee != null and params.realFee != ''" >
+				and REAL_FEE = #{params.realFee}
+			</if>
+			<if test="params != null and params.createdAt != null and params.createdAt != ''" >
+				and CREATED_AT = #{params.createdAt}
+			</if>
+			<if test="params != null and params.updatedAt != null and params.updatedAt != ''" >
+				and UPDATED_AT = #{params.updatedAt}
+			</if>
+			<if test="params != null and params.addressTo != null and params.addressTo != ''" >
+				and ADDRESS_TO = #{params.addressTo}
+			</if>
+			<if test="params != null and params.txid != null and params.txid != ''" >
+				and TXID = #{params.txid}
+			</if>
+			<if test="params != null and params.confirmations != null and params.confirmations != ''" >
+				and CONFIRMATIONS = #{params.confirmations}
+			</if>
+			<if test="params != null and params.isMining != null and params.isMining != ''" >
+				and IS_MINING = #{params.isMining}
+			</if>
+			<if test="params != null and params.status != null and params.status != ''" >
+				and STATUS = #{params.status}
+			</if>
+			<if test="params != null and params.encrypt != null and params.encrypt != ''" >
+				and ENCRYPT = #{params.encrypt}
+			</if>
+			<if test="params != null and params.verifyDescription != null and params.verifyDescription != ''" >
+				and VERIFY_DESCRIPTION = #{params.verifyDescription}
+			</if>
+			<if test="params != null and params.verifyHash != null and params.verifyHash != ''" >
+				and VERIFY_HASH = #{params.verifyHash}
+			</if>
+		</trim>
+	</select>
+	<select id="selectAll" resultMap="transactionDepositCryptoResultMap">
+		<include refid="baseSql"/>
+	</select>	
+	<select id="selectById" parameterType="java.lang.Integer" resultMap="transactionDepositCryptoResultMap">
+		<include refid="baseSql"/>	
+		<![CDATA[ WHERE ID=#{id}]]>
+	</select>
+	<select id="selectByUUID" parameterType="java.lang.String" resultMap="transactionDepositCryptoResultMap">
+		<include refid="baseSql"/>	
+		<![CDATA[ WHERE UUID=#{uuid}]]>
+	</select>
+	
+	<insert id="insert" parameterType="com.hyy.kcb.domain.blockchain.TransactionDepositCrypto" useGeneratedKeys="true" keyProperty="id">
+		insert into transaction_deposit_crypto
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="uid != null" >
+				UID,
+			</if>
+			<if test="symbol != null" >
+				SYMBOL,
+			</if>
+			<if test="amount != null" >
+				AMOUNT,
+			</if>
+			<if test="fee != null" >
+				FEE,
+			</if>
+			<if test="realFee != null" >
+				REAL_FEE,
+			</if>
+			<if test="createdAt != null" >
+				CREATED_AT,
+			</if>
+			<if test="updatedAt != null" >
+				UPDATED_AT,
+			</if>
+			<if test="addressTo != null" >
+				ADDRESS_TO,
+			</if>
+			<if test="txid != null" >
+				TXID,
+			</if>
+			<if test="confirmations != null" >
+				CONFIRMATIONS,
+			</if>
+			<if test="isMining != null" >
+				IS_MINING,
+			</if>
+			<if test="status != null" >
+				STATUS,
+			</if>
+			<if test="encrypt != null" >
+				ENCRYPT,
+			</if>
+			<if test="verifyDescription != null" >
+				VERIFY_DESCRIPTION,
+			</if>
+			<if test="verifyHash != null" >
+				VERIFY_HASH,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="uid != null" >
+				#{uid},
+			</if>
+			<if test="symbol != null" >
+				#{symbol},
+			</if>
+			<if test="amount != null" >
+				#{amount},
+			</if>
+			<if test="fee != null" >
+				#{fee},
+			</if>
+			<if test="realFee != null" >
+				#{realFee},
+			</if>
+			<if test="createdAt != null" >
+				#{createdAt},
+			</if>
+			<if test="updatedAt != null" >
+				#{updatedAt},
+			</if>
+			<if test="addressTo != null" >
+				#{addressTo},
+			</if>
+			<if test="txid != null" >
+				#{txid},
+			</if>
+			<if test="confirmations != null" >
+				#{confirmations},
+			</if>
+			<if test="isMining != null" >
+				#{isMining},
+			</if>
+			<if test="status != null" >
+				#{status},
+			</if>
+			<if test="encrypt != null" >
+				#{encrypt},
+			</if>
+			<if test="verifyDescription != null" >
+				#{verifyDescription},
+			</if>
+			<if test="verifyHash != null" >
+				#{verifyHash},
+			</if>
+		</trim>
+	</insert>
+	
+	<update id="updateObj" parameterType="com.hyy.kcb.domain.blockchain.TransactionDepositCrypto">
+		update transaction_deposit_crypto
+		<set>
+			<if test="uid != null" >
+				UID = #{uid},
+			</if>
+			<if test="symbol != null" >
+				SYMBOL = #{symbol},
+			</if>
+			<if test="amount != null" >
+				AMOUNT = #{amount},
+			</if>
+			<if test="fee != null" >
+				FEE = #{fee},
+			</if>
+			<if test="realFee != null" >
+				REAL_FEE = #{realFee},
+			</if>
+			<if test="createdAt != null" >
+				CREATED_AT = #{createdAt},
+			</if>
+			<if test="updatedAt != null" >
+				UPDATED_AT = #{updatedAt},
+			</if>
+			<if test="addressTo != null" >
+				ADDRESS_TO = #{addressTo},
+			</if>
+			<if test="txid != null" >
+				TXID = #{txid},
+			</if>
+			<if test="confirmations != null" >
+				CONFIRMATIONS = #{confirmations},
+			</if>
+			<if test="isMining != null" >
+				IS_MINING = #{isMining},
+			</if>
+			<if test="status != null" >
+				STATUS = #{status},
+			</if>
+			<if test="encrypt != null" >
+				ENCRYPT = #{encrypt},
+			</if>
+			<if test="verifyDescription != null" >
+				VERIFY_DESCRIPTION = #{verifyDescription},
+			</if>
+			<if test="verifyHash != null" >
+				VERIFY_HASH = #{verifyHash},
+			</if>
+		</set>
+		where ID = #{id}
+	</update>	
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		<![CDATA[
+			DELETE FROM transaction_deposit_crypto
+			WHERE ID=#{id}
+		]]>
+	</delete>	
+	
+</mapper>

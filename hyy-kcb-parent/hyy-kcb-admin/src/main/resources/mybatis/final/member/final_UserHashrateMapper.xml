@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hyy.kcb.dao.member.IUserHashrateDao" >
+	<resultMap id="userHashrateResultMap" type="com.hyy.kcb.domain.member.dto.UserHashrateDTO">
+		<result column="UID" property="uid" /> 
+		<result column="U_HASHRATE" property="uHashrate" /> 
+		<result column="OPEN_ID" property="openId" /> 
+		<result column="NICKNAME" property="nickname" /> 
+		<result column="MOBILE_NUMBER" property="mobileNumber" /> 
+		<result column="COUNTRY_CODE" property="countryCode" /> 
+		<result column="EMAIL" property="email" /> 
+		<result column="ORIGIN" property="origin" /> 
+		<result column="ROLE" property="role" /> 
+		<result column="PARENT_MOBILE_NUMBER" property="parentMobileNumber" /> 
+		<result column="PARENT_COUNTRY_CODE" property="parentCountryCode" /> 
+		<result column="PARENT_EMAIL" property="parentEmail" /> 
+		<result column="FREEZE_U_HASHRATE" property="freezeUHashrate" /> 
+	</resultMap>
+	<sql id="baseSql">
+		<![CDATA[
+			SELECT UID,U_HASHRATE,OPEN_ID,NICKNAME,MOBILE_NUMBER,COUNTRY_CODE,EMAIL,ORIGIN,ROLE,PARENT_MOBILE_NUMBER,PARENT_COUNTRY_CODE,PARENT_EMAIL,FREEZE_U_HASHRATE FROM user_hashrate
+		]]>
+	</sql>
+	
+	<select id="selectTList" parameterType="com.hyy.kcb.commons.page.Pager" resultMap="userHashrateResultMap">
+		<include refid="baseSql"/>	
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="params != null and params.uHashrate != null and params.uHashrate != ''" >
+				and U_HASHRATE = #{params.uHashrate}
+			</if>
+			<if test="params != null and params.openId != null and params.openId != ''" >
+				and OPEN_ID = #{params.openId}
+			</if>
+			<if test="params != null and params.nickname != null and params.nickname != ''" >
+				and NICKNAME = #{params.nickname}
+			</if>
+			<if test="params != null and params.mobileNumber != null and params.mobileNumber != ''" >
+				and MOBILE_NUMBER = #{params.mobileNumber}
+			</if>
+			<if test="params != null and params.countryCode != null and params.countryCode != ''" >
+				and COUNTRY_CODE = #{params.countryCode}
+			</if>
+			<if test="params != null and params.email != null and params.email != ''" >
+				and EMAIL = #{params.email}
+			</if>
+			<if test="params != null and params.origin != null and params.origin != ''" >
+				and ORIGIN = #{params.origin}
+			</if>
+			<if test="params != null and params.role != null and params.role != ''" >
+				and ROLE = #{params.role}
+			</if>
+			<if test="params != null and params.parentMobileNumber != null and params.parentMobileNumber != ''" >
+				and PARENT_MOBILE_NUMBER = #{params.parentMobileNumber}
+			</if>
+			<if test="params != null and params.parentCountryCode != null and params.parentCountryCode != ''" >
+				and PARENT_COUNTRY_CODE = #{params.parentCountryCode}
+			</if>
+			<if test="params != null and params.parentEmail != null and params.parentEmail != ''" >
+				and PARENT_EMAIL = #{params.parentEmail}
+			</if>
+			<if test="params != null and params.freezeUHashrate != null and params.freezeUHashrate != ''" >
+				and FREEZE_U_HASHRATE = #{params.freezeUHashrate}
+			</if>
+		</trim>
+			<if test="orderField != null and orderField != ''" >
+		      order by ${orderField}
+		    </if>
+		    <if test="orderField == null or orderField == ''" >
+		      order by id
+		    </if>
+			<if test="orderDirection != null and orderDirection != ''" >
+		      ${orderDirection}
+		    </if>
+			<if test="orderDirection == null or orderDirection == ''" >
+		      desc
+		    </if>
+		    <if test="limitStart >= 0" >
+		      limit #{limitStart} , #{pageSize}
+		    </if>
+	</select>
+	<select id="selectTListCount" parameterType="com.hyy.kcb.commons.page.Pager" resultType="java.lang.Integer">
+		select count(1) from user_hashrate 
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="params != null and params.uHashrate != null and params.uHashrate != ''" >
+				and U_HASHRATE = #{params.uHashrate}
+			</if>
+			<if test="params != null and params.openId != null and params.openId != ''" >
+				and OPEN_ID = #{params.openId}
+			</if>
+			<if test="params != null and params.nickname != null and params.nickname != ''" >
+				and NICKNAME = #{params.nickname}
+			</if>
+			<if test="params != null and params.mobileNumber != null and params.mobileNumber != ''" >
+				and MOBILE_NUMBER = #{params.mobileNumber}
+			</if>
+			<if test="params != null and params.countryCode != null and params.countryCode != ''" >
+				and COUNTRY_CODE = #{params.countryCode}
+			</if>
+			<if test="params != null and params.email != null and params.email != ''" >
+				and EMAIL = #{params.email}
+			</if>
+			<if test="params != null and params.origin != null and params.origin != ''" >
+				and ORIGIN = #{params.origin}
+			</if>
+			<if test="params != null and params.role != null and params.role != ''" >
+				and ROLE = #{params.role}
+			</if>
+			<if test="params != null and params.parentMobileNumber != null and params.parentMobileNumber != ''" >
+				and PARENT_MOBILE_NUMBER = #{params.parentMobileNumber}
+			</if>
+			<if test="params != null and params.parentCountryCode != null and params.parentCountryCode != ''" >
+				and PARENT_COUNTRY_CODE = #{params.parentCountryCode}
+			</if>
+			<if test="params != null and params.parentEmail != null and params.parentEmail != ''" >
+				and PARENT_EMAIL = #{params.parentEmail}
+			</if>
+			<if test="params != null and params.freezeUHashrate != null and params.freezeUHashrate != ''" >
+				and FREEZE_U_HASHRATE = #{params.freezeUHashrate}
+			</if>
+		</trim>
+	</select>
+	<select id="selectAll" resultMap="userHashrateResultMap">
+		<include refid="baseSql"/>
+	</select>	
+	<select id="selectById" parameterType="java.lang.Integer" resultMap="userHashrateResultMap">
+		<include refid="baseSql"/>	
+		<![CDATA[ WHERE ID=#{id}]]>
+	</select>
+	<select id="selectByUUID" parameterType="java.lang.String" resultMap="userHashrateResultMap">
+		<include refid="baseSql"/>	
+		<![CDATA[ WHERE UUID=#{uuid}]]>
+	</select>
+	
+	<insert id="insert" parameterType="com.hyy.kcb.domain.member.UserHashrate" useGeneratedKeys="true" keyProperty="id">
+		insert into user_hashrate
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="uHashrate != null" >
+				U_HASHRATE,
+			</if>
+			<if test="openId != null" >
+				OPEN_ID,
+			</if>
+			<if test="nickname != null" >
+				NICKNAME,
+			</if>
+			<if test="mobileNumber != null" >
+				MOBILE_NUMBER,
+			</if>
+			<if test="countryCode != null" >
+				COUNTRY_CODE,
+			</if>
+			<if test="email != null" >
+				EMAIL,
+			</if>
+			<if test="origin != null" >
+				ORIGIN,
+			</if>
+			<if test="role != null" >
+				ROLE,
+			</if>
+			<if test="parentMobileNumber != null" >
+				PARENT_MOBILE_NUMBER,
+			</if>
+			<if test="parentCountryCode != null" >
+				PARENT_COUNTRY_CODE,
+			</if>
+			<if test="parentEmail != null" >
+				PARENT_EMAIL,
+			</if>
+			<if test="freezeUHashrate != null" >
+				FREEZE_U_HASHRATE,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="uHashrate != null" >
+				#{uHashrate},
+			</if>
+			<if test="openId != null" >
+				#{openId},
+			</if>
+			<if test="nickname != null" >
+				#{nickname},
+			</if>
+			<if test="mobileNumber != null" >
+				#{mobileNumber},
+			</if>
+			<if test="countryCode != null" >
+				#{countryCode},
+			</if>
+			<if test="email != null" >
+				#{email},
+			</if>
+			<if test="origin != null" >
+				#{origin},
+			</if>
+			<if test="role != null" >
+				#{role},
+			</if>
+			<if test="parentMobileNumber != null" >
+				#{parentMobileNumber},
+			</if>
+			<if test="parentCountryCode != null" >
+				#{parentCountryCode},
+			</if>
+			<if test="parentEmail != null" >
+				#{parentEmail},
+			</if>
+			<if test="freezeUHashrate != null" >
+				#{freezeUHashrate},
+			</if>
+		</trim>
+	</insert>
+	
+	<update id="updateObj" parameterType="com.hyy.kcb.domain.member.UserHashrate">
+		update user_hashrate
+		<set>
+			<if test="uHashrate != null" >
+				U_HASHRATE = #{uHashrate},
+			</if>
+			<if test="openId != null" >
+				OPEN_ID = #{openId},
+			</if>
+			<if test="nickname != null" >
+				NICKNAME = #{nickname},
+			</if>
+			<if test="mobileNumber != null" >
+				MOBILE_NUMBER = #{mobileNumber},
+			</if>
+			<if test="countryCode != null" >
+				COUNTRY_CODE = #{countryCode},
+			</if>
+			<if test="email != null" >
+				EMAIL = #{email},
+			</if>
+			<if test="origin != null" >
+				ORIGIN = #{origin},
+			</if>
+			<if test="role != null" >
+				ROLE = #{role},
+			</if>
+			<if test="parentMobileNumber != null" >
+				PARENT_MOBILE_NUMBER = #{parentMobileNumber},
+			</if>
+			<if test="parentCountryCode != null" >
+				PARENT_COUNTRY_CODE = #{parentCountryCode},
+			</if>
+			<if test="parentEmail != null" >
+				PARENT_EMAIL = #{parentEmail},
+			</if>
+			<if test="freezeUHashrate != null" >
+				FREEZE_U_HASHRATE = #{freezeUHashrate},
+			</if>
+		</set>
+		where ID = #{id}
+	</update>	
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		<![CDATA[
+			DELETE FROM user_hashrate
+			WHERE UID=#{uid}
+		]]>
+	</delete>	
+	
+</mapper>

@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hyy.kcb.dao.configuration.ITypeHashrateDao" >
+	<resultMap id="typeHashrateResultMap" type="com.hyy.kcb.domain.configuration.dto.TypeHashrateDTO">
+		<result column="ID" property="id" /> 
+		<result column="TYPE" property="type" /> 
+		<result column="HASHRATE" property="hashrate" /> 
+		<result column="IS_OPEN" property="isOpen" /> 
+		<result column="C_TIME" property="cTime" /> 
+		<result column="M_TIME" property="mTime" /> 
+	</resultMap>
+	<sql id="baseSql">
+		<![CDATA[
+			SELECT ID,TYPE,HASHRATE,IS_OPEN,C_TIME,M_TIME FROM type_hashrate
+		]]>
+	</sql>
+	
+	<select id="selectTList" parameterType="com.hyy.kcb.commons.page.Pager" resultMap="typeHashrateResultMap">
+		<include refid="baseSql"/>	
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="params != null and params.type != null and params.type != ''" >
+				and TYPE = #{params.type}
+			</if>
+			<if test="params != null and params.hashrate != null and params.hashrate != ''" >
+				and HASHRATE = #{params.hashrate}
+			</if>
+			<if test="params != null and params.isOpen != null and params.isOpen != ''" >
+				and IS_OPEN = #{params.isOpen}
+			</if>
+			<if test="params != null and params.cTime != null and params.cTime != ''" >
+				and C_TIME = #{params.cTime}
+			</if>
+			<if test="params != null and params.mTime != null and params.mTime != ''" >
+				and M_TIME = #{params.mTime}
+			</if>
+		</trim>
+			<if test="orderField != null and orderField != ''" >
+		      order by ${orderField}
+		    </if>
+		    <if test="orderField == null or orderField == ''" >
+		      order by id
+		    </if>
+			<if test="orderDirection != null and orderDirection != ''" >
+		      ${orderDirection}
+		    </if>
+			<if test="orderDirection == null or orderDirection == ''" >
+		      desc
+		    </if>
+		    <if test="limitStart >= 0" >
+		      limit #{limitStart} , #{pageSize}
+		    </if>
+	</select>
+	<select id="selectTListCount" parameterType="com.hyy.kcb.commons.page.Pager" resultType="java.lang.Integer">
+		select count(1) from type_hashrate 
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="params != null and params.type != null and params.type != ''" >
+				and TYPE = #{params.type}
+			</if>
+			<if test="params != null and params.hashrate != null and params.hashrate != ''" >
+				and HASHRATE = #{params.hashrate}
+			</if>
+			<if test="params != null and params.isOpen != null and params.isOpen != ''" >
+				and IS_OPEN = #{params.isOpen}
+			</if>
+			<if test="params != null and params.cTime != null and params.cTime != ''" >
+				and C_TIME = #{params.cTime}
+			</if>
+			<if test="params != null and params.mTime != null and params.mTime != ''" >
+				and M_TIME = #{params.mTime}
+			</if>
+		</trim>
+	</select>
+	<select id="selectAll" resultMap="typeHashrateResultMap">
+		<include refid="baseSql"/>
+	</select>	
+	<select id="selectById" parameterType="java.lang.Integer" resultMap="typeHashrateResultMap">
+		<include refid="baseSql"/>	
+		<![CDATA[ WHERE ID=#{id}]]>
+	</select>
+	<select id="selectByUUID" parameterType="java.lang.String" resultMap="typeHashrateResultMap">
+		<include refid="baseSql"/>	
+		<![CDATA[ WHERE UUID=#{uuid}]]>
+	</select>
+	
+	<insert id="insert" parameterType="com.hyy.kcb.domain.configuration.TypeHashrate" useGeneratedKeys="true" keyProperty="id">
+		insert into type_hashrate
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="type != null" >
+				TYPE,
+			</if>
+			<if test="hashrate != null" >
+				HASHRATE,
+			</if>
+			<if test="isOpen != null" >
+				IS_OPEN,
+			</if>
+			<if test="cTime != null" >
+				C_TIME,
+			</if>
+			<if test="mTime != null" >
+				M_TIME,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="type != null" >
+				#{type},
+			</if>
+			<if test="hashrate != null" >
+				#{hashrate},
+			</if>
+			<if test="isOpen != null" >
+				#{isOpen},
+			</if>
+			<if test="cTime != null" >
+				#{cTime},
+			</if>
+			<if test="mTime != null" >
+				#{mTime},
+			</if>
+		</trim>
+	</insert>
+	
+	<update id="updateObj" parameterType="com.hyy.kcb.domain.configuration.TypeHashrate">
+		update type_hashrate
+		<set>
+			<if test="type != null" >
+				TYPE = #{type},
+			</if>
+			<if test="hashrate != null" >
+				HASHRATE = #{hashrate},
+			</if>
+			<if test="isOpen != null" >
+				IS_OPEN = #{isOpen},
+			</if>
+			<if test="cTime != null" >
+				C_TIME = #{cTime},
+			</if>
+			<if test="mTime != null" >
+				M_TIME = #{mTime},
+			</if>
+		</set>
+		where ID = #{id}
+	</update>	
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		<![CDATA[
+			DELETE FROM type_hashrate
+			WHERE ID=#{id}
+		]]>
+	</delete>	
+	
+</mapper>

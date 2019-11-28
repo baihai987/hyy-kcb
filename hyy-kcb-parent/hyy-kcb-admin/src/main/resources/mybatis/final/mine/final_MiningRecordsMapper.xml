@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hyy.kcb.dao.mine.IMiningRecordsDao" >
+	<resultMap id="miningRecordsResultMap" type="com.hyy.kcb.domain.mine.dto.MiningRecordsDTO">
+		<result column="ID" property="id" /> 
+		<result column="UID" property="uid" /> 
+		<result column="MINING_AMOUNT" property="miningAmount" /> 
+		<result column="CREATE_TIME" property="createTime" /> 
+		<result column="PURCHASED_HARD_DISK_ID" property="purchasedHardDiskId" /> 
+		<result column="LEVEL" property="level" /> 
+		<result column="TYPE" property="type" /> 
+		<result column="FROM_MOBILE" property="fromMobile" /> 
+		<result column="FROM_AMOUNT" property="fromAmount" /> 
+		<result column="INCOME_RATE" property="incomeRate" /> 
+		<result column="GENERATION" property="generation" /> 
+	</resultMap>
+	<sql id="baseSql">
+		<![CDATA[
+			SELECT ID,UID,MINING_AMOUNT,CREATE_TIME,PURCHASED_HARD_DISK_ID,LEVEL,TYPE,FROM_MOBILE,FROM_AMOUNT,INCOME_RATE,GENERATION FROM mining_records
+		]]>
+	</sql>
+	
+	<select id="selectTList" parameterType="com.hyy.kcb.commons.page.Pager" resultMap="miningRecordsResultMap">
+		<include refid="baseSql"/>	
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="params != null and params.uid != null and params.uid != ''" >
+				and UID = #{params.uid}
+			</if>
+			<if test="params != null and params.miningAmount != null and params.miningAmount != ''" >
+				and MINING_AMOUNT = #{params.miningAmount}
+			</if>
+			<if test="params != null and params.createTime != null and params.createTime != ''" >
+				and CREATE_TIME = #{params.createTime}
+			</if>
+			<if test="params != null and params.purchasedHardDiskId != null and params.purchasedHardDiskId != ''" >
+				and PURCHASED_HARD_DISK_ID = #{params.purchasedHardDiskId}
+			</if>
+			<if test="params != null and params.level != null and params.level != ''" >
+				and LEVEL = #{params.level}
+			</if>
+			<if test="params != null and params.type != null and params.type != ''" >
+				and TYPE = #{params.type}
+			</if>
+			<if test="params != null and params.fromMobile != null and params.fromMobile != ''" >
+				and FROM_MOBILE = #{params.fromMobile}
+			</if>
+			<if test="params != null and params.fromAmount != null and params.fromAmount != ''" >
+				and FROM_AMOUNT = #{params.fromAmount}
+			</if>
+			<if test="params != null and params.incomeRate != null and params.incomeRate != ''" >
+				and INCOME_RATE = #{params.incomeRate}
+			</if>
+			<if test="params != null and params.generation != null and params.generation != ''" >
+				and GENERATION = #{params.generation}
+			</if>
+		</trim>
+			<if test="orderField != null and orderField != ''" >
+		      order by ${orderField}
+		    </if>
+		    <if test="orderField == null or orderField == ''" >
+		      order by id
+		    </if>
+			<if test="orderDirection != null and orderDirection != ''" >
+		      ${orderDirection}
+		    </if>
+			<if test="orderDirection == null or orderDirection == ''" >
+		      desc
+		    </if>
+		    <if test="limitStart >= 0" >
+		      limit #{limitStart} , #{pageSize}
+		    </if>
+	</select>
+	<select id="selectTListCount" parameterType="com.hyy.kcb.commons.page.Pager" resultType="java.lang.Integer">
+		select count(1) from mining_records 
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="params != null and params.uid != null and params.uid != ''" >
+				and UID = #{params.uid}
+			</if>
+			<if test="params != null and params.miningAmount != null and params.miningAmount != ''" >
+				and MINING_AMOUNT = #{params.miningAmount}
+			</if>
+			<if test="params != null and params.createTime != null and params.createTime != ''" >
+				and CREATE_TIME = #{params.createTime}
+			</if>
+			<if test="params != null and params.purchasedHardDiskId != null and params.purchasedHardDiskId != ''" >
+				and PURCHASED_HARD_DISK_ID = #{params.purchasedHardDiskId}
+			</if>
+			<if test="params != null and params.level != null and params.level != ''" >
+				and LEVEL = #{params.level}
+			</if>
+			<if test="params != null and params.type != null and params.type != ''" >
+				and TYPE = #{params.type}
+			</if>
+			<if test="params != null and params.fromMobile != null and params.fromMobile != ''" >
+				and FROM_MOBILE = #{params.fromMobile}
+			</if>
+			<if test="params != null and params.fromAmount != null and params.fromAmount != ''" >
+				and FROM_AMOUNT = #{params.fromAmount}
+			</if>
+			<if test="params != null and params.incomeRate != null and params.incomeRate != ''" >
+				and INCOME_RATE = #{params.incomeRate}
+			</if>
+			<if test="params != null and params.generation != null and params.generation != ''" >
+				and GENERATION = #{params.generation}
+			</if>
+		</trim>
+	</select>
+	<select id="selectAll" resultMap="miningRecordsResultMap">
+		<include refid="baseSql"/>
+	</select>	
+	<select id="selectById" parameterType="java.lang.Integer" resultMap="miningRecordsResultMap">
+		<include refid="baseSql"/>	
+		<![CDATA[ WHERE ID=#{id}]]>
+	</select>
+	<select id="selectByUUID" parameterType="java.lang.String" resultMap="miningRecordsResultMap">
+		<include refid="baseSql"/>	
+		<![CDATA[ WHERE UUID=#{uuid}]]>
+	</select>
+	
+	<insert id="insert" parameterType="com.hyy.kcb.domain.mine.MiningRecords" useGeneratedKeys="true" keyProperty="id">
+		insert into mining_records
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="uid != null" >
+				UID,
+			</if>
+			<if test="miningAmount != null" >
+				MINING_AMOUNT,
+			</if>
+			<if test="createTime != null" >
+				CREATE_TIME,
+			</if>
+			<if test="purchasedHardDiskId != null" >
+				PURCHASED_HARD_DISK_ID,
+			</if>
+			<if test="level != null" >
+				LEVEL,
+			</if>
+			<if test="type != null" >
+				TYPE,
+			</if>
+			<if test="fromMobile != null" >
+				FROM_MOBILE,
+			</if>
+			<if test="fromAmount != null" >
+				FROM_AMOUNT,
+			</if>
+			<if test="incomeRate != null" >
+				INCOME_RATE,
+			</if>
+			<if test="generation != null" >
+				GENERATION,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="uid != null" >
+				#{uid},
+			</if>
+			<if test="miningAmount != null" >
+				#{miningAmount},
+			</if>
+			<if test="createTime != null" >
+				#{createTime},
+			</if>
+			<if test="purchasedHardDiskId != null" >
+				#{purchasedHardDiskId},
+			</if>
+			<if test="level != null" >
+				#{level},
+			</if>
+			<if test="type != null" >
+				#{type},
+			</if>
+			<if test="fromMobile != null" >
+				#{fromMobile},
+			</if>
+			<if test="fromAmount != null" >
+				#{fromAmount},
+			</if>
+			<if test="incomeRate != null" >
+				#{incomeRate},
+			</if>
+			<if test="generation != null" >
+				#{generation},
+			</if>
+		</trim>
+	</insert>
+	
+	<update id="updateObj" parameterType="com.hyy.kcb.domain.mine.MiningRecords">
+		update mining_records
+		<set>
+			<if test="uid != null" >
+				UID = #{uid},
+			</if>
+			<if test="miningAmount != null" >
+				MINING_AMOUNT = #{miningAmount},
+			</if>
+			<if test="createTime != null" >
+				CREATE_TIME = #{createTime},
+			</if>
+			<if test="purchasedHardDiskId != null" >
+				PURCHASED_HARD_DISK_ID = #{purchasedHardDiskId},
+			</if>
+			<if test="level != null" >
+				LEVEL = #{level},
+			</if>
+			<if test="type != null" >
+				TYPE = #{type},
+			</if>
+			<if test="fromMobile != null" >
+				FROM_MOBILE = #{fromMobile},
+			</if>
+			<if test="fromAmount != null" >
+				FROM_AMOUNT = #{fromAmount},
+			</if>
+			<if test="incomeRate != null" >
+				INCOME_RATE = #{incomeRate},
+			</if>
+			<if test="generation != null" >
+				GENERATION = #{generation},
+			</if>
+		</set>
+		where ID = #{id}
+	</update>	
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		<![CDATA[
+			DELETE FROM mining_records
+			WHERE ID=#{id}
+		]]>
+	</delete>	
+	
+</mapper>

@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hyy.kcb.dao.order.ITransactionDao" >
+	<resultMap id="transactionResultMap" type="com.hyy.kcb.domain.order.dto.TransactionDTO">
+		<result column="ID" property="id" /> 
+		<result column="FROM_UID" property="fromUid" /> 
+		<result column="FROM_TYPE" property="fromType" /> 
+		<result column="FROM_BALANCE" property="fromBalance" /> 
+		<result column="TO_UID" property="toUid" /> 
+		<result column="TO_TYPE" property="toType" /> 
+		<result column="TO_BALANCE" property="toBalance" /> 
+		<result column="AMOUNT" property="amount" /> 
+		<result column="META" property="meta" /> 
+		<result column="SCENE" property="scene" /> 
+		<result column="REF_TYPE" property="refType" /> 
+		<result column="REF_ID" property="refId" /> 
+		<result column="OP_UID" property="opUid" /> 
+		<result column="OP_IP" property="opIp" /> 
+		<result column="CTIME" property="ctime" /> 
+		<result column="MTIME" property="mtime" /> 
+		<result column="FINGERPRINT" property="fingerprint" /> 
+	</resultMap>
+	<sql id="baseSql">
+		<![CDATA[
+			SELECT ID,FROM_UID,FROM_TYPE,FROM_BALANCE,TO_UID,TO_TYPE,TO_BALANCE,AMOUNT,META,SCENE,REF_TYPE,REF_ID,OP_UID,OP_IP,CTIME,MTIME,FINGERPRINT FROM transaction
+		]]>
+	</sql>
+	
+	<select id="selectTList" parameterType="com.hyy.kcb.commons.page.Pager" resultMap="transactionResultMap">
+		<include refid="baseSql"/>	
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="params != null and params.fromUid != null and params.fromUid != ''" >
+				and FROM_UID = #{params.fromUid}
+			</if>
+			<if test="params != null and params.fromType != null and params.fromType != ''" >
+				and FROM_TYPE = #{params.fromType}
+			</if>
+			<if test="params != null and params.fromBalance != null and params.fromBalance != ''" >
+				and FROM_BALANCE = #{params.fromBalance}
+			</if>
+			<if test="params != null and params.toUid != null and params.toUid != ''" >
+				and TO_UID = #{params.toUid}
+			</if>
+			<if test="params != null and params.toType != null and params.toType != ''" >
+				and TO_TYPE = #{params.toType}
+			</if>
+			<if test="params != null and params.toBalance != null and params.toBalance != ''" >
+				and TO_BALANCE = #{params.toBalance}
+			</if>
+			<if test="params != null and params.amount != null and params.amount != ''" >
+				and AMOUNT = #{params.amount}
+			</if>
+			<if test="params != null and params.meta != null and params.meta != ''" >
+				and META = #{params.meta}
+			</if>
+			<if test="params != null and params.scene != null and params.scene != ''" >
+				and SCENE = #{params.scene}
+			</if>
+			<if test="params != null and params.refType != null and params.refType != ''" >
+				and REF_TYPE = #{params.refType}
+			</if>
+			<if test="params != null and params.refId != null and params.refId != ''" >
+				and REF_ID = #{params.refId}
+			</if>
+			<if test="params != null and params.opUid != null and params.opUid != ''" >
+				and OP_UID = #{params.opUid}
+			</if>
+			<if test="params != null and params.opIp != null and params.opIp != ''" >
+				and OP_IP = #{params.opIp}
+			</if>
+			<if test="params != null and params.ctime != null and params.ctime != ''" >
+				and CTIME = #{params.ctime}
+			</if>
+			<if test="params != null and params.mtime != null and params.mtime != ''" >
+				and MTIME = #{params.mtime}
+			</if>
+			<if test="params != null and params.fingerprint != null and params.fingerprint != ''" >
+				and FINGERPRINT = #{params.fingerprint}
+			</if>
+		</trim>
+			<if test="orderField != null and orderField != ''" >
+		      order by ${orderField}
+		    </if>
+		    <if test="orderField == null or orderField == ''" >
+		      order by id
+		    </if>
+			<if test="orderDirection != null and orderDirection != ''" >
+		      ${orderDirection}
+		    </if>
+			<if test="orderDirection == null or orderDirection == ''" >
+		      desc
+		    </if>
+		    <if test="limitStart >= 0" >
+		      limit #{limitStart} , #{pageSize}
+		    </if>
+	</select>
+	<select id="selectTListCount" parameterType="com.hyy.kcb.commons.page.Pager" resultType="java.lang.Integer">
+		select count(1) from transaction 
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="params != null and params.fromUid != null and params.fromUid != ''" >
+				and FROM_UID = #{params.fromUid}
+			</if>
+			<if test="params != null and params.fromType != null and params.fromType != ''" >
+				and FROM_TYPE = #{params.fromType}
+			</if>
+			<if test="params != null and params.fromBalance != null and params.fromBalance != ''" >
+				and FROM_BALANCE = #{params.fromBalance}
+			</if>
+			<if test="params != null and params.toUid != null and params.toUid != ''" >
+				and TO_UID = #{params.toUid}
+			</if>
+			<if test="params != null and params.toType != null and params.toType != ''" >
+				and TO_TYPE = #{params.toType}
+			</if>
+			<if test="params != null and params.toBalance != null and params.toBalance != ''" >
+				and TO_BALANCE = #{params.toBalance}
+			</if>
+			<if test="params != null and params.amount != null and params.amount != ''" >
+				and AMOUNT = #{params.amount}
+			</if>
+			<if test="params != null and params.meta != null and params.meta != ''" >
+				and META = #{params.meta}
+			</if>
+			<if test="params != null and params.scene != null and params.scene != ''" >
+				and SCENE = #{params.scene}
+			</if>
+			<if test="params != null and params.refType != null and params.refType != ''" >
+				and REF_TYPE = #{params.refType}
+			</if>
+			<if test="params != null and params.refId != null and params.refId != ''" >
+				and REF_ID = #{params.refId}
+			</if>
+			<if test="params != null and params.opUid != null and params.opUid != ''" >
+				and OP_UID = #{params.opUid}
+			</if>
+			<if test="params != null and params.opIp != null and params.opIp != ''" >
+				and OP_IP = #{params.opIp}
+			</if>
+			<if test="params != null and params.ctime != null and params.ctime != ''" >
+				and CTIME = #{params.ctime}
+			</if>
+			<if test="params != null and params.mtime != null and params.mtime != ''" >
+				and MTIME = #{params.mtime}
+			</if>
+			<if test="params != null and params.fingerprint != null and params.fingerprint != ''" >
+				and FINGERPRINT = #{params.fingerprint}
+			</if>
+		</trim>
+	</select>
+	<select id="selectAll" resultMap="transactionResultMap">
+		<include refid="baseSql"/>
+	</select>	
+	<select id="selectById" parameterType="java.lang.Integer" resultMap="transactionResultMap">
+		<include refid="baseSql"/>	
+		<![CDATA[ WHERE ID=#{id}]]>
+	</select>
+	<select id="selectByUUID" parameterType="java.lang.String" resultMap="transactionResultMap">
+		<include refid="baseSql"/>	
+		<![CDATA[ WHERE UUID=#{uuid}]]>
+	</select>
+	
+	<insert id="insert" parameterType="com.hyy.kcb.domain.order.Transaction" useGeneratedKeys="true" keyProperty="id">
+		insert into transaction
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="fromUid != null" >
+				FROM_UID,
+			</if>
+			<if test="fromType != null" >
+				FROM_TYPE,
+			</if>
+			<if test="fromBalance != null" >
+				FROM_BALANCE,
+			</if>
+			<if test="toUid != null" >
+				TO_UID,
+			</if>
+			<if test="toType != null" >
+				TO_TYPE,
+			</if>
+			<if test="toBalance != null" >
+				TO_BALANCE,
+			</if>
+			<if test="amount != null" >
+				AMOUNT,
+			</if>
+			<if test="meta != null" >
+				META,
+			</if>
+			<if test="scene != null" >
+				SCENE,
+			</if>
+			<if test="refType != null" >
+				REF_TYPE,
+			</if>
+			<if test="refId != null" >
+				REF_ID,
+			</if>
+			<if test="opUid != null" >
+				OP_UID,
+			</if>
+			<if test="opIp != null" >
+				OP_IP,
+			</if>
+			<if test="ctime != null" >
+				CTIME,
+			</if>
+			<if test="mtime != null" >
+				MTIME,
+			</if>
+			<if test="fingerprint != null" >
+				FINGERPRINT,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="fromUid != null" >
+				#{fromUid},
+			</if>
+			<if test="fromType != null" >
+				#{fromType},
+			</if>
+			<if test="fromBalance != null" >
+				#{fromBalance},
+			</if>
+			<if test="toUid != null" >
+				#{toUid},
+			</if>
+			<if test="toType != null" >
+				#{toType},
+			</if>
+			<if test="toBalance != null" >
+				#{toBalance},
+			</if>
+			<if test="amount != null" >
+				#{amount},
+			</if>
+			<if test="meta != null" >
+				#{meta},
+			</if>
+			<if test="scene != null" >
+				#{scene},
+			</if>
+			<if test="refType != null" >
+				#{refType},
+			</if>
+			<if test="refId != null" >
+				#{refId},
+			</if>
+			<if test="opUid != null" >
+				#{opUid},
+			</if>
+			<if test="opIp != null" >
+				#{opIp},
+			</if>
+			<if test="ctime != null" >
+				#{ctime},
+			</if>
+			<if test="mtime != null" >
+				#{mtime},
+			</if>
+			<if test="fingerprint != null" >
+				#{fingerprint},
+			</if>
+		</trim>
+	</insert>
+	
+	<update id="updateObj" parameterType="com.hyy.kcb.domain.order.Transaction">
+		update transaction
+		<set>
+			<if test="fromUid != null" >
+				FROM_UID = #{fromUid},
+			</if>
+			<if test="fromType != null" >
+				FROM_TYPE = #{fromType},
+			</if>
+			<if test="fromBalance != null" >
+				FROM_BALANCE = #{fromBalance},
+			</if>
+			<if test="toUid != null" >
+				TO_UID = #{toUid},
+			</if>
+			<if test="toType != null" >
+				TO_TYPE = #{toType},
+			</if>
+			<if test="toBalance != null" >
+				TO_BALANCE = #{toBalance},
+			</if>
+			<if test="amount != null" >
+				AMOUNT = #{amount},
+			</if>
+			<if test="meta != null" >
+				META = #{meta},
+			</if>
+			<if test="scene != null" >
+				SCENE = #{scene},
+			</if>
+			<if test="refType != null" >
+				REF_TYPE = #{refType},
+			</if>
+			<if test="refId != null" >
+				REF_ID = #{refId},
+			</if>
+			<if test="opUid != null" >
+				OP_UID = #{opUid},
+			</if>
+			<if test="opIp != null" >
+				OP_IP = #{opIp},
+			</if>
+			<if test="ctime != null" >
+				CTIME = #{ctime},
+			</if>
+			<if test="mtime != null" >
+				MTIME = #{mtime},
+			</if>
+			<if test="fingerprint != null" >
+				FINGERPRINT = #{fingerprint},
+			</if>
+		</set>
+		where ID = #{id}
+	</update>	
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		<![CDATA[
+			DELETE FROM transaction
+			WHERE ID=#{id}
+		]]>
+	</delete>	
+	
+</mapper>

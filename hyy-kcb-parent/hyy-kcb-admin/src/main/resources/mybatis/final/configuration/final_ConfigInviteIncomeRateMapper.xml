@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hyy.kcb.dao.configuration.IConfigInviteIncomeRateDao" >
+	<resultMap id="configInviteIncomeRateResultMap" type="com.hyy.kcb.domain.configuration.dto.ConfigInviteIncomeRateDTO">
+		<result column="ID" property="id" /> 
+		<result column="LEVEL" property="level" /> 
+		<result column="GENERATION" property="generation" /> 
+		<result column="INCOME_RATE" property="incomeRate" /> 
+		<result column="NUMBER_OF_INVITEES" property="numberOfInvitees" /> 
+	</resultMap>
+	<sql id="baseSql">
+		<![CDATA[
+			SELECT ID,LEVEL,GENERATION,INCOME_RATE,NUMBER_OF_INVITEES FROM config_invite_income_rate
+		]]>
+	</sql>
+	
+	<select id="selectTList" parameterType="com.hyy.kcb.commons.page.Pager" resultMap="configInviteIncomeRateResultMap">
+		<include refid="baseSql"/>	
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="params != null and params.level != null and params.level != ''" >
+				and LEVEL = #{params.level}
+			</if>
+			<if test="params != null and params.generation != null and params.generation != ''" >
+				and GENERATION = #{params.generation}
+			</if>
+			<if test="params != null and params.incomeRate != null and params.incomeRate != ''" >
+				and INCOME_RATE = #{params.incomeRate}
+			</if>
+			<if test="params != null and params.numberOfInvitees != null and params.numberOfInvitees != ''" >
+				and NUMBER_OF_INVITEES = #{params.numberOfInvitees}
+			</if>
+		</trim>
+			<if test="orderField != null and orderField != ''" >
+		      order by ${orderField}
+		    </if>
+		    <if test="orderField == null or orderField == ''" >
+		      order by id
+		    </if>
+			<if test="orderDirection != null and orderDirection != ''" >
+		      ${orderDirection}
+		    </if>
+			<if test="orderDirection == null or orderDirection == ''" >
+		      desc
+		    </if>
+		    <if test="limitStart >= 0" >
+		      limit #{limitStart} , #{pageSize}
+		    </if>
+	</select>
+	<select id="selectTListCount" parameterType="com.hyy.kcb.commons.page.Pager" resultType="java.lang.Integer">
+		select count(1) from config_invite_income_rate 
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="params != null and params.level != null and params.level != ''" >
+				and LEVEL = #{params.level}
+			</if>
+			<if test="params != null and params.generation != null and params.generation != ''" >
+				and GENERATION = #{params.generation}
+			</if>
+			<if test="params != null and params.incomeRate != null and params.incomeRate != ''" >
+				and INCOME_RATE = #{params.incomeRate}
+			</if>
+			<if test="params != null and params.numberOfInvitees != null and params.numberOfInvitees != ''" >
+				and NUMBER_OF_INVITEES = #{params.numberOfInvitees}
+			</if>
+		</trim>
+	</select>
+	<select id="selectAll" resultMap="configInviteIncomeRateResultMap">
+		<include refid="baseSql"/>
+	</select>	
+	<select id="selectById" parameterType="java.lang.Integer" resultMap="configInviteIncomeRateResultMap">
+		<include refid="baseSql"/>	
+		<![CDATA[ WHERE ID=#{id}]]>
+	</select>
+	<select id="selectByUUID" parameterType="java.lang.String" resultMap="configInviteIncomeRateResultMap">
+		<include refid="baseSql"/>	
+		<![CDATA[ WHERE UUID=#{uuid}]]>
+	</select>
+	
+	<insert id="insert" parameterType="com.hyy.kcb.domain.configuration.ConfigInviteIncomeRate" useGeneratedKeys="true" keyProperty="id">
+		insert into config_invite_income_rate
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="level != null" >
+				LEVEL,
+			</if>
+			<if test="generation != null" >
+				GENERATION,
+			</if>
+			<if test="incomeRate != null" >
+				INCOME_RATE,
+			</if>
+			<if test="numberOfInvitees != null" >
+				NUMBER_OF_INVITEES,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="level != null" >
+				#{level},
+			</if>
+			<if test="generation != null" >
+				#{generation},
+			</if>
+			<if test="incomeRate != null" >
+				#{incomeRate},
+			</if>
+			<if test="numberOfInvitees != null" >
+				#{numberOfInvitees},
+			</if>
+		</trim>
+	</insert>
+	
+	<update id="updateObj" parameterType="com.hyy.kcb.domain.configuration.ConfigInviteIncomeRate">
+		update config_invite_income_rate
+		<set>
+			<if test="level != null" >
+				LEVEL = #{level},
+			</if>
+			<if test="generation != null" >
+				GENERATION = #{generation},
+			</if>
+			<if test="incomeRate != null" >
+				INCOME_RATE = #{incomeRate},
+			</if>
+			<if test="numberOfInvitees != null" >
+				NUMBER_OF_INVITEES = #{numberOfInvitees},
+			</if>
+		</set>
+		where ID = #{id}
+	</update>	
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		<![CDATA[
+			DELETE FROM config_invite_income_rate
+			WHERE ID=#{id}
+		]]>
+	</delete>	
+	
+</mapper>

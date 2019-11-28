@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hyy.kcb.dao.configuration.ISumHashrateDao" >
+	<resultMap id="sumHashrateResultMap" type="com.hyy.kcb.domain.configuration.dto.SumHashrateDTO">
+		<result column="ID" property="id" /> 
+		<result column="MANAGED_FORCE" property="managedForce" /> 
+	</resultMap>
+	<sql id="baseSql">
+		<![CDATA[
+			SELECT ID,MANAGED_FORCE FROM sum_hashrate
+		]]>
+	</sql>
+	
+	<select id="selectTList" parameterType="com.hyy.kcb.commons.page.Pager" resultMap="sumHashrateResultMap">
+		<include refid="baseSql"/>	
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="params != null and params.managedForce != null and params.managedForce != ''" >
+				and MANAGED_FORCE = #{params.managedForce}
+			</if>
+		</trim>
+			<if test="orderField != null and orderField != ''" >
+		      order by ${orderField}
+		    </if>
+		    <if test="orderField == null or orderField == ''" >
+		      order by id
+		    </if>
+			<if test="orderDirection != null and orderDirection != ''" >
+		      ${orderDirection}
+		    </if>
+			<if test="orderDirection == null or orderDirection == ''" >
+		      desc
+		    </if>
+		    <if test="limitStart >= 0" >
+		      limit #{limitStart} , #{pageSize}
+		    </if>
+	</select>
+	<select id="selectTListCount" parameterType="com.hyy.kcb.commons.page.Pager" resultType="java.lang.Integer">
+		select count(1) from sum_hashrate 
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="params != null and params.managedForce != null and params.managedForce != ''" >
+				and MANAGED_FORCE = #{params.managedForce}
+			</if>
+		</trim>
+	</select>
+	<select id="selectAll" resultMap="sumHashrateResultMap">
+		<include refid="baseSql"/>
+	</select>	
+	<select id="selectById" parameterType="java.lang.Integer" resultMap="sumHashrateResultMap">
+		<include refid="baseSql"/>	
+		<![CDATA[ WHERE ID=#{id}]]>
+	</select>
+	<select id="selectByUUID" parameterType="java.lang.String" resultMap="sumHashrateResultMap">
+		<include refid="baseSql"/>	
+		<![CDATA[ WHERE UUID=#{uuid}]]>
+	</select>
+	
+	<insert id="insert" parameterType="com.hyy.kcb.domain.configuration.SumHashrate" useGeneratedKeys="true" keyProperty="id">
+		insert into sum_hashrate
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="managedForce != null" >
+				MANAGED_FORCE,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="managedForce != null" >
+				#{managedForce},
+			</if>
+		</trim>
+	</insert>
+	
+	<update id="updateObj" parameterType="com.hyy.kcb.domain.configuration.SumHashrate">
+		update sum_hashrate
+		<set>
+			<if test="managedForce != null" >
+				MANAGED_FORCE = #{managedForce},
+			</if>
+		</set>
+		where ID = #{id}
+	</update>	
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		<![CDATA[
+			DELETE FROM sum_hashrate
+			WHERE ID=#{id}
+		]]>
+	</delete>	
+	
+</mapper>

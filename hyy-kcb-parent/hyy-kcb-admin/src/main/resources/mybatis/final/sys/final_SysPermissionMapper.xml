@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hyy.kcb.dao.sys.ISysPermissionDao" >
+	<resultMap id="sysPermissionResultMap" type="com.hyy.kcb.domain.sys.dto.SysPermissionDTO">
+		<result column="ID" property="id" /> 
+		<result column="NAME" property="name" /> 
+		<result column="RESOURCE_TYPE" property="resourceType" /> 
+		<result column="URL" property="url" /> 
+		<result column="PERMISSION" property="permission" /> 
+		<result column="PARENT_ID" property="parentId" /> 
+		<result column="PARENT_IDS" property="parentIds" /> 
+		<result column="AVAILABLE" property="available" /> 
+	</resultMap>
+	<sql id="baseSql">
+		<![CDATA[
+			SELECT ID,NAME,RESOURCE_TYPE,URL,PERMISSION,PARENT_ID,PARENT_IDS,AVAILABLE FROM sys_permission
+		]]>
+	</sql>
+	
+	<select id="selectTList" parameterType="com.hyy.kcb.commons.page.Pager" resultMap="sysPermissionResultMap">
+		<include refid="baseSql"/>	
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="params != null and params.name != null and params.name != ''" >
+				and NAME = #{params.name}
+			</if>
+			<if test="params != null and params.resourceType != null and params.resourceType != ''" >
+				and RESOURCE_TYPE = #{params.resourceType}
+			</if>
+			<if test="params != null and params.url != null and params.url != ''" >
+				and URL = #{params.url}
+			</if>
+			<if test="params != null and params.permission != null and params.permission != ''" >
+				and PERMISSION = #{params.permission}
+			</if>
+			<if test="params != null and params.parentId != null and params.parentId != ''" >
+				and PARENT_ID = #{params.parentId}
+			</if>
+			<if test="params != null and params.parentIds != null and params.parentIds != ''" >
+				and PARENT_IDS = #{params.parentIds}
+			</if>
+			<if test="params != null and params.available != null and params.available != ''" >
+				and AVAILABLE = #{params.available}
+			</if>
+		</trim>
+			<if test="orderField != null and orderField != ''" >
+		      order by ${orderField}
+		    </if>
+		    <if test="orderField == null or orderField == ''" >
+		      order by id
+		    </if>
+			<if test="orderDirection != null and orderDirection != ''" >
+		      ${orderDirection}
+		    </if>
+			<if test="orderDirection == null or orderDirection == ''" >
+		      desc
+		    </if>
+		    <if test="limitStart >= 0" >
+		      limit #{limitStart} , #{pageSize}
+		    </if>
+	</select>
+	<select id="selectTListCount" parameterType="com.hyy.kcb.commons.page.Pager" resultType="java.lang.Integer">
+		select count(1) from sys_permission 
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="params != null and params.name != null and params.name != ''" >
+				and NAME = #{params.name}
+			</if>
+			<if test="params != null and params.resourceType != null and params.resourceType != ''" >
+				and RESOURCE_TYPE = #{params.resourceType}
+			</if>
+			<if test="params != null and params.url != null and params.url != ''" >
+				and URL = #{params.url}
+			</if>
+			<if test="params != null and params.permission != null and params.permission != ''" >
+				and PERMISSION = #{params.permission}
+			</if>
+			<if test="params != null and params.parentId != null and params.parentId != ''" >
+				and PARENT_ID = #{params.parentId}
+			</if>
+			<if test="params != null and params.parentIds != null and params.parentIds != ''" >
+				and PARENT_IDS = #{params.parentIds}
+			</if>
+			<if test="params != null and params.available != null and params.available != ''" >
+				and AVAILABLE = #{params.available}
+			</if>
+		</trim>
+	</select>
+	<select id="selectAll" resultMap="sysPermissionResultMap">
+		<include refid="baseSql"/>
+	</select>	
+	<select id="selectById" parameterType="java.lang.Integer" resultMap="sysPermissionResultMap">
+		<include refid="baseSql"/>	
+		<![CDATA[ WHERE ID=#{id}]]>
+	</select>
+	<select id="selectByUUID" parameterType="java.lang.String" resultMap="sysPermissionResultMap">
+		<include refid="baseSql"/>	
+		<![CDATA[ WHERE UUID=#{uuid}]]>
+	</select>
+	
+	<insert id="insert" parameterType="com.hyy.kcb.domain.sys.SysPermission" useGeneratedKeys="true" keyProperty="id">
+		insert into sys_permission
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="name != null" >
+				NAME,
+			</if>
+			<if test="resourceType != null" >
+				RESOURCE_TYPE,
+			</if>
+			<if test="url != null" >
+				URL,
+			</if>
+			<if test="permission != null" >
+				PERMISSION,
+			</if>
+			<if test="parentId != null" >
+				PARENT_ID,
+			</if>
+			<if test="parentIds != null" >
+				PARENT_IDS,
+			</if>
+			<if test="available != null" >
+				AVAILABLE,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="name != null" >
+				#{name},
+			</if>
+			<if test="resourceType != null" >
+				#{resourceType},
+			</if>
+			<if test="url != null" >
+				#{url},
+			</if>
+			<if test="permission != null" >
+				#{permission},
+			</if>
+			<if test="parentId != null" >
+				#{parentId},
+			</if>
+			<if test="parentIds != null" >
+				#{parentIds},
+			</if>
+			<if test="available != null" >
+				#{available},
+			</if>
+		</trim>
+	</insert>
+	
+	<update id="updateObj" parameterType="com.hyy.kcb.domain.sys.SysPermission">
+		update sys_permission
+		<set>
+			<if test="name != null" >
+				NAME = #{name},
+			</if>
+			<if test="resourceType != null" >
+				RESOURCE_TYPE = #{resourceType},
+			</if>
+			<if test="url != null" >
+				URL = #{url},
+			</if>
+			<if test="permission != null" >
+				PERMISSION = #{permission},
+			</if>
+			<if test="parentId != null" >
+				PARENT_ID = #{parentId},
+			</if>
+			<if test="parentIds != null" >
+				PARENT_IDS = #{parentIds},
+			</if>
+			<if test="available != null" >
+				AVAILABLE = #{available},
+			</if>
+		</set>
+		where ID = #{id}
+	</update>	
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		<![CDATA[
+			DELETE FROM sys_permission
+			WHERE ID=#{id}
+		]]>
+	</delete>	
+	
+</mapper>
