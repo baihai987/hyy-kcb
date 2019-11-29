@@ -33,6 +33,7 @@ public class SysPermissionController extends ApiBaseController{
 	@Autowired
 	private ISysPermissionService sysPermissionService;
 
+	//['系统管理','权限管理','审批管理','财务管理','APP内容管理','统计分析','消息管理']
 	@PostMapping(value = "save")
 	@ResponseBody
 	public WebResout saveObj(@ModelAttribute SysPermission sysPermission,HttpServletRequest request) throws BusinessException{

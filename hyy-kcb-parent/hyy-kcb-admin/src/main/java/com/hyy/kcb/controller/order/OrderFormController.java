@@ -115,4 +115,13 @@ public class OrderFormController extends ApiBaseController{
 		
 		return success(request,pager);
 	}
+
+	@PostMapping("/findOrderByCondition")
+	@ResponseBody
+	public WebResout findOrderByCondition(HttpServletRequest request,Pager<OrderForm> pager,
+										  @ModelAttribute OrderFormDTO orderFormDto)throws BusinessException{
+		pager.setParams(orderFormDto);
+		orderFormService.selectTList(pager);
+		return success(request,pager);
+	}
 }

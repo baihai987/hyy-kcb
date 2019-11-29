@@ -20,7 +20,7 @@ public class OrderForm  implements java.io.Serializable {
 	private String cTime ; //创建时间
 	private String body ; //订单说明
 	private String subject ; //订单标题
- 	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss") 
+ 	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	private Date eTime ; //订单结束时间
 	private BigDecimal fee ; //手续费
 
