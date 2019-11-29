@@ -11,24 +11,21 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @Controller
 @RequestMapping(value = "login/1.0/admin/")
 public class Login extends ApiBaseController {
     @PostMapping(value = "login")
     @ResponseBody
-    public WebResout login(HttpServletRequest request){
+    public WebResout login(HttpServletRequest request, HttpServletResponse response) {
 
         String userName = request.getParameter("username");
         String passWord = request.getParameter("password");
-
-
         Subject subject = SecurityUtils.getSubject();
         UsernamePasswordToken token = new UsernamePasswordToken(userName, passWord);
         System.out.println(token);
@@ -42,16 +39,18 @@ public class Login extends ApiBaseController {
             return fail(request, ConstantEnum._WEB_NOT_LOGIN_ERROR.getVal(), "该用户不存在");
         } catch (Exception e) {
             e.printStackTrace();
-            return fail(request,ConstantEnum._TOKEN_OUT_TIME_VAL.getVal(),"token过期");
+            return fail(request, ConstantEnum._TOKEN_OUT_TIME_VAL.getVal(), "token过期");
         }
-        return success(request,"",subject.getSession().getId());
+        return success(request, subject.getSession().getId().toString(), null);
     }
+
     /**
-     *  shiro未登录
+     * shiro未登录
+     *
      * @param request
      * @return
      */
-    @GetMapping(value="/unauth")
+    @GetMapping(value = "/unauth")
     @ResponseBody
     public WebResout getInfo(HttpServletRequest request) {
         System.out.println("-------unauth--------");
@@ -60,11 +59,12 @@ public class Login extends ApiBaseController {
 
 
     /**
-     *  shiro权限测试
+     * shiro权限测试
+     *
      * @param request
      * @return
      */
-    @GetMapping(value="/auth")
+    @GetMapping(value = "/auth")
     @ResponseBody
     @RequiresPermissions("user:list")
     public WebResout authTest(HttpServletRequest request) {
