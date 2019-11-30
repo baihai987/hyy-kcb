@@ -1,6 +1,7 @@
 package com.hyy.kcb.controller.member;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -12,15 +13,7 @@ import org.apache.shiro.authz.annotation.RequiresUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import com.hyy.kcb.commons.ConstantEnum;
 import com.hyy.kcb.config.controller.ApiBaseController;
@@ -120,5 +113,18 @@ public class AccountController extends ApiBaseController{
 		logger.debug("AccountController exe list out={}",pager);
 		
 		return success(request,pager);
+	}
+
+	//转入转出
+	@PostMapping("/findAllAccounts")
+	@ResponseBody
+//	@RequiresPermissions("static:findAllAccounts")
+	public WebResout findAllAccounts(HttpServletRequest request,
+								  @RequestParam Map<String,Object> map) throws BusinessException {
+		Map hashMap= accountService.findOutAndIn(map);
+		if(hashMap.get("totalCount").equals(0)){
+			return fail(request,"无查询结果");
+		}
+		return success(request,hashMap);
 	}
 }

@@ -14,6 +14,8 @@ import org.springframework.web.servlet.ModelAndView;
 import com.hyy.kcb.commons.ConstantEnum;
 import com.hyy.kcb.commons.exception.TokenException;
 
+import java.nio.channels.SeekableByteChannel;
+
 public class AuthenticationInterceptor implements HandlerInterceptor {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -26,7 +28,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
 
 
         String token = httpServletRequest.getHeader("token");// 从 http 请求头中取出 token
-
+        System.out.println("token---------------"+token);
 
         String url = httpServletRequest.getRequestURL().toString();
         System.out.println("................................"+url);
@@ -51,16 +53,17 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
             return true;
         }
 
-        if (StringUtils.isEmpty(token)) {
-            logger.info("AuthenticationInterceptor.preHandle  token is null");
-            throw new TokenException(ConstantEnum._TOKEN_FAIL_NULL.getVal(), ConstantEnum._TOKEN_FAIL_NULL.getDesc());
-        }
+//        if (StringUtils.isEmpty(token)) {
+//            logger.info("AuthenticationInterceptor.preHandle  token is null");
+//            throw new TokenException(ConstantEnum._TOKEN_FAIL_NULL.getVal(), ConstantEnum._TOKEN_FAIL_NULL.getDesc());
+//        }
 
-        String sessionId = (String) SecurityUtils.getSubject().getSession().getId();
-        if (!sessionId.equals(token)) {
-            logger.info("AuthenticationInterceptor.preHandle  token error");
-            throw new TokenException(ConstantEnum._TOKEN_FAIL_IS_ERROR.getVal(), ConstantEnum._TOKEN_FAIL_IS_ERROR.getDesc());
-        }
+//        String sessionId = (String) SecurityUtils.getSubject().getSession().getId();
+//        System.out.println("取出的token为----------："+ sessionId);
+//        if (!sessionId.equals(token)) {
+//            logger.info("AuthenticationInterceptor.preHandle  token error");
+//            throw new TokenException(ConstantEnum._TOKEN_FAIL_IS_ERROR.getVal(), ConstantEnum._TOKEN_FAIL_IS_ERROR.getDesc());
+//        }
 
         return true;
     }

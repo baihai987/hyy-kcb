@@ -88,7 +88,6 @@ public class ShiroConfig {
     public MyShiroRealm myShiroRealm() {
         MyShiroRealm myShiroRealm = new MyShiroRealm();
         myShiroRealm.setCredentialsMatcher(hashedCredentialsMatcher());
-        ;
         return myShiroRealm;
     }
 

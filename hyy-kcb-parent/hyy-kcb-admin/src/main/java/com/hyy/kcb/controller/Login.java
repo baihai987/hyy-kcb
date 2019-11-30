@@ -28,9 +28,9 @@ public class Login extends ApiBaseController {
         String passWord = request.getParameter("password");
         Subject subject = SecurityUtils.getSubject();
         UsernamePasswordToken token = new UsernamePasswordToken(userName, passWord);
-        System.out.println(token);
         try {
             subject.login(token);
+            System.out.println("-----------"+subject.getSession().getId().toString());
         } catch (IncorrectCredentialsException e) {
             return fail(request, ConstantEnum._WEB_NOT_LOGIN_ERROR.getVal(), "密码错误");
         } catch (LockedAccountException e) {

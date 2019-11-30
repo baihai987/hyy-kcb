@@ -1,6 +1,7 @@
 package com.hyy.kcb.service.member.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -104,4 +105,8 @@ public class  AccountServiceImpl extends BaseObject implements IAccountService {
 		return i;
 	}
 
+	@Override
+	public Map findOutAndIn(Map<String, Object> map) {
+		return null;
+	}
 }

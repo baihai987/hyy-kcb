@@ -21,7 +21,8 @@ public class CustomSessionManager extends DefaultWebSessionManager {
 
     public CustomSessionManager() {
         super();
-        setGlobalSessionTimeout(DEFAULT_GLOBAL_SESSION_TIMEOUT);  //系统session默认有效时间30分钟
+        //系统session默认有效时间30分钟
+        setGlobalSessionTimeout(60*24*30 * MILLIS_PER_MINUTE);
     }
 
     @Override

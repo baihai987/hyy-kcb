@@ -98,6 +98,6 @@
 			DELETE FROM sys_user_role
 			WHERE ID=#{id}
 		]]>
-	</delete>	
+	</delete>
 	
 </mapper>

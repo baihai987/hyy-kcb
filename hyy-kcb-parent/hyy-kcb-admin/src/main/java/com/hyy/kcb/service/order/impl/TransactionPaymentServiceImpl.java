@@ -1,7 +1,12 @@
 package com.hyy.kcb.service.order.impl;
 
-import java.util.List;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
+import com.hyy.kcb.domain.order.dto.OrderFormDTO;
+import com.hyy.kcb.domain.order.dto.TransactionPaymentDTO;
+import com.hyy.kcb.utils.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -102,4 +107,36 @@ public class  TransactionPaymentServiceImpl extends BaseObject implements ITrans
 		return i;
 	}
 
+	@Override
+	public Map findOutAndIn(Map<String, Object> map) {
+		HashMap<String, Object> hashMap = new HashMap<>();
+		Map<String, Object> stringObjectMap = PageUtil.setPageAndPerPageNum(map);
+		Integer totalCount = transactionPaymentDao.findOutAndInCount(stringObjectMap);
+		List<TransactionPaymentDTO> list =
+				transactionPaymentDao.findOutAndIn(stringObjectMap);
+		LinkedList<Map> linkedList = new LinkedList<>();
+		HashMap<String, Object> resultMap = new HashMap<>();
+		if (totalCount == 0) {
+			hashMap.put("totalCount", 0);
+			hashMap.put("list", new ArrayList<>());
+			return hashMap;
+		}
+		String str = "yyy-MM-dd HH:mm:ss";
+		SimpleDateFormat sdf = new SimpleDateFormat(str);
+		for(TransactionPaymentDTO transactionPaymentDTO:list){
+			Date createTime = transactionPaymentDTO.getCreateTime();
+			String formatTime = sdf.format(createTime);
+			resultMap.put("amount",transactionPaymentDTO.getAmount());
+			resultMap.put("createTime",formatTime);
+			resultMap.put("fee",transactionPaymentDTO.getFee());
+			resultMap.put("payMobile",transactionPaymentDTO.getPayMobile());
+			resultMap.put("receiptAmount",transactionPaymentDTO.getReceiptAmount());
+			resultMap.put("receiptMobile",transactionPaymentDTO.getReceiptMobile());
+			resultMap.put("remark",transactionPaymentDTO.getRemark());
+			linkedList.add(resultMap);
+		}
+		hashMap.put("totalCount", totalCount);
+		hashMap.put("list", linkedList);
+		return hashMap;
+	}
 }

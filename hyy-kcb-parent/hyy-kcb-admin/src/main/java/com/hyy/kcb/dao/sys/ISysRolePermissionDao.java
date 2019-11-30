@@ -11,6 +11,8 @@ import com.hyy.kcb.domain.sys.SysRolePermission;
  */
 @Mapper
 public interface ISysRolePermissionDao extends BaseDao<SysRolePermission>{
-	
-	
+
+
+    SysRolePermission findRolePermissionById(Long roleId, Long permissionId);
+
 }

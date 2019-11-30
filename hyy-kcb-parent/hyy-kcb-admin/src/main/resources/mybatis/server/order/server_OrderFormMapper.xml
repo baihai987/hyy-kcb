@@ -1,5 +1,77 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.hyy.kcb.dao.order.IOrderFormDao" >
-	
+<mapper namespace="com.hyy.kcb.dao.order.IOrderFormDao">
+    <resultMap id="server_orderFormResultMap" type="com.hyy.kcb.domain.order.dto.OrderFormDTO">
+        <result column="ID" property="id"/>
+        <result column="UID" property="uid"/>
+        <result column="ORDER_NUMBER" property="orderNumber"/>
+        <result column="AMOUNT" property="amount"/>
+        <result column="SHIFT" property="shift"/>
+        <result column="STATUS" property="status"/>
+        <result column="C_TIME" property="cTime"/>
+        <result column="BODY" property="body"/>
+        <result column="SUBJECT" property="subject"/>
+        <result column="E_TIME" property="eTime"/>
+        <result column="FEE" property="fee"/>
+
+        <!--新增dto字段-->
+        <result column="MOBILE" property="mobile"/>
+        <result column="EMAIL" property="email"/>
+    </resultMap>
+    <!--startTime endTime-->
+    <select id="findOrderByCondition" resultMap="server_orderFormResultMap" parameterType="java.util.Map">
+        SELECT ofm.*,
+        uh.mobile_number mobile,
+        uh.email email
+        FROM order_form ofm
+        JOIN user_hashrate uh ON ofm.uid = uh.uid
+        <trim prefix="WHERE" prefixOverrides="AND|OR">
+            <if test="map != null and map.mobile != null and map.mobile != ''">
+                and uh.mobile_number like concat('%',#{map.mobile},'%')
+            </if>
+            <if test="map != null and map.orderNumber != null and map.orderNumber != ''">
+                and ofm.order_number = #{map.orderNumber}
+            </if>
+            <if test="map != null and map.subject != null and map.subject != ''">
+                and ofm.subject = #{map.subject}
+            </if>
+            <if test="map != null and map.status != null and map.status != ''">
+                and ofm.subject = #{map.subject}
+            </if>
+            <if test="map != null and map.startTime != null and map.startTime != '' and map.endTime != null and map.endTime != ''">
+                and ofm.c_time between #{map.startTime} and #{map.endTime}
+            </if>
+            <if test="map != null and map.email != null and map.email != ''">
+                and uh.email = #{map.email}
+            </if>
+        </trim>
+        ORDER BY ofm.c_time DESC
+        LIMIT #{map.pageNum},#{map.numPerPage};
+    </select>
+
+    <select id="findOrderByConditionCount" resultType="java.lang.Integer" parameterType="java.util.Map">
+        SELECT COUNT(ofm.id)
+        FROM order_form ofm
+        JOIN user_hashrate uh ON ofm.uid = uh.uid
+        <trim prefix="WHERE" prefixOverrides="AND|OR">
+            <if test="map != null and map.mobile != null and map.mobile != ''">
+                and uh.mobile_number like concat('%',#{map.mobile},'%')
+            </if>
+            <if test="map != null and map.orderNumber != null and map.orderNumber != ''">
+                and ofm.order_number = #{map.orderNumber}
+            </if>
+            <if test="map != null and map.subject != null and map.subject != ''">
+                and ofm.subject = #{map.subject}
+            </if>
+            <if test="map != null and map.status != null and map.status != ''">
+                and ofm.subject = #{map.subject}
+            </if>
+            <if test="map != null and map.startTime != null and map.startTime != '' and map.endTime != null and map.endTime != ''">
+                and ofm.c_time between #{map.startTime} and #{map.endTime}
+            </if>
+            <if test="map != null and map.email != null and map.email != ''">
+                and uh.email = #{map.email}
+            </if>
+        </trim>
+    </select>
 </mapper>

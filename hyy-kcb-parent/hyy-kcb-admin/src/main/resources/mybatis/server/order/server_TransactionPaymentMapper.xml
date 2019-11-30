@@ -1,5 +1,51 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.hyy.kcb.dao.order.ITransactionPaymentDao" >
-	
+<mapper namespace="com.hyy.kcb.dao.order.ITransactionPaymentDao">
+
+    <resultMap id="server_transactionPaymentResultMap" type="com.hyy.kcb.domain.order.dto.TransactionPaymentDTO">
+        <result column="ID" property="id"/>
+        <result column="PAYMENT_UID" property="paymentUid"/>
+        <result column="AMOUNT" property="amount"/>
+        <result column="RECEIPT_MOBILE" property="receiptMobile"/>
+        <result column="FEE" property="fee"/>
+        <result column="REMARK" property="remark"/>
+        <result column="RECEIPT_AMOUNT" property="receiptAmount"/>
+        <result column="CREATE_TIME" property="createTime"/>
+
+        <result column="PAYMOBILE" property="payMobile"/>
+    </resultMap>
+    <select id="findOutAndIn" parameterType="java.util.Map" resultMap="server_transactionPaymentResultMap">
+        SELECT
+        tp.*,
+        uh.mobile_number payMobile
+        FROM
+        transaction_payment tp
+        JOIN user_hashrate uh ON uh.uid = tp.payment_uid
+        <trim prefix="WHERE" prefixOverrides="AND|OR">
+            <if test="map != null and map.startTime != null and map.startTime != '' and map.endTime != null and map.endTime != ''">
+                and tp.create_time between #{map.startTime} and #{map.endTime}
+            </if>
+            <if test="map != null and map.payMobile != null and map.payMobile != ''">
+                and uh.mobile_number = #{map.payMobile}
+            </if>
+        </trim>
+        ORDER BY tp.create_time DESC
+        LIMIT #{map.pageNum},#{map.numPerPage};
+    </select>
+
+    <select id="findOutAndInCount" resultType="java.lang.Integer" parameterType="java.util.Map">
+        SELECT
+        COUNT(tp.id)
+        FROM
+        transaction_payment tp
+        JOIN user_hashrate uh ON uh.uid = tp.payment_uid
+        <trim prefix="WHERE" prefixOverrides="AND|OR">
+            <if test="map != null and map.startTime != null and map.startTime != '' and map.endTime != null and map.endTime != ''">
+                and tp.create_time between #{map.startTime} and #{map.endTime}
+            </if>
+            <if test="map != null and map.payMobile != null and map.payMobile != ''">
+                and uh.mobile_number = #{map.payMobile}
+            </if>
+        </trim>
+    </select>
 </mapper>
