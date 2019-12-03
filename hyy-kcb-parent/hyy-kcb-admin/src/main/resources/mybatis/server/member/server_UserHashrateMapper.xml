@@ -1,5 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.hyy.kcb.dao.member.IUserHashrateDao" >
-	
+<mapper namespace="com.hyy.kcb.dao.member.IUserHashrateDao">
+    <select id="">
+        SELECT uh.uid,
+               uh.u_hashrate,
+               res1.budaoamount,
+               res2.yingpanamount,
+               (res1.budaoamount + res2.yingpanamount) totalamount
+        FROM user_hashrate uh
+                 LEFT JOIN (SELECT uid, sum(amount) budaoamount, hashrate_type
+                            FROM water_hashrate
+                            WHERE hashrate_type = '布道算力加速'
+                            GROUP BY uid, hashrate_type) res1 ON uh.uid = res1.uid
+                 LEFT JOIN (SELECT uid, sum(amount) yingpanamount, hashrate_type
+                            FROM water_hashrate
+                            WHERE hashrate_type != '布道算力加速'
+                            GROUP BY uid) res2 ON uh.uid = res2.uid;
+    </select>
 </mapper>

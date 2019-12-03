@@ -1,7 +1,5 @@
 package com.hyy.kcb.domain.order;
 
-import java.util.Date;
-import org.springframework.format.annotation.DateTimeFormat;
 import java.math.BigDecimal;
 
 /**

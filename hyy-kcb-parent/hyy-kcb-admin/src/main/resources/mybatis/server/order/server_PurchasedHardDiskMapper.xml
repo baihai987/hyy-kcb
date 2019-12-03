@@ -1,5 +1,92 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.hyy.kcb.dao.order.IPurchasedHardDiskDao" >
-	
+<mapper namespace="com.hyy.kcb.dao.order.IPurchasedHardDiskDao">
+    <resultMap id="server_purchasedHardDiskResultMap" type="com.hyy.kcb.domain.order.dto.PurchasedHardDiskDTO">
+        <result column="ID" property="id"/>
+        <result column="UID" property="uid"/>
+        <result column="MOBILE_NUMBER" property="mobileNumber"/>
+        <result column="HARD_DISK_ID" property="hardDiskId"/>
+        <result column="HARD_DISK_NAME" property="hardDiskName"/>
+        <result column="LEVEL" property="level"/>
+        <result column="BUYING_PRICE" property="buyingPrice"/>
+        <result column="C_TIME" property="cTime"/>
+        <result column="LIFT_TIME" property="liftTime"/>
+        <result column="REMAINING_DAYS" property="remainingDays"/>
+        <result column="TYPE" property="type"/>
+        <result column="DEDUCT_MONEY_ORDER" property="deductMoneyOrder"/>
+        <result column="OUTPUT_TODAY" property="outputToday"/>
+        <result column="PENDING_AMOUNT" property="pendingAmount"/>
+        <result column="BEFORE_LEVEL" property="beforeLevel"/>
+
+        <result column="contractId" property="contractId"/>
+        <result column="miningAmount" property="miningAmount"/>
+        <result column="CONTRACT_START_TIME" property="contractStartTime"/>
+        <result column="CONTRACT_END_TIME" property="contractEndTime"/>
+
+    </resultMap>
+
+    <select id="findOrderByConditionCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM (
+        SELECT phd.uid
+        FROM purchased_hard_disk phd
+        JOIN user_hashrate uh ON phd.uid = uh.uid
+        JOIN purchased_hard_disk_contract phdc ON phdc.purchased_hard_disk_id = phd.id
+        JOIN mining_records mr ON mr.purchased_hard_disk_id = phd.id
+        <trim prefix="WHERE" prefixOverrides="AND|OR">
+            <if test="map != null and map.contractId != null and map.contractId != ''">
+                and phdc.contract_id = #{map.contractId}
+            </if>
+            <if test="map != null and map.level != null and map.level != ''">
+                and phd.`level` = #{map.level}
+            </if>
+            <if test="map != null and map.mobileNumber != null and map.mobileNumber != ''">
+                and phd.mobile_number = #{map.mobileNumber}
+            </if>
+            <if test="map != null and map.type != null and map.type != ''">
+                and phd.type = #{map.type}
+            </if>
+        </trim>
+        GROUP BY mr.purchased_hard_disk_id
+        ) res1
+    </select>
+
+    <select id="findOrderByCondition" parameterType="java.util.Map" resultMap="server_purchasedHardDiskResultMap">
+        SELECT phd.`level`,
+        phd.uid,
+        phd.mobile_number,
+        uh.email,
+        phdc.contract_id contractId,
+        phd.buying_price,
+        sum(if(mr.purchased_hard_disk_id = phd.id, mr.mining_amount, 0)) miningAmount,
+        phd.type,
+        phd.c_time,
+        phd.lift_time,
+        phdc.contract_start_time,
+        phdc.contract_end_time,
+        phd.hard_disk_name
+        FROM purchased_hard_disk phd
+        JOIN user_hashrate uh ON phd.uid = uh.uid
+        JOIN purchased_hard_disk_contract phdc ON phdc.purchased_hard_disk_id = phd.id
+        JOIN mining_records mr on mr.purchased_hard_disk_id = phd.id
+
+        <trim prefix="WHERE" prefixOverrides="AND|OR">
+            <if test="map != null and map.contractId != null and map.contractId != ''">
+                and phdc.contract_id = #{map.contractId}
+            </if>
+            <if test="map != null and map.level != null and map.level != ''">
+                and phd.`level` = #{map.level}
+            </if>
+            <if test="map != null and map.mobileNumber != null and map.mobileNumber != ''">
+                and phd.mobile_number = #{map.mobileNumber}
+            </if>
+            <if test="map != null and map.type != null and map.type != ''">
+                and phd.type = #{map.type}
+            </if>
+        </trim>
+
+        GROUP BY mr.purchased_hard_disk_id
+        ORDER BY phdc.contract_start_time DESC
+        LIMIT #{map.pageNum},#{map.numPerPage};
+    </select>
 </mapper>

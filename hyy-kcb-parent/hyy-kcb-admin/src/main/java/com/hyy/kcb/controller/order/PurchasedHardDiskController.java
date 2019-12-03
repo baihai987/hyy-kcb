@@ -1,20 +1,13 @@
 package com.hyy.kcb.controller.order;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import com.hyy.kcb.commons.ConstantEnum;
 import com.hyy.kcb.config.controller.ApiBaseController;
@@ -114,5 +107,17 @@ public class PurchasedHardDiskController extends ApiBaseController{
 		logger.debug("PurchasedHardDiskController exe list out={}",pager);
 		
 		return success(request,pager);
+	}
+
+	@PostMapping("/findHardDiskCondition")
+	@ResponseBody
+//    @RequiresPermissions("static:findHardDiskCondition")
+	public WebResout findOrderByCondition(HttpServletRequest request,
+										  @RequestParam Map<String,Object> map) throws BusinessException {
+		Map hashMap= purchasedHardDiskService.findHardDiskCondition(map);
+		if(hashMap.get("totalCount").equals(0)){
+			return fail(request,"无查询结果");
+		}
+		return success(request,hashMap);
 	}
 }
